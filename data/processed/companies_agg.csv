@@ -1,0 +1,595 @@
+year,region,state,sector,opened,closed,net
+2019,Centro-Oeste,DF,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",12740,18555,-5815
+2019,Centro-Oeste,DF,B Indústrias extrativas,7783,1422,6361
+2019,Centro-Oeste,DF,C Indústrias de transformação,52519,51100,1419
+2019,Centro-Oeste,DF,D Eletricidade e gás,11696,6801,4895
+2019,Centro-Oeste,DF,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",8596,4342,4254
+2019,Centro-Oeste,DF,F Construção,110867,74899,35968
+2019,Centro-Oeste,DF,G Comércio; reparação de veículos automotores e motocicletas,508120,441764,66356
+2019,Centro-Oeste,DF,"H Transporte, armazenagem e correio",62949,77464,-14515
+2019,Centro-Oeste,DF,I Alojamento e alimentação,198018,180841,17177
+2019,Centro-Oeste,DF,J Informação e comunicação,110938,56034,54904
+2019,Centro-Oeste,DF,"K Atividades financeiras, de seguros e serviços relacionados",22394,62441,-40047
+2019,Centro-Oeste,DF,L Atividades imobiliárias,15500,10373,5127
+2019,Centro-Oeste,DF,"M Atividades profissionais, científicas e técnicas",92856,66208,26648
+2019,Centro-Oeste,DF,N Atividades administrativas e serviços complementares,234488,144360,90128
+2019,Centro-Oeste,DF,"O Administração pública, defesa e seguridade social",6,0,6
+2019,Centro-Oeste,DF,P Educação,70097,55995,14102
+2019,Centro-Oeste,DF,Q Saúde humana e serviços sociais,82779,44765,38014
+2019,Centro-Oeste,DF,"R Artes, cultura, esporte e recreação",24574,16802,7772
+2019,Centro-Oeste,DF,S Outras atividades de serviços,36326,35304,1022
+2019,Centro-Oeste,DF,T Serviços domésticos,0,0,0
+2019,Centro-Oeste,DF,Total,1506548,1257249,249299
+2019,Centro-Oeste,DF,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Centro-Oeste,GO,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",113990,65028,48962
+2019,Centro-Oeste,GO,B Indústrias extrativas,33921,5557,28364
+2019,Centro-Oeste,GO,C Indústrias de transformação,273472,298810,-25338
+2019,Centro-Oeste,GO,D Eletricidade e gás,12222,27,12195
+2019,Centro-Oeste,GO,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",28450,11103,17347
+2019,Centro-Oeste,GO,F Construção,207556,121638,85918
+2019,Centro-Oeste,GO,G Comércio; reparação de veículos automotores e motocicletas,723232,704799,18433
+2019,Centro-Oeste,GO,"H Transporte, armazenagem e correio",176848,117508,59340
+2019,Centro-Oeste,GO,I Alojamento e alimentação,176162,171359,4803
+2019,Centro-Oeste,GO,J Informação e comunicação,54263,54000,263
+2019,Centro-Oeste,GO,"K Atividades financeiras, de seguros e serviços relacionados",52602,62381,-9779
+2019,Centro-Oeste,GO,L Atividades imobiliárias,21572,12045,9527
+2019,Centro-Oeste,GO,"M Atividades profissionais, científicas e técnicas",122415,69162,53253
+2019,Centro-Oeste,GO,N Atividades administrativas e serviços complementares,430275,244226,186049
+2019,Centro-Oeste,GO,"O Administração pública, defesa e seguridade social",22585,1,22584
+2019,Centro-Oeste,GO,P Educação,86212,76383,9829
+2019,Centro-Oeste,GO,Q Saúde humana e serviços sociais,130430,64393,66037
+2019,Centro-Oeste,GO,"R Artes, cultura, esporte e recreação",19037,16657,2380
+2019,Centro-Oeste,GO,S Outras atividades de serviços,43533,32855,10678
+2019,Centro-Oeste,GO,T Serviços domésticos,0,0,0
+2019,Centro-Oeste,GO,Total,2543334,2051336,491998
+2019,Centro-Oeste,GO,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Centro-Oeste,MS,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",127443,17085,110358
+2019,Centro-Oeste,MS,B Indústrias extrativas,20992,13566,7426
+2019,Centro-Oeste,MS,C Indústrias de transformação,154318,200901,-46583
+2019,Centro-Oeste,MS,D Eletricidade e gás,11755,55,11700
+2019,Centro-Oeste,MS,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",9858,4804,5054
+2019,Centro-Oeste,MS,F Construção,88493,48023,40470
+2019,Centro-Oeste,MS,G Comércio; reparação de veículos automotores e motocicletas,287195,211880,75315
+2019,Centro-Oeste,MS,"H Transporte, armazenagem e correio",70863,54420,16443
+2019,Centro-Oeste,MS,I Alojamento e alimentação,70193,56578,13615
+2019,Centro-Oeste,MS,J Informação e comunicação,22676,15211,7465
+2019,Centro-Oeste,MS,"K Atividades financeiras, de seguros e serviços relacionados",23152,28746,-5594
+2019,Centro-Oeste,MS,L Atividades imobiliárias,12669,5892,6777
+2019,Centro-Oeste,MS,"M Atividades profissionais, científicas e técnicas",47514,29946,17568
+2019,Centro-Oeste,MS,N Atividades administrativas e serviços complementares,77243,41115,36128
+2019,Centro-Oeste,MS,"O Administração pública, defesa e seguridade social",1,0,1
+2019,Centro-Oeste,MS,P Educação,24135,14530,9605
+2019,Centro-Oeste,MS,Q Saúde humana e serviços sociais,29834,16729,13105
+2019,Centro-Oeste,MS,"R Artes, cultura, esporte e recreação",9342,7747,1595
+2019,Centro-Oeste,MS,S Outras atividades de serviços,20726,15509,5217
+2019,Centro-Oeste,MS,T Serviços domésticos,0,0,0
+2019,Centro-Oeste,MS,Total,957996,712975,245021
+2019,Centro-Oeste,MS,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Centro-Oeste,MT,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",92208,61774,30434
+2019,Centro-Oeste,MT,B Indústrias extrativas,21680,7625,14055
+2019,Centro-Oeste,MT,C Indústrias de transformação,267481,225357,42124
+2019,Centro-Oeste,MT,D Eletricidade e gás,17306,5484,11822
+2019,Centro-Oeste,MT,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",17919,5391,12528
+2019,Centro-Oeste,MT,F Construção,166196,77700,88496
+2019,Centro-Oeste,MT,G Comércio; reparação de veículos automotores e motocicletas,548597,409412,139185
+2019,Centro-Oeste,MT,"H Transporte, armazenagem e correio",170337,89310,81027
+2019,Centro-Oeste,MT,I Alojamento e alimentação,114132,92278,21854
+2019,Centro-Oeste,MT,J Informação e comunicação,37858,26496,11362
+2019,Centro-Oeste,MT,"K Atividades financeiras, de seguros e serviços relacionados",32839,31498,1341
+2019,Centro-Oeste,MT,L Atividades imobiliárias,15966,5762,10204
+2019,Centro-Oeste,MT,"M Atividades profissionais, científicas e técnicas",78305,52997,25308
+2019,Centro-Oeste,MT,N Atividades administrativas e serviços complementares,141931,101103,40828
+2019,Centro-Oeste,MT,"O Administração pública, defesa e seguridade social",7,3,4
+2019,Centro-Oeste,MT,P Educação,43467,116723,-73256
+2019,Centro-Oeste,MT,Q Saúde humana e serviços sociais,52715,28015,24700
+2019,Centro-Oeste,MT,"R Artes, cultura, esporte e recreação",9171,8320,851
+2019,Centro-Oeste,MT,S Outras atividades de serviços,24566,17084,7482
+2019,Centro-Oeste,MT,T Serviços domésticos,0,0,0
+2019,Centro-Oeste,MT,Total,1685184,1275472,409712
+2019,Centro-Oeste,MT,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,AL,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",26289,8205,18084
+2019,Nordeste,AL,B Indústrias extrativas,11901,2859,9042
+2019,Nordeste,AL,C Indústrias de transformação,33410,33231,179
+2019,Nordeste,AL,D Eletricidade e gás,9222,5,9217
+2019,Nordeste,AL,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",9146,6923,2223
+2019,Nordeste,AL,F Construção,55867,47340,8527
+2019,Nordeste,AL,G Comércio; reparação de veículos automotores e motocicletas,177778,184332,-6554
+2019,Nordeste,AL,"H Transporte, armazenagem e correio",25442,36119,-10677
+2019,Nordeste,AL,I Alojamento e alimentação,60954,56646,4308
+2019,Nordeste,AL,J Informação e comunicação,17653,11444,6209
+2019,Nordeste,AL,"K Atividades financeiras, de seguros e serviços relacionados",9190,13863,-4673
+2019,Nordeste,AL,L Atividades imobiliárias,15893,6986,8907
+2019,Nordeste,AL,"M Atividades profissionais, científicas e técnicas",35439,14396,21043
+2019,Nordeste,AL,N Atividades administrativas e serviços complementares,53323,36487,16836
+2019,Nordeste,AL,"O Administração pública, defesa e seguridade social",6313,1,6312
+2019,Nordeste,AL,P Educação,34107,27996,6111
+2019,Nordeste,AL,Q Saúde humana e serviços sociais,31798,11355,20443
+2019,Nordeste,AL,"R Artes, cultura, esporte e recreação",8174,6314,1860
+2019,Nordeste,AL,S Outras atividades de serviços,13520,10550,2970
+2019,Nordeste,AL,T Serviços domésticos,0,0,0
+2019,Nordeste,AL,Total,535955,455157,80798
+2019,Nordeste,AL,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,BA,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",78954,70226,8728
+2019,Nordeste,BA,B Indústrias extrativas,29419,12225,17194
+2019,Nordeste,BA,C Indústrias de transformação,244531,236814,7717
+2019,Nordeste,BA,D Eletricidade e gás,7709,6582,1127
+2019,Nordeste,BA,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",49171,17127,32044
+2019,Nordeste,BA,F Construção,426665,315698,110967
+2019,Nordeste,BA,G Comércio; reparação de veículos automotores e motocicletas,977845,1084706,-106861
+2019,Nordeste,BA,"H Transporte, armazenagem e correio",189223,148926,40297
+2019,Nordeste,BA,I Alojamento e alimentação,203356,226767,-23411
+2019,Nordeste,BA,J Informação e comunicação,53534,68606,-15072
+2019,Nordeste,BA,"K Atividades financeiras, de seguros e serviços relacionados",38207,78200,-39993
+2019,Nordeste,BA,L Atividades imobiliárias,22799,11460,11339
+2019,Nordeste,BA,"M Atividades profissionais, científicas e técnicas",196430,70139,126291
+2019,Nordeste,BA,N Atividades administrativas e serviços complementares,207780,187017,20763
+2019,Nordeste,BA,"O Administração pública, defesa e seguridade social",19,7,12
+2019,Nordeste,BA,P Educação,110548,116593,-6045
+2019,Nordeste,BA,Q Saúde humana e serviços sociais,121386,50071,71315
+2019,Nordeste,BA,"R Artes, cultura, esporte e recreação",23782,19830,3952
+2019,Nordeste,BA,S Outras atividades de serviços,43138,43619,-481
+2019,Nordeste,BA,T Serviços domésticos,0,0,0
+2019,Nordeste,BA,Total,2857380,2681676,175704
+2019,Nordeste,BA,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,CE,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",20680,18583,2097
+2019,Nordeste,CE,B Indústrias extrativas,10219,4180,6039
+2019,Nordeste,CE,C Indústrias de transformação,181474,163087,18387
+2019,Nordeste,CE,D Eletricidade e gás,35844,18006,17838
+2019,Nordeste,CE,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",14812,5634,9178
+2019,Nordeste,CE,F Construção,222508,136375,86133
+2019,Nordeste,CE,G Comércio; reparação de veículos automotores e motocicletas,468496,422137,46359
+2019,Nordeste,CE,"H Transporte, armazenagem e correio",83979,62498,21481
+2019,Nordeste,CE,I Alojamento e alimentação,121936,128209,-6273
+2019,Nordeste,CE,J Informação e comunicação,58608,42215,16393
+2019,Nordeste,CE,"K Atividades financeiras, de seguros e serviços relacionados",152443,38229,114214
+2019,Nordeste,CE,L Atividades imobiliárias,19086,7901,11185
+2019,Nordeste,CE,"M Atividades profissionais, científicas e técnicas",90618,44084,46534
+2019,Nordeste,CE,N Atividades administrativas e serviços complementares,239301,134225,105076
+2019,Nordeste,CE,"O Administração pública, defesa e seguridade social",2126,4,2122
+2019,Nordeste,CE,P Educação,47219,60575,-13356
+2019,Nordeste,CE,Q Saúde humana e serviços sociais,53415,38342,15073
+2019,Nordeste,CE,"R Artes, cultura, esporte e recreação",20687,13842,6845
+2019,Nordeste,CE,S Outras atividades de serviços,38745,30945,7800
+2019,Nordeste,CE,T Serviços domésticos,0,0,0
+2019,Nordeste,CE,Total,1725023,1285895,439128
+2019,Nordeste,CE,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,MA,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",32322,12304,20018
+2019,Nordeste,MA,B Indústrias extrativas,10061,7219,2842
+2019,Nordeste,MA,C Indústrias de transformação,58171,40978,17193
+2019,Nordeste,MA,D Eletricidade e gás,19157,15984,3173
+2019,Nordeste,MA,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",141080,119116,21964
+2019,Nordeste,MA,F Construção,121502,69756,51746
+2019,Nordeste,MA,G Comércio; reparação de veículos automotores e motocicletas,375988,319021,56967
+2019,Nordeste,MA,"H Transporte, armazenagem e correio",58401,39881,18520
+2019,Nordeste,MA,I Alojamento e alimentação,62618,62322,296
+2019,Nordeste,MA,J Informação e comunicação,30726,26586,4140
+2019,Nordeste,MA,"K Atividades financeiras, de seguros e serviços relacionados",23726,18153,5573
+2019,Nordeste,MA,L Atividades imobiliárias,13928,6308,7620
+2019,Nordeste,MA,"M Atividades profissionais, científicas e técnicas",42132,24076,18056
+2019,Nordeste,MA,N Atividades administrativas e serviços complementares,86968,46070,40898
+2019,Nordeste,MA,"O Administração pública, defesa e seguridade social",5,0,5
+2019,Nordeste,MA,P Educação,37363,48768,-11405
+2019,Nordeste,MA,Q Saúde humana e serviços sociais,105162,55169,49993
+2019,Nordeste,MA,"R Artes, cultura, esporte e recreação",7621,8516,-895
+2019,Nordeste,MA,S Outras atividades de serviços,18131,11870,6261
+2019,Nordeste,MA,T Serviços domésticos,0,0,0
+2019,Nordeste,MA,Total,1103700,852717,250983
+2019,Nordeste,MA,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,PB,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",17754,6042,11712
+2019,Nordeste,PB,B Indústrias extrativas,10477,5273,5204
+2019,Nordeste,PB,C Indústrias de transformação,74665,52717,21948
+2019,Nordeste,PB,D Eletricidade e gás,5454,15235,-9781
+2019,Nordeste,PB,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",12930,4802,8128
+2019,Nordeste,PB,F Construção,96599,45486,51113
+2019,Nordeste,PB,G Comércio; reparação de veículos automotores e motocicletas,211598,158951,52647
+2019,Nordeste,PB,"H Transporte, armazenagem e correio",31514,21629,9885
+2019,Nordeste,PB,I Alojamento e alimentação,54113,51885,2228
+2019,Nordeste,PB,J Informação e comunicação,29482,13957,15525
+2019,Nordeste,PB,"K Atividades financeiras, de seguros e serviços relacionados",22589,22185,404
+2019,Nordeste,PB,L Atividades imobiliárias,12536,6722,5814
+2019,Nordeste,PB,"M Atividades profissionais, científicas e técnicas",37921,12790,25131
+2019,Nordeste,PB,N Atividades administrativas e serviços complementares,49647,28214,21433
+2019,Nordeste,PB,"O Administração pública, defesa e seguridade social",0,0,0
+2019,Nordeste,PB,P Educação,34906,20026,14880
+2019,Nordeste,PB,Q Saúde humana e serviços sociais,26208,15077,11131
+2019,Nordeste,PB,"R Artes, cultura, esporte e recreação",10285,6843,3442
+2019,Nordeste,PB,S Outras atividades de serviços,14283,12914,1369
+2019,Nordeste,PB,T Serviços domésticos,0,0,0
+2019,Nordeste,PB,Total,623295,421669,201626
+2019,Nordeste,PB,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,PE,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",58557,42968,15589
+2019,Nordeste,PE,B Indústrias extrativas,8269,6573,1696
+2019,Nordeste,PE,C Indústrias de transformação,169015,188912,-19897
+2019,Nordeste,PE,D Eletricidade e gás,17630,27740,-10110
+2019,Nordeste,PE,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",23781,6662,17119
+2019,Nordeste,PE,F Construção,151940,162965,-11025
+2019,Nordeste,PE,G Comércio; reparação de veículos automotores e motocicletas,658504,639439,19065
+2019,Nordeste,PE,"H Transporte, armazenagem e correio",98012,97125,887
+2019,Nordeste,PE,I Alojamento e alimentação,161316,177021,-15705
+2019,Nordeste,PE,J Informação e comunicação,62308,49532,12776
+2019,Nordeste,PE,"K Atividades financeiras, de seguros e serviços relacionados",35078,48593,-13515
+2019,Nordeste,PE,L Atividades imobiliárias,25469,8224,17245
+2019,Nordeste,PE,"M Atividades profissionais, científicas e técnicas",85099,54389,30710
+2019,Nordeste,PE,N Atividades administrativas e serviços complementares,172636,126733,45903
+2019,Nordeste,PE,"O Administração pública, defesa e seguridade social",2751,4,2747
+2019,Nordeste,PE,P Educação,82120,58794,23326
+2019,Nordeste,PE,Q Saúde humana e serviços sociais,82923,29164,53759
+2019,Nordeste,PE,"R Artes, cultura, esporte e recreação",20444,20187,257
+2019,Nordeste,PE,S Outras atividades de serviços,39495,46799,-7304
+2019,Nordeste,PE,T Serviços domésticos,0,0,0
+2019,Nordeste,PE,Total,1808793,1700328,108465
+2019,Nordeste,PE,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,PI,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",12016,5642,6374
+2019,Nordeste,PI,B Indústrias extrativas,6155,4526,1629
+2019,Nordeste,PI,C Indústrias de transformação,40765,29926,10839
+2019,Nordeste,PI,D Eletricidade e gás,11905,17,11888
+2019,Nordeste,PI,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",9020,5675,3345
+2019,Nordeste,PI,F Construção,87113,38317,48796
+2019,Nordeste,PI,G Comércio; reparação de veículos automotores e motocicletas,256687,158402,98285
+2019,Nordeste,PI,"H Transporte, armazenagem e correio",29073,22564,6509
+2019,Nordeste,PI,I Alojamento e alimentação,42771,38425,4346
+2019,Nordeste,PI,J Informação e comunicação,17781,14077,3704
+2019,Nordeste,PI,"K Atividades financeiras, de seguros e serviços relacionados",10952,14481,-3529
+2019,Nordeste,PI,L Atividades imobiliárias,7752,6279,1473
+2019,Nordeste,PI,"M Atividades profissionais, científicas e técnicas",25227,11232,13995
+2019,Nordeste,PI,N Atividades administrativas e serviços complementares,35068,18127,16941
+2019,Nordeste,PI,"O Administração pública, defesa e seguridade social",7,1,6
+2019,Nordeste,PI,P Educação,20660,20711,-51
+2019,Nordeste,PI,Q Saúde humana e serviços sociais,19029,13058,5971
+2019,Nordeste,PI,"R Artes, cultura, esporte e recreação",8382,6987,1395
+2019,Nordeste,PI,S Outras atividades de serviços,14572,9846,4726
+2019,Nordeste,PI,T Serviços domésticos,0,0,0
+2019,Nordeste,PI,Total,537032,355309,181723
+2019,Nordeste,PI,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,RN,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",16447,11034,5413
+2019,Nordeste,RN,B Indústrias extrativas,28394,10772,17622
+2019,Nordeste,RN,C Indústrias de transformação,78981,75952,3029
+2019,Nordeste,RN,D Eletricidade e gás,13074,7152,5922
+2019,Nordeste,RN,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",18780,6068,12712
+2019,Nordeste,RN,F Construção,86544,48893,37651
+2019,Nordeste,RN,G Comércio; reparação de veículos automotores e motocicletas,239555,234318,5237
+2019,Nordeste,RN,"H Transporte, armazenagem e correio",32051,31332,719
+2019,Nordeste,RN,I Alojamento e alimentação,78593,77038,1555
+2019,Nordeste,RN,J Informação e comunicação,27306,16145,11161
+2019,Nordeste,RN,"K Atividades financeiras, de seguros e serviços relacionados",18908,20106,-1198
+2019,Nordeste,RN,L Atividades imobiliárias,15745,5454,10291
+2019,Nordeste,RN,"M Atividades profissionais, científicas e técnicas",38305,19348,18957
+2019,Nordeste,RN,N Atividades administrativas e serviços complementares,54338,40810,13528
+2019,Nordeste,RN,"O Administração pública, defesa e seguridade social",6,1,5
+2019,Nordeste,RN,P Educação,33222,51560,-18338
+2019,Nordeste,RN,Q Saúde humana e serviços sociais,37054,14312,22742
+2019,Nordeste,RN,"R Artes, cultura, esporte e recreação",10765,7623,3142
+2019,Nordeste,RN,S Outras atividades de serviços,20638,20301,337
+2019,Nordeste,RN,T Serviços domésticos,0,0,0
+2019,Nordeste,RN,Total,706128,624414,81714
+2019,Nordeste,RN,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Nordeste,SE,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",9539,6184,3355
+2019,Nordeste,SE,B Indústrias extrativas,57742,21884,35858
+2019,Nordeste,SE,C Indústrias de transformação,32871,22355,10516
+2019,Nordeste,SE,D Eletricidade e gás,12,3,9
+2019,Nordeste,SE,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",8057,1760,6297
+2019,Nordeste,SE,F Construção,45765,37879,7886
+2019,Nordeste,SE,G Comércio; reparação de veículos automotores e motocicletas,109250,98805,10445
+2019,Nordeste,SE,"H Transporte, armazenagem e correio",19770,21238,-1468
+2019,Nordeste,SE,I Alojamento e alimentação,31086,32818,-1732
+2019,Nordeste,SE,J Informação e comunicação,14266,15922,-1656
+2019,Nordeste,SE,"K Atividades financeiras, de seguros e serviços relacionados",8750,17038,-8288
+2019,Nordeste,SE,L Atividades imobiliárias,7641,4285,3356
+2019,Nordeste,SE,"M Atividades profissionais, científicas e técnicas",25974,11490,14484
+2019,Nordeste,SE,N Atividades administrativas e serviços complementares,37213,23871,13342
+2019,Nordeste,SE,"O Administração pública, defesa e seguridade social",5,0,5
+2019,Nordeste,SE,P Educação,15187,12740,2447
+2019,Nordeste,SE,Q Saúde humana e serviços sociais,21116,8193,12923
+2019,Nordeste,SE,"R Artes, cultura, esporte e recreação",8182,6956,1226
+2019,Nordeste,SE,S Outras atividades de serviços,11842,10934,908
+2019,Nordeste,SE,T Serviços domésticos,0,0,0
+2019,Nordeste,SE,Total,356514,275798,80716
+2019,Nordeste,SE,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,AC,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",5102,3395,1707
+2019,Norte,AC,B Indústrias extrativas,2476,2444,32
+2019,Norte,AC,C Indústrias de transformação,15837,10282,5555
+2019,Norte,AC,D Eletricidade e gás,14,2,12
+2019,Norte,AC,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",9,1186,-1177
+2019,Norte,AC,F Construção,15488,13761,1727
+2019,Norte,AC,G Comércio; reparação de veículos automotores e motocicletas,64675,54966,9709
+2019,Norte,AC,"H Transporte, armazenagem e correio",9595,7940,1655
+2019,Norte,AC,I Alojamento e alimentação,17009,14043,2966
+2019,Norte,AC,J Informação e comunicação,9069,4304,4765
+2019,Norte,AC,"K Atividades financeiras, de seguros e serviços relacionados",9928,7100,2828
+2019,Norte,AC,L Atividades imobiliárias,6108,2261,3847
+2019,Norte,AC,"M Atividades profissionais, científicas e técnicas",13179,6302,6877
+2019,Norte,AC,N Atividades administrativas e serviços complementares,17227,18669,-1442
+2019,Norte,AC,"O Administração pública, defesa e seguridade social",0,0,0
+2019,Norte,AC,P Educação,10591,6805,3786
+2019,Norte,AC,Q Saúde humana e serviços sociais,10520,5988,4532
+2019,Norte,AC,"R Artes, cultura, esporte e recreação",4960,3536,1424
+2019,Norte,AC,S Outras atividades de serviços,9980,5269,4711
+2019,Norte,AC,T Serviços domésticos,0,0,0
+2019,Norte,AC,Total,123240,115403,7837
+2019,Norte,AC,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,AM,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",9007,4398,4609
+2019,Norte,AM,B Indústrias extrativas,21743,29206,-7463
+2019,Norte,AM,C Indústrias de transformação,65831,85262,-19431
+2019,Norte,AM,D Eletricidade e gás,36774,2215,34559
+2019,Norte,AM,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",11597,3642,7955
+2019,Norte,AM,F Construção,91019,55350,35669
+2019,Norte,AM,G Comércio; reparação de veículos automotores e motocicletas,275186,219187,55999
+2019,Norte,AM,"H Transporte, armazenagem e correio",43850,40161,3689
+2019,Norte,AM,I Alojamento e alimentação,68430,76867,-8437
+2019,Norte,AM,J Informação e comunicação,31450,17932,13518
+2019,Norte,AM,"K Atividades financeiras, de seguros e serviços relacionados",18396,15545,2851
+2019,Norte,AM,L Atividades imobiliárias,9495,5806,3689
+2019,Norte,AM,"M Atividades profissionais, científicas e técnicas",50026,33413,16613
+2019,Norte,AM,N Atividades administrativas e serviços complementares,85445,93191,-7746
+2019,Norte,AM,"O Administração pública, defesa e seguridade social",2,0,2
+2019,Norte,AM,P Educação,48140,53732,-5592
+2019,Norte,AM,Q Saúde humana e serviços sociais,28804,15037,13767
+2019,Norte,AM,"R Artes, cultura, esporte e recreação",9935,6754,3181
+2019,Norte,AM,S Outras atividades de serviços,14601,9564,5037
+2019,Norte,AM,T Serviços domésticos,0,0,0
+2019,Norte,AM,Total,767827,670716,97111
+2019,Norte,AM,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,AP,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",6013,5184,829
+2019,Norte,AP,B Indústrias extrativas,4714,8806,-4092
+2019,Norte,AP,C Indústrias de transformação,15425,13127,2298
+2019,Norte,AP,D Eletricidade e gás,2849,8400,-5551
+2019,Norte,AP,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",5509,2665,2844
+2019,Norte,AP,F Construção,22082,21695,387
+2019,Norte,AP,G Comércio; reparação de veículos automotores e motocicletas,67333,66746,587
+2019,Norte,AP,"H Transporte, armazenagem e correio",8555,14186,-5631
+2019,Norte,AP,I Alojamento e alimentação,15761,19427,-3666
+2019,Norte,AP,J Informação e comunicação,9156,8320,836
+2019,Norte,AP,"K Atividades financeiras, de seguros e serviços relacionados",7094,4271,2823
+2019,Norte,AP,L Atividades imobiliárias,6913,4717,2196
+2019,Norte,AP,"M Atividades profissionais, científicas e técnicas",13109,9001,4108
+2019,Norte,AP,N Atividades administrativas e serviços complementares,27206,27250,-44
+2019,Norte,AP,"O Administração pública, defesa e seguridade social",2,0,2
+2019,Norte,AP,P Educação,21288,10530,10758
+2019,Norte,AP,Q Saúde humana e serviços sociais,13442,8780,4662
+2019,Norte,AP,"R Artes, cultura, esporte e recreação",5643,4514,1129
+2019,Norte,AP,S Outras atividades de serviços,8918,5226,3692
+2019,Norte,AP,T Serviços domésticos,0,0,0
+2019,Norte,AP,Total,157019,172337,-15318
+2019,Norte,AP,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,PA,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",46149,28573,17576
+2019,Norte,PA,B Indústrias extrativas,12903,10379,2524
+2019,Norte,PA,C Indústrias de transformação,196970,156840,40130
+2019,Norte,PA,D Eletricidade e gás,19351,1386,17965
+2019,Norte,PA,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",11330,6055,5275
+2019,Norte,PA,F Construção,272605,121999,150606
+2019,Norte,PA,G Comércio; reparação de veículos automotores e motocicletas,616978,555966,61012
+2019,Norte,PA,"H Transporte, armazenagem e correio",111074,101103,9971
+2019,Norte,PA,I Alojamento e alimentação,105783,87943,17840
+2019,Norte,PA,J Informação e comunicação,44620,27282,17338
+2019,Norte,PA,"K Atividades financeiras, de seguros e serviços relacionados",23606,37392,-13786
+2019,Norte,PA,L Atividades imobiliárias,13458,5142,8316
+2019,Norte,PA,"M Atividades profissionais, científicas e técnicas",54977,41200,13777
+2019,Norte,PA,N Atividades administrativas e serviços complementares,207801,128146,79655
+2019,Norte,PA,"O Administração pública, defesa e seguridade social",4,4,0
+2019,Norte,PA,P Educação,57884,43600,14284
+2019,Norte,PA,Q Saúde humana e serviços sociais,54794,34172,20622
+2019,Norte,PA,"R Artes, cultura, esporte e recreação",12378,13195,-817
+2019,Norte,PA,S Outras atividades de serviços,27892,22291,5601
+2019,Norte,PA,T Serviços domésticos,0,0,0
+2019,Norte,PA,Total,1735742,1341798,393944
+2019,Norte,PA,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,RO,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",16706,7123,9583
+2019,Norte,RO,B Indústrias extrativas,6555,5212,1343
+2019,Norte,RO,C Indústrias de transformação,47369,36298,11071
+2019,Norte,RO,D Eletricidade e gás,1865,7,1858
+2019,Norte,RO,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",5116,4176,940
+2019,Norte,RO,F Construção,26054,23742,2312
+2019,Norte,RO,G Comércio; reparação de veículos automotores e motocicletas,208660,184955,23705
+2019,Norte,RO,"H Transporte, armazenagem e correio",32336,30284,2052
+2019,Norte,RO,I Alojamento e alimentação,36694,35437,1257
+2019,Norte,RO,J Informação e comunicação,18163,10719,7444
+2019,Norte,RO,"K Atividades financeiras, de seguros e serviços relacionados",25040,22643,2397
+2019,Norte,RO,L Atividades imobiliárias,8292,5043,3249
+2019,Norte,RO,"M Atividades profissionais, científicas e técnicas",24873,13170,11703
+2019,Norte,RO,N Atividades administrativas e serviços complementares,49983,32120,17863
+2019,Norte,RO,"O Administração pública, defesa e seguridade social",0,0,0
+2019,Norte,RO,P Educação,38778,35916,2862
+2019,Norte,RO,Q Saúde humana e serviços sociais,26243,15910,10333
+2019,Norte,RO,"R Artes, cultura, esporte e recreação",7881,5441,2440
+2019,Norte,RO,S Outras atividades de serviços,14466,6935,7531
+2019,Norte,RO,T Serviços domésticos,0,0,0
+2019,Norte,RO,Total,467211,405548,61663
+2019,Norte,RO,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,RR,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",6893,3917,2976
+2019,Norte,RR,B Indústrias extrativas,1472,1466,6
+2019,Norte,RR,C Indústrias de transformação,15215,8933,6282
+2019,Norte,RR,D Eletricidade e gás,16907,2,16905
+2019,Norte,RR,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",1317,2785,-1468
+2019,Norte,RR,F Construção,38125,11143,26982
+2019,Norte,RR,G Comércio; reparação de veículos automotores e motocicletas,53687,37122,16565
+2019,Norte,RR,"H Transporte, armazenagem e correio",15403,7160,8243
+2019,Norte,RR,I Alojamento e alimentação,17018,13686,3332
+2019,Norte,RR,J Informação e comunicação,9960,10335,-375
+2019,Norte,RR,"K Atividades financeiras, de seguros e serviços relacionados",8496,9901,-1405
+2019,Norte,RR,L Atividades imobiliárias,5280,4116,1164
+2019,Norte,RR,"M Atividades profissionais, científicas e técnicas",15093,6127,8966
+2019,Norte,RR,N Atividades administrativas e serviços complementares,18969,8180,10789
+2019,Norte,RR,"O Administração pública, defesa e seguridade social",2,1,1
+2019,Norte,RR,P Educação,8710,6402,2308
+2019,Norte,RR,Q Saúde humana e serviços sociais,20644,6379,14265
+2019,Norte,RR,"R Artes, cultura, esporte e recreação",5218,4120,1098
+2019,Norte,RR,S Outras atividades de serviços,8172,4961,3211
+2019,Norte,RR,T Serviços domésticos,0,0,0
+2019,Norte,RR,Total,151265,84512,66753
+2019,Norte,RR,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Norte,TO,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",26683,10855,15828
+2019,Norte,TO,B Indústrias extrativas,9954,5061,4893
+2019,Norte,TO,C Indústrias de transformação,31239,24514,6725
+2019,Norte,TO,D Eletricidade e gás,9656,141,9515
+2019,Norte,TO,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",6807,4263,2544
+2019,Norte,TO,F Construção,41171,61272,-20101
+2019,Norte,TO,G Comércio; reparação de veículos automotores e motocicletas,146268,101509,44759
+2019,Norte,TO,"H Transporte, armazenagem e correio",39507,19084,20423
+2019,Norte,TO,I Alojamento e alimentação,32926,23742,9184
+2019,Norte,TO,J Informação e comunicação,17616,6141,11475
+2019,Norte,TO,"K Atividades financeiras, de seguros e serviços relacionados",11208,10536,672
+2019,Norte,TO,L Atividades imobiliárias,10407,6500,3907
+2019,Norte,TO,"M Atividades profissionais, científicas e técnicas",25199,11665,13534
+2019,Norte,TO,N Atividades administrativas e serviços complementares,65174,32595,32579
+2019,Norte,TO,"O Administração pública, defesa e seguridade social",1,0,1
+2019,Norte,TO,P Educação,16275,10489,5786
+2019,Norte,TO,Q Saúde humana e serviços sociais,26192,9813,16379
+2019,Norte,TO,"R Artes, cultura, esporte e recreação",8585,5565,3020
+2019,Norte,TO,S Outras atividades de serviços,11272,5961,5311
+2019,Norte,TO,T Serviços domésticos,0,0,0
+2019,Norte,TO,Total,399833,278512,121321
+2019,Norte,TO,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Sudeste,ES,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",56765,65138,-8373
+2019,Sudeste,ES,B Indústrias extrativas,20503,9997,10506
+2019,Sudeste,ES,C Indústrias de transformação,213774,277835,-64061
+2019,Sudeste,ES,D Eletricidade e gás,6120,20452,-14332
+2019,Sudeste,ES,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",9313,4206,5107
+2019,Sudeste,ES,F Construção,85060,64933,20127
+2019,Sudeste,ES,G Comércio; reparação de veículos automotores e motocicletas,359488,340052,19436
+2019,Sudeste,ES,"H Transporte, armazenagem e correio",104793,75754,29039
+2019,Sudeste,ES,I Alojamento e alimentação,95279,96723,-1444
+2019,Sudeste,ES,J Informação e comunicação,30972,27194,3778
+2019,Sudeste,ES,"K Atividades financeiras, de seguros e serviços relacionados",39997,28999,10998
+2019,Sudeste,ES,L Atividades imobiliárias,11291,10276,1015
+2019,Sudeste,ES,"M Atividades profissionais, científicas e técnicas",65265,45043,20222
+2019,Sudeste,ES,N Atividades administrativas e serviços complementares,113048,91011,22037
+2019,Sudeste,ES,"O Administração pública, defesa e seguridade social",8,2,6
+2019,Sudeste,ES,P Educação,74805,41837,32968
+2019,Sudeste,ES,Q Saúde humana e serviços sociais,39686,27397,12289
+2019,Sudeste,ES,"R Artes, cultura, esporte e recreação",13866,11294,2572
+2019,Sudeste,ES,S Outras atividades de serviços,20839,22466,-1627
+2019,Sudeste,ES,T Serviços domésticos,0,0,0
+2019,Sudeste,ES,Total,1207886,1157808,50078
+2019,Sudeste,ES,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Sudeste,MG,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",167244,172804,-5560
+2019,Sudeste,MG,B Indústrias extrativas,66815,91638,-24823
+2019,Sudeste,MG,C Indústrias de transformação,766324,805556,-39232
+2019,Sudeste,MG,D Eletricidade e gás,16808,6531,10277
+2019,Sudeste,MG,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",15510,16623,-1113
+2019,Sudeste,MG,F Construção,817255,395062,422193
+2019,Sudeste,MG,G Comércio; reparação de veículos automotores e motocicletas,1674906,1636732,38174
+2019,Sudeste,MG,"H Transporte, armazenagem e correio",423857,283115,140742
+2019,Sudeste,MG,I Alojamento e alimentação,405669,481845,-76176
+2019,Sudeste,MG,J Informação e comunicação,173461,264553,-91092
+2019,Sudeste,MG,"K Atividades financeiras, de seguros e serviços relacionados",146006,145117,889
+2019,Sudeste,MG,L Atividades imobiliárias,36954,18378,18576
+2019,Sudeste,MG,"M Atividades profissionais, científicas e técnicas",310821,138803,172018
+2019,Sudeste,MG,N Atividades administrativas e serviços complementares,626438,494535,131903
+2019,Sudeste,MG,"O Administração pública, defesa e seguridade social",11,5,6
+2019,Sudeste,MG,P Educação,145536,158772,-13236
+2019,Sudeste,MG,Q Saúde humana e serviços sociais,156585,109914,46671
+2019,Sudeste,MG,"R Artes, cultura, esporte e recreação",41049,50075,-9026
+2019,Sudeste,MG,S Outras atividades de serviços,99186,85246,13940
+2019,Sudeste,MG,T Serviços domésticos,0,0,0
+2019,Sudeste,MG,Total,5943236,5265596,677640
+2019,Sudeste,MG,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Sudeste,RJ,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",15534,9982,5552
+2019,Sudeste,RJ,B Indústrias extrativas,206260,239619,-33359
+2019,Sudeste,RJ,C Indústrias de transformação,410685,611692,-201007
+2019,Sudeste,RJ,D Eletricidade e gás,20047,8777,11270
+2019,Sudeste,RJ,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",48307,14444,33863
+2019,Sudeste,RJ,F Construção,349428,378372,-28944
+2019,Sudeste,RJ,G Comércio; reparação de veículos automotores e motocicletas,1599178,1702512,-103334
+2019,Sudeste,RJ,"H Transporte, armazenagem e correio",595862,304214,291648
+2019,Sudeste,RJ,I Alojamento e alimentação,491417,552145,-60728
+2019,Sudeste,RJ,J Informação e comunicação,237281,1067177,-829896
+2019,Sudeste,RJ,"K Atividades financeiras, de seguros e serviços relacionados",135839,252284,-116445
+2019,Sudeste,RJ,L Atividades imobiliárias,37652,65406,-27754
+2019,Sudeste,RJ,"M Atividades profissionais, científicas e técnicas",332820,342425,-9605
+2019,Sudeste,RJ,N Atividades administrativas e serviços complementares,623791,423568,200223
+2019,Sudeste,RJ,"O Administração pública, defesa e seguridade social",4020,2,4018
+2019,Sudeste,RJ,P Educação,183137,207124,-23987
+2019,Sudeste,RJ,Q Saúde humana e serviços sociais,213662,129669,83993
+2019,Sudeste,RJ,"R Artes, cultura, esporte e recreação",84888,65590,19298
+2019,Sudeste,RJ,S Outras atividades de serviços,82626,134719,-52093
+2019,Sudeste,RJ,T Serviços domésticos,0,0,0
+2019,Sudeste,RJ,Total,5456690,6360250,-903560
+2019,Sudeste,RJ,U Organismos internacionais e outras instituições extraterritoriais,0,1,-1
+2019,Sudeste,SP,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",276261,469155,-192894
+2019,Sudeste,SP,B Indústrias extrativas,25904,24904,1000
+2019,Sudeste,SP,C Indústrias de transformação,2919068,3878351,-959283
+2019,Sudeste,SP,D Eletricidade e gás,52909,67918,-15009
+2019,Sudeste,SP,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",455358,188428,266930
+2019,Sudeste,SP,F Construção,1410633,1118261,292372
+2019,Sudeste,SP,G Comércio; reparação de veículos automotores e motocicletas,5933202,5697029,236173
+2019,Sudeste,SP,"H Transporte, armazenagem e correio",1817233,1128660,688573
+2019,Sudeste,SP,I Alojamento e alimentação,1494998,1650609,-155611
+2019,Sudeste,SP,J Informação e comunicação,1107737,1586960,-479223
+2019,Sudeste,SP,"K Atividades financeiras, de seguros e serviços relacionados",1194659,1060843,133816
+2019,Sudeste,SP,L Atividades imobiliárias,132452,66787,65665
+2019,Sudeste,SP,"M Atividades profissionais, científicas e técnicas",1034671,959310,75361
+2019,Sudeste,SP,N Atividades administrativas e serviços complementares,2736225,2233453,502772
+2019,Sudeste,SP,"O Administração pública, defesa e seguridade social",4974,2328,2646
+2019,Sudeste,SP,P Educação,453135,605961,-152826
+2019,Sudeste,SP,Q Saúde humana e serviços sociais,664242,577607,86635
+2019,Sudeste,SP,"R Artes, cultura, esporte e recreação",110424,137004,-26580
+2019,Sudeste,SP,S Outras atividades de serviços,315018,310887,4131
+2019,Sudeste,SP,T Serviços domésticos,0,0,0
+2019,Sudeste,SP,Total,21925407,21619655,305752
+2019,Sudeste,SP,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Sul,PR,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",90598,56916,33682
+2019,Sul,PR,B Indústrias extrativas,8429,7175,1254
+2019,Sul,PR,C Indústrias de transformação,729554,918584,-189030
+2019,Sul,PR,D Eletricidade e gás,19708,315,19393
+2019,Sul,PR,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",49762,12828,36934
+2019,Sul,PR,F Construção,404647,238993,165654
+2019,Sul,PR,G Comércio; reparação de veículos automotores e motocicletas,1398390,1130663,267727
+2019,Sul,PR,"H Transporte, armazenagem e correio",357753,213785,143968
+2019,Sul,PR,I Alojamento e alimentação,282276,295416,-13140
+2019,Sul,PR,J Informação e comunicação,125028,185111,-60083
+2019,Sul,PR,"K Atividades financeiras, de seguros e serviços relacionados",91994,136596,-44602
+2019,Sul,PR,L Atividades imobiliárias,32341,15570,16771
+2019,Sul,PR,"M Atividades profissionais, científicas e técnicas",175319,97719,77600
+2019,Sul,PR,N Atividades administrativas e serviços complementares,584145,438260,145885
+2019,Sul,PR,"O Administração pública, defesa e seguridade social",2,1957,-1955
+2019,Sul,PR,P Educação,97655,90620,7035
+2019,Sul,PR,Q Saúde humana e serviços sociais,100777,86654,14123
+2019,Sul,PR,"R Artes, cultura, esporte e recreação",36711,24345,12366
+2019,Sul,PR,S Outras atividades de serviços,64962,44432,20530
+2019,Sul,PR,T Serviços domésticos,0,0,0
+2019,Sul,PR,Total,4487526,3905560,581966
+2019,Sul,PR,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Sul,RS,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",55395,49064,6331
+2019,Sul,RS,B Indústrias extrativas,9995,5940,4055
+2019,Sul,RS,C Indústrias de transformação,525553,703631,-178078
+2019,Sul,RS,D Eletricidade e gás,82881,92910,-10029
+2019,Sul,RS,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",25159,15386,9773
+2019,Sul,RS,F Construção,229050,223256,5794
+2019,Sul,RS,G Comércio; reparação de veículos automotores e motocicletas,1023912,1064004,-40092
+2019,Sul,RS,"H Transporte, armazenagem e correio",196801,170287,26514
+2019,Sul,RS,I Alojamento e alimentação,232609,257243,-24634
+2019,Sul,RS,J Informação e comunicação,115259,123642,-8383
+2019,Sul,RS,"K Atividades financeiras, de seguros e serviços relacionados",78743,113003,-34260
+2019,Sul,RS,L Atividades imobiliárias,28043,14429,13614
+2019,Sul,RS,"M Atividades profissionais, científicas e técnicas",127066,101305,25761
+2019,Sul,RS,N Atividades administrativas e serviços complementares,209411,275084,-65673
+2019,Sul,RS,"O Administração pública, defesa e seguridade social",4523,4,4519
+2019,Sul,RS,P Educação,62393,72360,-9967
+2019,Sul,RS,Q Saúde humana e serviços sociais,109608,64078,45530
+2019,Sul,RS,"R Artes, cultura, esporte e recreação",29835,24502,5333
+2019,Sul,RS,S Outras atividades de serviços,47304,40971,6333
+2019,Sul,RS,T Serviços domésticos,0,0,0
+2019,Sul,RS,Total,3145255,3317512,-172257
+2019,Sul,RS,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
+2019,Sul,SC,"A Agricultura, pecuária, produção florestal, pesca e aquicultura",40779,20473,20306
+2019,Sul,SC,B Indústrias extrativas,15721,6047,9674
+2019,Sul,SC,C Indústrias de transformação,542639,474959,67680
+2019,Sul,SC,D Eletricidade e gás,16957,6117,10840
+2019,Sul,SC,"E Água, esgoto, atividades de gestão de resíduos e descontaminação",18810,24272,-5462
+2019,Sul,SC,F Construção,280126,180121,100005
+2019,Sul,SC,G Comércio; reparação de veículos automotores e motocicletas,945723,750595,195128
+2019,Sul,SC,"H Transporte, armazenagem e correio",199994,154474,45520
+2019,Sul,SC,I Alojamento e alimentação,264201,239181,25020
+2019,Sul,SC,J Informação e comunicação,96676,77593,19083
+2019,Sul,SC,"K Atividades financeiras, de seguros e serviços relacionados",77744,62464,15280
+2019,Sul,SC,L Atividades imobiliárias,31972,12111,19861
+2019,Sul,SC,"M Atividades profissionais, científicas e técnicas",125902,56796,69106
+2019,Sul,SC,N Atividades administrativas e serviços complementares,294734,150806,143928
+2019,Sul,SC,"O Administração pública, defesa e seguridade social",4,2,2
+2019,Sul,SC,P Educação,77238,61861,15377
+2019,Sul,SC,Q Saúde humana e serviços sociais,86291,36769,49522
+2019,Sul,SC,"R Artes, cultura, esporte e recreação",29343,18045,11298
+2019,Sul,SC,S Outras atividades de serviços,69246,37727,31519
+2019,Sul,SC,T Serviços domésticos,0,0,0
+2019,Sul,SC,Total,3055456,2280447,775009
+2019,Sul,SC,U Organismos internacionais e outras instituições extraterritoriais,0,0,0
