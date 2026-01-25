@@ -1,131 +1,268 @@
-# B2B_Dashboard
-Plataforma de inteligência econômica que integra dados do IBGE e CAGED para mapear crescimento, oportunidades B2B e dinâmica setorial no Brasil.
+# Market Opportunity Dashboard
 
-Economic Intelligence Platform that integrates IBGE and CAGED data to map growth, B2B opportunities, and sectoral dynamics in Brazil.
+Economic intelligence platform that integrates **IBGE** and **CAGED** data to map  
+**business growth, B2B opportunities, and sectoral dynamics in Brazil**.
 
-## 🖥️ Visão do Projeto
+Plataforma de inteligência econômica que integra dados do **IBGE** e **CAGED** para mapear  
+**crescimento empresarial, oportunidades B2B e dinâmica setorial no Brasil**.
 
-### Pipeline de dados e Opportunity Engine
+---
+
+## 🖥️ Project Overview
+
+### Data Pipeline & Opportunity Engine
 ![Pipeline](assets/opportunityv3.jpg)
 
-### Dashboard interativo (Streamlit)
+### Interactive Dashboard (Streamlit)
 ![Dashboard](assets/Postlinkedin1.jpg)
-
-
-# 📊 Mapeamento do Crescimento Empresarial e Oportunidades B2B no Brasil  
-# 📊 Mapping Business Growth and B2B Opportunities in Brazil
 
 ---
 
 ## 🇧🇷 Sobre o Projeto | 🇺🇸 About the Project
 
-### 🇧🇷 Português
-Este projeto tem como objetivo **analisar o cenário empresarial brasileiro** a partir de dados públicos,
-identificando **regiões, estados e setores econômicos em crescimento**, com foco em **oportunidades B2B**.
+This project analyzes the **Brazilian business landscape** using public economic and labor
+market data to identify **growth signals, emerging regions, and high-potential B2B sectors**.
 
-A proposta é transformar dados brutos em **inteligência de mercado**, apoiando:
-- tomada de decisão estratégica  
-- prospecção B2B  
-- análise de novos mercados  
-- identificação de polos empresariais emergentes  
+The objective is to transform raw public data into **market and economic intelligence**,
+supporting:
 
-O dashboard foi desenvolvido com **storytelling orientado a negócios**, permitindo uma leitura clara,
-visual e acionável do ambiente empresarial brasileiro.
-
-### 🇺🇸 English
-This project aims to **analyze the Brazilian business landscape** using public data sources,
-identifying **growing regions, states, and economic sectors**, with a strong focus on **B2B opportunities**.
-
-The goal is to transform raw data into **market intelligence**, supporting:
 - strategic decision-making  
-- B2B market prospection  
-- new market analysis  
+- B2B market analysis  
+- regional and sectoral opportunity mapping  
 - identification of emerging business hubs  
 
-The dashboard was built with **business-oriented storytelling**, enabling clear,
-visual, and actionable insights into the Brazilian business environment.
+The dashboard is designed with a **business-oriented and executive-friendly approach**,
+prioritizing clarity, interpretability, and decision support.
 
 ---
 
-## 🎯 Objetivos | Objectives
 
-### 🇧🇷 Português
-- Mapear a abertura de empresas por região e estado  
-- Identificar estados em crescimento dentro de cada região  
-- Analisar setores econômicos com maior potencial B2B  
-- Criar uma base de consulta estratégica para empreendedores e investidores  
+## 🚦 Rotina Padrão de Inicialização
 
-### 🇺🇸 English
-- Map business openings by region and state  
-- Identify high-growth states within each region  
-- Analyze economic sectors with strong B2B potential  
-- Build a strategic reference base for entrepreneurs and investors  
+1. Rode os pipelines de dados (PNAD/CAGED/RAIS quando aplicável)
+
+2. Execute o bootstrap do DuckDB para garantir as views e dimensões padrão no banco oficial:
+
+```bash
+python scripts/bootstrap_duckdb.py
+# O banco oficial é data/marts/b2b.duckdb
+```
+
+3. Rode o Streamlit:
+
+```bash
+streamlit run app/main.py
+```
+
+Assim, o app nunca ficará sem dados por nomes inconsistentes e todas as views padrão estarão disponíveis no banco data/marts/b2b.duckdb.
 
 ---
 
-## 🧠 Abordagem Analítica | Analytical Approach
+## 🧠 Analytical Approach
 
-### 🇧🇷 Português
-- Análise exploratória de dados (EDA)  
-- Agregações por região, estado e setor  
-- Visualizações interativas com foco executivo  
-- Storytelling orientado a oportunidades de negócio  
+## 🧠 Analytical Approach
 
-### 🇺🇸 English
 - Exploratory Data Analysis (EDA)  
 - Aggregations by region, state, and economic sector  
-- Interactive visualizations with an executive focus  
-- Business-oriented storytelling focused on market opportunities  
+- Opportunity scoring and comparative analysis  
+- Executive-oriented data visualization and storytelling  
 
 ---
 
-## 📊 Principais Análises | Key Analyses
+## 📊 Key Analyses
 
-### 🇧🇷 Português
-- Evolução da abertura de empresas ao longo do tempo  
-- Comparação entre regiões brasileiras  
-- Identificação de estados emergentes dentro de cada região  
-- Distribuição setorial com foco em mercados B2B  
-
-### 🇺🇸 English
-- Business openings evolution over time  
-- Comparison across Brazilian regions  
-- Identification of emerging states within each region  
-- Sector distribution with a B2B market focus  
+- Evolution of business openings over time  
+- Regional comparisons across Brazil  
+- Identification of emerging states and clusters  
+- Sectoral distribution with a B2B market focus  
 
 ---
 
-## 🛠️ Tecnologias Utilizadas | Technologies
+## 🛠️ Technologies & Stack
 
-### 🇧🇷 Português
-- Python  
-- Pandas  
-- NumPy  
-- Parquet (data lake analítico)  
-- Pipelines automatizados (ETL)  
-- Scikit-learn (modelos estatísticos)  
-- Streamlit (visualização executiva)  
-- Plotly / GeoJSON (mapas e análises espaciais)  
-
-### 🇺🇸 English
-- Python  
-- Pandas  
-- NumPy  
-- Parquet (analytics data lake)  
-- Automated pipelines (ETL)  
-- Scikit-learn (statistical models)  
-- Streamlit (executive dashboards)  
-- Plotly / GeoJSON (maps and spatial analytics)  
+- **Python 3.9+** (Pandas, NumPy)  
+- **Parquet** (analytical data lake)  
+- **Automated ETL pipelines**  
+- **Statistical models** (regression-based analysis)  
+- **Streamlit** (executive dashboards)  
+- **Plotly & GeoJSON** (spatial and regional analysis)  
 
 ---
 
-## 📁 Estrutura do Projeto | Project Structure
+## ⚡ Quick Start
+
+### Prerequisites
+- Python 3.12 (recomendado)
+- pip ou conda
+- Git
+
+### Execucao rapida (BigQuery)
+```bash
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+set GOOGLE_APPLICATION_CREDENTIALS=C:\\path\\to\\service-account.json
+set BQ_PROJECT_ID=dados-mercado-brasil
+set BQ_DATASET_GOLD=gold
+streamlit run app/main.py
+```
+
+### Installation
+
+1. **Clone o repositório:**
+```bash
+git clone https://github.com/seu-usuario/b2b-dashboard.git
+cd B2B_Dashboard
+```
+
+2. **Crie um ambiente virtual:**
+```bash
+# Com venv
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+```
+```powershell
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+```
+```bat
+# Windows (CMD)
+.venv\Scripts\activate.bat
+```
+
+# Com conda
+conda create -n b2b-dashboard python=3.12
+conda activate b2b-dashboard
+```
+
+3. **Instale as dependencias:**
+```bash
+pip install -r requirements.txt
+```
+
+Nota: `types-openpyxl` e outros stubs de tipos sao opcionais (dev-only) e nao sao necessarios para rodar o app.
+
+4. **Configure variáveis de ambiente:**
+```bash
+# Copie o template
+cp .env.example .env
+
+# Edite conforme necessário (opcional para desenvolvimento)
+```
+
+5. **Execute o dashboard:**
+```bash
+streamlit run app/main.py
+```
+
+O app estará disponível em `http://localhost:8501`
+
+---
+
+## Streamlit Dashboard
+
+- App name: Market Opportunity Dashboard
+- Language support: Portuguese and English via sidebar selector
+- Credentials: set `GOOGLE_APPLICATION_CREDENTIALS` to your service account JSON path
+- BigQuery overrides: `BQ_PROJECT_ID` and `BQ_DATASET_GOLD`
+- RAIS data is available only for 2022 (no temporal metrics)
+
+### Atualizacao do ambiente (Windows)
+```bash
+pip install -U pip setuptools wheel
+pip install -r requirements.txt
+streamlit run app/main.py
+```
+
+---
+
+## Criar views no BigQuery
+
+Crie (ou atualize) as views abaixo no dataset configurado (`BQ_DATASET_GOLD`):
+
+- `gold_rais_sector_year_metrics`
+- `gold_rais_region_risk`
+- `gold_rais_profile_mix`
+- `gold_rais_opportunity_score`
+
+Os SQLs estao em `sql/rais_views/`.
+
+Nota: nao existe dimensao de descricao CNAE neste projeto. Os seletores exibem CNAE por codigo. Uma futura melhoria e integrar uma `dim_cnae`.
+
+---
+
+## 🏗️ Architecture & Project Structure
+
+### Nova Estrutura Modularizada (v2.0+)
+
+```text
+B2B_Dashboard/
+│
+├── src/                          # Código principal
+│   ├── config/                   # ⭐ Configuração centralizada
+│   │   ├── __init__.py
+│   │   ├── settings.py           # Paths, variáveis de ambiente
+│   │   └── constants.py          # UF_ORDER, I18N, MACRO_SECTORS
+│   │
+│   ├── core/                     # ⭐ Lógica de negócio
+│   │   ├── __init__.py
+│   │   └── data_processing.py    # Prep, filtering, transformações
+│   │
+│   ├── ui/                       # ⭐ Componentes UI reutilizáveis
+│   │   ├── __init__.py
+│   │   └── components.py         # Styles, KPIs, Pills
+│   │
+│   ├── utils/                    # Utilitários gerais
+│   │   ├── __init__.py
+│   │   ├── formatters.py         # fmt_int, normalize_uf, etc
+│   │   ├── data_loading.py       # load_parquet_safe, validate
+│   │   └── logging_config.py     # Setup logging estruturado
+│   │
+│   ├── Pipelines/                # Scripts ETL/Transform
+│   │   ├── caged/
+│   │   └── ibge_3274_3275_pipeline.py
+│   │
+│   └── scoring/
+│       └── opportunity_engine.py
+│
+├── dashboards/
+│   └── app.py                    # ⭐ Refatorado (140 linhas!)
+│
+├── tests/                        # Testes unitários
+│   ├── __init__.py
+│   ├── test_formatters.py
+│   └── test_data_processing.py
+│
+├── data/
+│   ├── geo/
+│   ├── processed/
+│   └── raw/
+│
+├── .env.example                  # Template de variáveis
+├── pyproject.toml                # Gerenciamento moderno
+├── .streamlit/config.toml
+└── README.md
+```
+
+### Mudanças Principais (v2.0)
+
+✅ **Configuração centralizada** → `src/config/settings.py` e `constants.py`  
+✅ **Modularização** → Helpers em `src/utils/`, componentes em `src/ui/`, lógica em `src/core/`  
+✅ **Logging estruturado** → `src/utils/logging_config.py`  
+✅ **Type hints & docstrings** → 100% do código  
+✅ **app.py simplificado** → De 832 para ~140 linhas  
+✅ **pyproject.toml moderno** → Substituindo requirements.txt  
+✅ **Suporte a .env** → Variáveis de ambiente centralizadas  
+
+---
+
+## 📁 Project Structure (Legacy)
 
 ```text
 B2B_Dashboard/
 │
 ├── dashboards/
-│   └── app.py                  # Streamlit app (working)
+│   └── app.py                  # Streamlit application
 │
 ├── data/
 │   ├── geo/
@@ -152,55 +289,41 @@ B2B_Dashboard/
     │   │   ├── download_caged_xlsx.py
     │   │   └── build_caged_parquet.py
     │   └── ibge_3274_3275_pipeline.py
-    │
+│
     └── scoring/
         ├── opportunity_engine.py
         └── build_opportunity_v3.py
+🚧 Project Status
+Under active development.
 
-🚧 Status do Projeto | Project Status
-🇧🇷 Português
-🔧 Em desenvolvimento
-O projeto está em evolução contínua, com foco em aprofundar a análise regional,
-melhorar a qualidade dos dados e ampliar os insights estratégicos para o mercado B2B.
+Current focus areas include:
 
-🇺🇸 English
-🔧 Under development
-This project is under continuous development, focusing on deeper regional analysis,
-improved data quality, and expanded strategic insights for the B2B market.
+Deepening regional and sectoral analysis
 
-🗺️ Próximos Passos | Next Steps
-🇧🇷 Português
-Consolidar o Opportunity Score v3 (IBGE + CNPJ + CAGED)
-Criar módulo Market Momentum e Hiring Heatmap no Streamlit
-Desenvolver modelos preditivos para tendências de 2026
-Adicionar camada LLM + RAG para narrativas executivas (“onde investir, por quê e quando”)
+Improving data quality and consistency
 
-🇺🇸 English
+Expanding strategic and comparative insights
+
+🗺️ Next Steps
 Consolidate Opportunity Score v3 (IBGE + CNPJ + CAGED)
-Add Market Momentum and Hiring Heatmap modules in Streamlit
 
-Build predictive models for 2026 trends
+Add Market Momentum and Hiring Heatmap modules
 
-Add LLM + RAG layer for executive narratives (“where to invest, why, and when”)
+Develop predictive trend analysis for 2026
 
-📌 Considerações Finais | Final Notes
-🇧🇷 Português
-Este projeto faz parte de um portfólio em Ciência de Dados e Business Intelligence,
-com foco em transformar dados públicos em insights estratégicos para tomada de decisão,
-especialmente no contexto B2B.
+Integrate LLM + RAG for executive narratives
+(where to invest, why, and when)
 
-🇺🇸 English
+📌 Final Notes
+This project is part of a Data Analytics and Business Intelligence portfolio, focused on
+transforming public economic data into actionable market insights, particularly for
+B2B strategy and decision-making.
 
-This project is part of a Data Science and Business Intelligence portfolio,
-focused on turning public data into strategic decision-making insights,
-especially in a B2B context.
+👤 Author
+Flávia Dottori
+Data Analytics & Market Intelligence
 
+🔗 LinkedIn: https://www.linkedin.com/in/fmdottori
 
-## 👤 Author
-
-Flávia Dottori  
-Data Science & Market Intelligence  
-
-LinkedIn: https://www.linkedin.com/in/fmdottori  
-
-
+markdown
+Copiar código
