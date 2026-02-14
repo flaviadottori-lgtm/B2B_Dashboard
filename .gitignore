@@ -1,68 +1,38 @@
-# Ambiente virtual
+# Envs
 .venv/
 venv/
-env/
-ENV/
+.env
+.env.*
 
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*.pyo
+*.pyd
 
-# Testing
+# Tool caches
 .pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.hypothesis/
-
-# Type checking
 .mypy_cache/
-.dmypy.json
-dmypy.json
+.ruff_cache/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# OS
 .DS_Store
+Thumbs.db
 
-# Environment
-.env
-.env.local
-.env.*.local
-.env.example
-*.json
+# Data / artifacts (keep repo light)
+data/**/*.parquet
+data/**/*.csv
+data/**/*.duckdb
+data/**/marts/
+data/**/processed/
+data/**/raw/
+*.parquet
+*.duckdb
 
-# Streamlit
-.streamlit/secrets.toml
-
-# Logs
+# Backups / temp
+*.bak
+*.tmp
 *.log
-logs/
 
-# Data (opcional - comentar se quiser rastrear)
-# data/processed/*.parquet
-# data/raw/**/*
-
-# Pre-commit
-.pre-commit
+# Notebooks
+.ipynb_checkpoints/
