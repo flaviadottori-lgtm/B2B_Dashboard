@@ -12,12 +12,14 @@ Este script:
 import sys
 from pathlib import Path
 
+
 def check_python_version():
     """Verifica se Python 3.9+ está instalado."""
     if sys.version_info < (3, 9):
         print("❌ Python 3.9+ é necessário")
         sys.exit(1)
     print(f"✅ Python {sys.version.split()[0]} detectado")
+
 
 def check_project_structure():
     """Valida estrutura de pastas."""
@@ -29,14 +31,15 @@ def check_project_structure():
         "dashboards",
         "data",
     ]
-    
+
     for dir_path in required_dirs:
         if not Path(dir_path).exists():
             print(f"❌ Diretório faltando: {dir_path}")
             return False
         print(f"✅ {dir_path}")
-    
+
     return True
+
 
 def check_critical_files():
     """Verifica arquivos críticos."""
@@ -47,12 +50,13 @@ def check_critical_files():
         "src/ui/components.py",
         "pyproject.toml",
     ]
-    
+
     for file_path in files:
         if not Path(file_path).exists():
             print(f"⚠️  Arquivo não encontrado: {file_path}")
         else:
             print(f"✅ {file_path}")
+
 
 def print_next_steps():
     """Mostra próximos passos."""
@@ -94,19 +98,20 @@ def print_next_steps():
 💡 DICA: Leia DEVELOPMENT.md antes de contribuir!
     """)
 
+
 if __name__ == "__main__":
     print("🔍 Validando projeto B2B Dashboard...\n")
-    
+
     check_python_version()
     print()
-    
+
     print("📁 Verificando estrutura de pastas:")
     if not check_project_structure():
         sys.exit(1)
     print()
-    
+
     print("📄 Verificando arquivos críticos:")
     check_critical_files()
     print()
-    
+
     print_next_steps()

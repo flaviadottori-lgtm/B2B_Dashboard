@@ -46,12 +46,18 @@ saldo_total = int(caged_df["saldo"].sum()) if not caged_df.empty else 0
 top_uf = ""
 top_macro = ""
 if not caged_df.empty:
-    by_uf = caged_df.groupby("sigla_uf", as_index=False)["saldo"].sum().sort_values("saldo", ascending=False)
+    by_uf = (
+        caged_df.groupby("sigla_uf", as_index=False)["saldo"]
+        .sum()
+        .sort_values("saldo", ascending=False)
+    )
     if not by_uf.empty:
         top_uf = by_uf.iloc[0]["sigla_uf"]
     macro_df = sector.add_macro_columns(caged_df.copy(), t, cnae_secao_col="cnae_secao")
     by_macro = (
-        macro_df.groupby("macro_label", as_index=False)["saldo"].sum().sort_values("saldo", ascending=False)
+        macro_df.groupby("macro_label", as_index=False)["saldo"]
+        .sum()
+        .sort_values("saldo", ascending=False)
     )
     if not by_macro.empty:
         top_macro = by_macro.iloc[0]["macro_label"]
@@ -95,9 +101,14 @@ with left:
         st.info(t("no_data_filters"))
     else:
         ranking_ufs = (
-            caged_df.groupby("sigla_uf", as_index=False)["saldo"].sum().sort_values("saldo", ascending=False).head(10)
+            caged_df.groupby("sigla_uf", as_index=False)["saldo"]
+            .sum()
+            .sort_values("saldo", ascending=False)
+            .head(10)
         )
-        ranking_ufs = ranking_ufs.rename(columns={"sigla_uf": t("col_state"), "saldo": t("col_saldo")})
+        ranking_ufs = ranking_ufs.rename(
+            columns={"sigla_uf": t("col_state"), "saldo": t("col_saldo")}
+        )
         st.dataframe(ranking_ufs, use_container_width=True)
 
 with right:
@@ -107,18 +118,29 @@ with right:
     else:
         macro_df = sector.add_macro_columns(caged_df.copy(), t, cnae_secao_col="cnae_secao")
         ranking_macro = (
-            macro_df.groupby("macro_label", as_index=False)["saldo"].sum().sort_values("saldo", ascending=False).head(10)
+            macro_df.groupby("macro_label", as_index=False)["saldo"]
+            .sum()
+            .sort_values("saldo", ascending=False)
+            .head(10)
         )
-        ranking_macro = ranking_macro.rename(columns={"macro_label": t("col_setor"), "saldo": t("col_saldo")})
+        ranking_macro = ranking_macro.rename(
+            columns={"macro_label": t("col_setor"), "saldo": t("col_saldo")}
+        )
         st.dataframe(ranking_macro, use_container_width=True)
 
 st.divider()
 if rais_df.empty:
     st.info(t("no_data_filters"))
 else:
-    rais_summary = rais_df.groupby("sigla_uf", as_index=False)["vinculos"].sum().sort_values("vinculos", ascending=False)
+    rais_summary = (
+        rais_df.groupby("sigla_uf", as_index=False)["vinculos"]
+        .sum()
+        .sort_values("vinculos", ascending=False)
+    )
     st.markdown(f"**{t('kpi_rais_vinculos')}**")
     st.dataframe(
-        rais_summary.head(10).rename(columns={"sigla_uf": t("col_state"), "vinculos": t("col_vinculos")}),
+        rais_summary.head(10).rename(
+            columns={"sigla_uf": t("col_state"), "vinculos": t("col_vinculos")}
+        ),
         use_container_width=True,
     )

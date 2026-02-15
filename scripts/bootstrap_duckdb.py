@@ -2,6 +2,7 @@ import duckdb
 import sys
 from src.utils.paths import DUCKDB_PATH
 
+
 def print_db_info():
     db_path = DUCKDB_PATH.resolve()
     print(f"[BOOTSTRAP] DuckDB path: {db_path}")
@@ -10,10 +11,13 @@ def print_db_info():
     else:
         print(f"[BOOTSTRAP] DB exists: False")
 
+
 def get_con():
     return duckdb.connect(str(DUCKDB_PATH))
 
+
 con = get_con()
+
 
 def ensure_dim_uf(con):
     con.execute("""
@@ -56,36 +60,37 @@ def ensure_dim_uf(con):
         (53,'DF','Distrito Federal','Centro-Oeste');
     """)
 
+
 def ensure_views(con):
     def is_table(name):
         q = """
         SELECT table_type FROM information_schema.tables WHERE table_name = ?
         """
         res = con.execute(q, [name]).fetchone()
-        return res and res[0] == 'BASE TABLE'
+        return res and res[0] == "BASE TABLE"
 
     def is_view(name):
         q = """
         SELECT table_type FROM information_schema.tables WHERE table_name = ?
         """
         res = con.execute(q, [name]).fetchone()
-        return res and res[0] == 'VIEW'
+        return res and res[0] == "VIEW"
 
     tables = [r[0] for r in con.execute("SHOW TABLES").fetchall()]
 
     # PNAD: priorizar tabela física
     pnad_base = None
-    if 'pnad_uf_quarter_gender_age' in tables and is_table('pnad_uf_quarter_gender_age'):
-        pnad_base = 'pnad_uf_quarter_gender_age'
-    elif 'pnad' in tables and is_table('pnad'):
-        pnad_base = 'pnad'
+    if "pnad_uf_quarter_gender_age" in tables and is_table("pnad_uf_quarter_gender_age"):
+        pnad_base = "pnad_uf_quarter_gender_age"
+    elif "pnad" in tables and is_table("pnad"):
+        pnad_base = "pnad"
 
     if pnad_base:
         con.execute(f"CREATE OR REPLACE VIEW pnad AS SELECT * FROM {pnad_base};")
         info = con.execute(f"PRAGMA table_info('{pnad_base}')").fetchdf()
         uf_col = None
         for col in ["uf_code", "cod_uf", "uf", "state"]:
-            if col in info['name'].values:
+            if col in info["name"].values:
                 uf_col = col
                 break
         if uf_col:
@@ -123,17 +128,17 @@ def ensure_views(con):
 
     # CAGED: priorizar tabela física
     caged_base = None
-    if 'caged_state_sector_year' in tables and is_table('caged_state_sector_year'):
-        caged_base = 'caged_state_sector_year'
-    elif 'caged' in tables and is_table('caged'):
-        caged_base = 'caged'
+    if "caged_state_sector_year" in tables and is_table("caged_state_sector_year"):
+        caged_base = "caged_state_sector_year"
+    elif "caged" in tables and is_table("caged"):
+        caged_base = "caged"
 
     if caged_base:
         con.execute(f"CREATE OR REPLACE VIEW caged AS SELECT * FROM {caged_base};")
         info = con.execute(f"PRAGMA table_info('{caged_base}')").fetchdf()
         uf_col = None
         for col in ["cod_uf", "uf_code", "uf", "state"]:
-            if col in info['name'].values:
+            if col in info["name"].values:
                 uf_col = col
                 break
         if uf_col:
@@ -167,25 +172,31 @@ def ensure_views(con):
             WHERE FALSE;
         """)
 
+
 def main():
     # Ingestão PNAD opcional
     import os
     from pathlib import Path
+
     candidates = [
         Path("data/processed/pnad_uf_quarter_gender_age.parquet"),
         Path("data/marts/pnad/pnad_uf_quarter_gender_age.parquet"),
-        Path("data/processed/pnad_uf_quarter_gender_age.csv")
+        Path("data/processed/pnad_uf_quarter_gender_age.csv"),
     ]
     pnad_loaded = False
     for file in candidates:
         if file.exists():
             if file.suffix == ".parquet":
-                con.execute(f"CREATE OR REPLACE TABLE pnad_uf_quarter_gender_age AS SELECT * FROM read_parquet('{str(file)}')")
+                con.execute(
+                    f"CREATE OR REPLACE TABLE pnad_uf_quarter_gender_age AS SELECT * FROM read_parquet('{str(file)}')"
+                )
                 print(f"PNAD carregado de {file}")
                 pnad_loaded = True
                 break
             elif file.suffix == ".csv":
-                con.execute(f"CREATE OR REPLACE TABLE pnad_uf_quarter_gender_age AS SELECT * FROM read_csv_auto('{str(file)}')")
+                con.execute(
+                    f"CREATE OR REPLACE TABLE pnad_uf_quarter_gender_age AS SELECT * FROM read_csv_auto('{str(file)}')"
+                )
                 print(f"PNAD carregado de {file}")
                 pnad_loaded = True
                 break
@@ -193,6 +204,7 @@ def main():
     ensure_views(con)
     con.close()
     print("Bootstrap DuckDB concluído com sucesso.")
+
 
 if __name__ == "__main__":
     main()

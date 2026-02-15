@@ -2,7 +2,7 @@
 
 from google.cloud import bigquery
 
-client = bigquery.Client(project='b2b-opportunity-engine')
+client = bigquery.Client(project="b2b-opportunity-engine")
 
 # Test query
 query = """

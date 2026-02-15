@@ -6,17 +6,12 @@ from typing import Tuple
 import requests
 import streamlit as st
 
-GEOJSON_URL = (
-    "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson"
-)
+GEOJSON_URL = "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson"
 
 
 def normalize_name(value: str) -> str:
     return (
-        unicodedata.normalize("NFKD", value or "")
-        .encode("ascii", "ignore")
-        .decode("ascii")
-        .lower()
+        unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode("ascii").lower()
     )
 
 

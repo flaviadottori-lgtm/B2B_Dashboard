@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import os
 
-BASE_PROJECT = os.getenv('BQ_PROJECT_ID', 'dados-mercado-brasil')
-BASE_DATASET = os.getenv('BQ_DATASET_GOLD', 'gold')
+BASE_PROJECT = os.getenv("BQ_PROJECT_ID", "dados-mercado-brasil")
+BASE_DATASET = os.getenv("BQ_DATASET_GOLD", "gold")
 
 TABLE_CAGED = f"`{BASE_PROJECT}.{BASE_DATASET}.caged_uf_mes`"
 TABLE_PNAD = f"`{BASE_PROJECT}.{BASE_DATASET}.pnad_uf_trimestre`"

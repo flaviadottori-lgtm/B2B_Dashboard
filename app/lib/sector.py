@@ -135,13 +135,10 @@ def add_macro_columns(
         return df
 
     if cnae_subclasse_col in df.columns:
-        cnae2_series = (
-            df[cnae_subclasse_col]
-            .astype(str)
-            .str.replace(r"\D", "", regex=True)
-            .str[:2]
+        cnae2_series = df[cnae_subclasse_col].astype(str).str.replace(r"\D", "", regex=True).str[:2]
+        df["macro_key"] = cnae2_series.apply(
+            lambda val: macro_key_from_cnae2(_parse_cnae2(val)) or "outros"
         )
-        df["macro_key"] = cnae2_series.apply(lambda val: macro_key_from_cnae2(_parse_cnae2(val)) or "outros")
         df["macro_label"] = df["macro_key"].apply(lambda key: macro_label_with_range(key, t))
     else:
         df["macro_key"] = "outros"

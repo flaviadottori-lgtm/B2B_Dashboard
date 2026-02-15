@@ -55,9 +55,7 @@ if caged_df.empty:
     st.stop()
 
 st.subheader(t("employment_series"))
-series_df = (
-    series_raw.groupby("mes", as_index=False)["saldo"].sum().sort_values("mes")
-)
+series_df = series_raw.groupby("mes", as_index=False)["saldo"].sum().sort_values("mes")
 fig = px.line(
     series_df,
     x="mes",
@@ -80,10 +78,16 @@ else:
     prev = sector_df[sector_df["mes"] == prev_month]
 
     growth = (
-        latest.groupby("macro_label", as_index=False)["saldo"].sum().rename(columns={"saldo": "saldo_atual"})
+        latest.groupby("macro_label", as_index=False)["saldo"]
+        .sum()
+        .rename(columns={"saldo": "saldo_atual"})
     )
     if not prev.empty:
-        prev_sum = prev.groupby("macro_label", as_index=False)["saldo"].sum().rename(columns={"saldo": "saldo_prev"})
+        prev_sum = (
+            prev.groupby("macro_label", as_index=False)["saldo"]
+            .sum()
+            .rename(columns={"saldo": "saldo_prev"})
+        )
         growth = growth.merge(prev_sum, on="macro_label", how="left")
         growth["saldo_prev"] = growth["saldo_prev"].fillna(0)
         growth["delta"] = growth["saldo_atual"] - growth["saldo_prev"]
@@ -91,7 +95,5 @@ else:
         growth["delta"] = growth["saldo_atual"]
 
     growth = growth.sort_values("delta", ascending=False).head(10)
-    growth_display = growth.rename(
-        columns={"macro_label": t("col_setor"), "delta": t("col_saldo")}
-    )
+    growth_display = growth.rename(columns={"macro_label": t("col_setor"), "delta": t("col_saldo")})
     st.dataframe(growth_display, use_container_width=True)

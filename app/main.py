@@ -53,8 +53,10 @@ macro_label = (
     else ", ".join(sector.secao_display_label(value, t) for value in macros)
 )
 subclasses = filters.get("caged_subclasses") or []
-subclass_label = t("filters_summary_all") if not subclasses else ", ".join(
-    sector.format_cnae_subclasse(value) for value in subclasses
+subclass_label = (
+    t("filters_summary_all")
+    if not subclasses
+    else ", ".join(sector.format_cnae_subclasse(value) for value in subclasses)
 )
 summary = (
     f"{t('filters_summary_year')}: {filters['ano']} · "
@@ -90,13 +92,17 @@ if metric_source == "caged" and not caged_df.empty:
     map_df = caged_df.groupby("sigla_uf", as_index=False)[metric_col].sum()
     macro_df = sector.add_macro_columns(caged_df.copy(), t, cnae_secao_col="cnae_secao")
     top_macro = (
-        macro_df.groupby("macro_label", as_index=False)[metric_col].sum().sort_values(metric_col, ascending=False)
+        macro_df.groupby("macro_label", as_index=False)[metric_col]
+        .sum()
+        .sort_values(metric_col, ascending=False)
     )
 elif metric_source == "rais" and not rais_df.empty:
     map_df = rais_df.groupby("sigla_uf", as_index=False)[metric_col].sum()
     macro_df = sector.add_macro_columns(rais_df.copy(), t)
     top_macro = (
-        macro_df.groupby("macro_label", as_index=False)[metric_col].sum().sort_values(metric_col, ascending=False)
+        macro_df.groupby("macro_label", as_index=False)[metric_col]
+        .sum()
+        .sort_values(metric_col, ascending=False)
     )
 else:
     map_df = None
@@ -134,12 +140,16 @@ with left:
         st.info(t("no_data_filters"))
     else:
         ranking_ufs = map_df.sort_values(metric_col, ascending=False).head(10)
-        ranking_ufs = ranking_ufs.rename(columns={"sigla_uf": t("col_state"), metric_col: metric_label})
+        ranking_ufs = ranking_ufs.rename(
+            columns={"sigla_uf": t("col_state"), metric_col: metric_label}
+        )
         st.dataframe(ranking_ufs, use_container_width=True)
 with right:
     st.markdown(f"**{t('ranking_macro')}**")
     if top_macro is None or top_macro.empty:
         st.info(t("no_data_filters"))
     else:
-        ranking_macro = top_macro.head(10).rename(columns={"macro_label": t("col_setor"), metric_col: metric_label})
+        ranking_macro = top_macro.head(10).rename(
+            columns={"macro_label": t("col_setor"), metric_col: metric_label}
+        )
         st.dataframe(ranking_macro, use_container_width=True)

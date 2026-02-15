@@ -42,9 +42,7 @@ if "pessoas" not in pnad_df.columns:
     st.info(t("income_unavailable"))
     st.stop()
 
-series = (
-    pnad_df.groupby("trimestre", as_index=False)["pessoas"].sum().sort_values("trimestre")
-)
+series = pnad_df.groupby("trimestre", as_index=False)["pessoas"].sum().sort_values("trimestre")
 fig = px.bar(
     series,
     x="trimestre",

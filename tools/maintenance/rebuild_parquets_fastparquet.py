@@ -16,14 +16,14 @@ print("\n[1] Reconstruindo companies_agg.parquet...")
 try:
     csv_path = Path("data/processed/companies_agg.csv")
     parquet_path = Path("data/processed/companies_agg.parquet")
-    
+
     df = pd.read_csv(csv_path)
     print(f"    ✓ CSV carregado: {len(df)} linhas")
-    
-    df.to_parquet(parquet_path, engine='fastparquet', compression='snappy')
+
+    df.to_parquet(parquet_path, engine="fastparquet", compression="snappy")
     print(f"    ✓ Parquet salvo com fastparquet")
-    
-    df_test = pd.read_parquet(parquet_path, engine='fastparquet')
+
+    df_test = pd.read_parquet(parquet_path, engine="fastparquet")
     print(f"    ✓ Verificação: {len(df_test)} linhas")
 except Exception as e:
     print(f"    ✗ Erro: {e}")
@@ -33,14 +33,14 @@ print("\n[2] Reconstruindo opportunity_scores.parquet...")
 try:
     backup_path = Path("data/processed/opportunity_scores.parquet.bak")
     parquet_path = Path("data/processed/opportunity_scores.parquet")
-    
-    df = pd.read_parquet(backup_path, engine='fastparquet')
+
+    df = pd.read_parquet(backup_path, engine="fastparquet")
     print(f"    ✓ Backup carregado: {len(df)} linhas")
-    
-    df.to_parquet(parquet_path, engine='fastparquet', compression='snappy')
+
+    df.to_parquet(parquet_path, engine="fastparquet", compression="snappy")
     print(f"    ✓ Parquet salvo com fastparquet")
-    
-    df_test = pd.read_parquet(parquet_path, engine='fastparquet')
+
+    df_test = pd.read_parquet(parquet_path, engine="fastparquet")
     print(f"    ✓ Verificação: {len(df_test)} linhas")
 except Exception as e:
     print(f"    ✗ Erro: {e}")
@@ -50,14 +50,14 @@ print("\n[3] Reconstruindo caged_state_sector_year.parquet...")
 try:
     backup_path = Path("data/processed/caged_state_sector_year.parquet.bak")
     parquet_path = Path("data/processed/caged_state_sector_year.parquet")
-    
-    df = pd.read_parquet(backup_path, engine='fastparquet')
+
+    df = pd.read_parquet(backup_path, engine="fastparquet")
     print(f"    ✓ Backup carregado: {len(df)} linhas")
-    
-    df.to_parquet(parquet_path, engine='fastparquet', compression='snappy')
+
+    df.to_parquet(parquet_path, engine="fastparquet", compression="snappy")
     print(f"    ✓ Parquet salvo com fastparquet")
-    
-    df_test = pd.read_parquet(parquet_path, engine='fastparquet')
+
+    df_test = pd.read_parquet(parquet_path, engine="fastparquet")
     print(f"    ✓ Verificação: {len(df_test)} linhas")
 except Exception as e:
     print(f"    ✗ Erro: {e}")

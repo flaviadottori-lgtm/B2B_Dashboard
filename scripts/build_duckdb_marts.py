@@ -5,16 +5,17 @@ import sys
 
 from src.utils.paths import DUCKDB_PATH
 
+
 def read_df_with_fallback(name, candidates):
     for file, ftype in candidates:
         path = PROCESSED / file
         if not path.exists():
             print(f"[{name}] {path} - arquivo não encontrado.")
             continue
-        if ftype == 'parquet':
+        if ftype == "parquet":
             # Tenta pyarrow
             try:
-                df = pd.read_parquet(path, engine='pyarrow')
+                df = pd.read_parquet(path, engine="pyarrow")
                 print(f"[{name}] {path} - parquet(pyarrow) - OK")
                 return df
             except Exception as e:
@@ -22,14 +23,15 @@ def read_df_with_fallback(name, candidates):
             # Tenta fastparquet se instalado
             try:
                 import fastparquet
-                df = pd.read_parquet(path, engine='fastparquet')
+
+                df = pd.read_parquet(path, engine="fastparquet")
                 print(f"[{name}] {path} - parquet(fastparquet) - OK")
                 return df
             except ImportError:
                 print(f"[{name}] {path} - fastparquet não instalado.")
             except Exception as e:
                 print(f"[{name}] {path} - parquet(fastparquet) - ERRO: {e}")
-        elif ftype == 'csv':
+        elif ftype == "csv":
             try:
                 df = pd.read_csv(path)
                 print(f"[{name}] {path} - csv - OK")
@@ -41,6 +43,7 @@ def read_df_with_fallback(name, candidates):
 
 
 ## Função build_dim_uf removida: dim_uf será sempre criada por ensure_dim_uf com schema correto
+
 
 def ensure_dim_uf(con):
     con.execute("""
@@ -105,7 +108,11 @@ def ensure_dim_uf(con):
         total, sem_match = res
         if sem_match > 0:
             import logging
-            logging.warning(f"PNAD: {sem_match} registros sem correspondência de UF (de {total}) na view pnad_enriched.")
+
+            logging.warning(
+                f"PNAD: {sem_match} registros sem correspondência de UF (de {total}) na view pnad_enriched."
+            )
+
 
 def main():
     con = duckdb.connect(str(DB_PATH))
@@ -147,6 +154,7 @@ def main():
         print(f"{name}: {count} linhas")
     con.close()
     print("Mart DuckDB atualizado!")
+
 
 if __name__ == "__main__":
     main()

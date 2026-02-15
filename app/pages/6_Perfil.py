@@ -49,7 +49,12 @@ def weighted_share(df: pd.DataFrame, group_col: str) -> pd.DataFrame:
             lambda g: (g["participacao"] * g["peso"]).sum() / g["peso"].sum()
         )
         return grouped.reset_index().rename(columns={0: "share"})
-    return df.groupby(group_col)["participacao"].mean().reset_index().rename(columns={"participacao": "share"})
+    return (
+        df.groupby(group_col)["participacao"]
+        .mean()
+        .reset_index()
+        .rename(columns={"participacao": "share"})
+    )
 
 
 col1, col2 = st.columns(2)

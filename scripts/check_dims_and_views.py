@@ -4,7 +4,6 @@ from pathlib import Path
 
 import duckdb
 
-
 # ===== DuckDB path (single source of truth) =====
 PROJECT_ROOT = Path(__file__).resolve().parents[1]  # raiz do repo (B2B_Dashboard)
 DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "marts" / "b2b.duckdb"
@@ -43,14 +42,10 @@ for t in ["pnad", "pnad_enriched"]:
 
 if exists("pnad_enriched"):
     print("\nDiagnóstico pnad_enriched (sem_match):")
-    print(
-        con.execute(
-            """
+    print(con.execute("""
             SELECT
               SUM(CASE WHEN sigla_uf IS NULL THEN 1 ELSE 0 END) AS sem_match
             FROM pnad_enriched
-            """
-        ).fetchdf()
-    )
+            """).fetchdf())
 
 con.close()

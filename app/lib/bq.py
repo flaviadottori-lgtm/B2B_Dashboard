@@ -12,8 +12,8 @@ from google.auth.exceptions import DefaultCredentialsError
 from lib import sector
 from lib.i18n import t
 
-DEFAULT_PROJECT = 'dados-mercado-brasil'
-DEFAULT_DATASET_GOLD = 'gold'
+DEFAULT_PROJECT = "dados-mercado-brasil"
+DEFAULT_DATASET_GOLD = "gold"
 
 
 def get_config(key: str, default: Any | None = None) -> Any | None:
@@ -28,8 +28,8 @@ def get_config(key: str, default: Any | None = None) -> Any | None:
 
 @st.cache_resource
 def get_client() -> bigquery.Client | None:
-    project_id = get_config('BQ_PROJECT_ID', DEFAULT_PROJECT)
-    credentials_path = get_config('GOOGLE_APPLICATION_CREDENTIALS')
+    project_id = get_config("BQ_PROJECT_ID", DEFAULT_PROJECT)
+    credentials_path = get_config("GOOGLE_APPLICATION_CREDENTIALS")
     try:
         if credentials_path:
             credentials = service_account.Credentials.from_service_account_file(credentials_path)
@@ -43,7 +43,9 @@ def get_client() -> bigquery.Client | None:
 @st.cache_data(show_spinner=False)
 def run_query(
     sql: str,
-    _params: Optional[Iterable[bigquery.ScalarQueryParameter | bigquery.ArrayQueryParameter]] = None,
+    _params: Optional[
+        Iterable[bigquery.ScalarQueryParameter | bigquery.ArrayQueryParameter]
+    ] = None,
 ) -> pd.DataFrame:
     try:
         client = get_client()
@@ -65,20 +67,20 @@ def load_caged_options() -> Dict[str, List[Any]]:
         client = get_client()
         if client is None:
             return {
-                'anos': [],
-                'ufs': [],
-                'secoes': [],
-                'subclasses': [],
+                "anos": [],
+                "ufs": [],
+                "secoes": [],
+                "subclasses": [],
             }
     except DefaultCredentialsError:
         return {
-            'anos': [],
-            'ufs': [],
-            'secoes': [],
-            'subclasses': [],
+            "anos": [],
+            "ufs": [],
+            "secoes": [],
+            "subclasses": [],
         }
-    project_id = get_config('BQ_PROJECT_ID', DEFAULT_PROJECT)
-    dataset = get_config('BQ_DATASET_GOLD', DEFAULT_DATASET_GOLD)
+    project_id = get_config("BQ_PROJECT_ID", DEFAULT_PROJECT)
+    dataset = get_config("BQ_DATASET_GOLD", DEFAULT_DATASET_GOLD)
     table = f"`{project_id}.{dataset}.caged_uf_mes`"
     cols = get_view_columns(table)
     has_secao = "cnae_secao" in cols
@@ -116,28 +118,28 @@ def load_caged_options() -> Dict[str, List[Any]]:
     except Exception as exc:
         st.error(str(exc))
         return {
-            'anos': [],
-            'ufs': [],
-            'secoes': [],
-            'subclasses': [],
+            "anos": [],
+            "ufs": [],
+            "secoes": [],
+            "subclasses": [],
         }
     if df.empty:
         return {
-            'anos': [],
-            'ufs': [],
-            'secoes': [],
-            'subclasses': [],
+            "anos": [],
+            "ufs": [],
+            "secoes": [],
+            "subclasses": [],
         }
     row = df.iloc[0]
-    anos = row['anos']
-    ufs = row['ufs']
-    secoes = row['secoes']
-    subclasses = row['subclasses']
+    anos = row["anos"]
+    ufs = row["ufs"]
+    secoes = row["secoes"]
+    subclasses = row["subclasses"]
     return {
-        'anos': anos if anos is not None and len(anos) > 0 else [],
-        'ufs': ufs if ufs is not None and len(ufs) > 0 else [],
-        'secoes': [s for s in (secoes if secoes is not None else []) if s],
-        'subclasses': [c for c in (subclasses if subclasses is not None else []) if c],
+        "anos": anos if anos is not None and len(anos) > 0 else [],
+        "ufs": ufs if ufs is not None and len(ufs) > 0 else [],
+        "secoes": [s for s in (secoes if secoes is not None else []) if s],
+        "subclasses": [c for c in (subclasses if subclasses is not None else []) if c],
     }
 
 
@@ -147,20 +149,20 @@ def load_rais_options() -> Dict[str, List[Any]]:
         client = get_client()
         if client is None:
             return {
-                'anos': [],
-                'ufs': [],
-                'subclasses': [],
-                'cnae2_list': [],
+                "anos": [],
+                "ufs": [],
+                "subclasses": [],
+                "cnae2_list": [],
             }
     except DefaultCredentialsError:
         return {
-            'anos': [],
-            'ufs': [],
-            'subclasses': [],
-            'cnae2_list': [],
+            "anos": [],
+            "ufs": [],
+            "subclasses": [],
+            "cnae2_list": [],
         }
-    project_id = get_config('BQ_PROJECT_ID', DEFAULT_PROJECT)
-    dataset = get_config('BQ_DATASET_GOLD', DEFAULT_DATASET_GOLD)
+    project_id = get_config("BQ_PROJECT_ID", DEFAULT_PROJECT)
+    dataset = get_config("BQ_DATASET_GOLD", DEFAULT_DATASET_GOLD)
     table = f"`{project_id}.{dataset}.rais_uf_ano`"
 
     sql = f"""
@@ -189,28 +191,28 @@ def load_rais_options() -> Dict[str, List[Any]]:
     except Exception as exc:
         st.error(str(exc))
         return {
-            'anos': [],
-            'ufs': [],
-            'subclasses': [],
-            'cnae2_list': [],
+            "anos": [],
+            "ufs": [],
+            "subclasses": [],
+            "cnae2_list": [],
         }
     if df.empty:
         return {
-            'anos': [],
-            'ufs': [],
-            'subclasses': [],
-            'cnae2_list': [],
+            "anos": [],
+            "ufs": [],
+            "subclasses": [],
+            "cnae2_list": [],
         }
     row = df.iloc[0]
-    anos = row['anos']
-    ufs = row['ufs']
-    subclasses = row['subclasses']
-    cnae2_list = row['cnae2_list']
+    anos = row["anos"]
+    ufs = row["ufs"]
+    subclasses = row["subclasses"]
+    cnae2_list = row["cnae2_list"]
     return {
-        'anos': anos if anos is not None and len(anos) > 0 else [],
-        'ufs': ufs if ufs is not None and len(ufs) > 0 else [],
-        'subclasses': [c for c in (subclasses if subclasses is not None else []) if c],
-        'cnae2_list': [c for c in (cnae2_list if cnae2_list is not None else []) if c],
+        "anos": anos if anos is not None and len(anos) > 0 else [],
+        "ufs": ufs if ufs is not None and len(ufs) > 0 else [],
+        "subclasses": [c for c in (subclasses if subclasses is not None else []) if c],
+        "cnae2_list": [c for c in (cnae2_list if cnae2_list is not None else []) if c],
     }
 
 
@@ -219,8 +221,8 @@ def load_caged_months(ano: int) -> List[int]:
     client = get_client()
     if client is None:
         return []
-    project_id = get_config('BQ_PROJECT_ID', DEFAULT_PROJECT)
-    dataset = get_config('BQ_DATASET_GOLD', DEFAULT_DATASET_GOLD)
+    project_id = get_config("BQ_PROJECT_ID", DEFAULT_PROJECT)
+    dataset = get_config("BQ_DATASET_GOLD", DEFAULT_DATASET_GOLD)
     table = f"`{project_id}.{dataset}.caged_uf_mes`"
     sql = f"""
     SELECT ARRAY_AGG(DISTINCT mes IGNORE NULLS ORDER BY mes) AS meses
@@ -278,7 +280,9 @@ def load_pnad_options() -> Dict[str, List[Any]]:
     return {
         "anos": [int(v) for v in (row["anos"] if row["anos"] is not None else [])],
         "ufs": [v for v in (row["ufs"] if row["ufs"] is not None else []) if v],
-        "trimestres": [int(v) for v in (row["trimestres"] if row["trimestres"] is not None else [])],
+        "trimestres": [
+            int(v) for v in (row["trimestres"] if row["trimestres"] is not None else [])
+        ],
     }
 
 
@@ -293,8 +297,12 @@ def render_filters_pnad() -> Dict[str, Any]:
         st.sidebar.info(t("filters_empty"))
 
     st.sidebar.header(t("filters_title"))
-    ano = st.sidebar.selectbox(t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0))
-    trimestre = st.sidebar.selectbox(t("col_trimestre"), trimestres or [0], index=(len(trimestres) - 1 if trimestres else 0))
+    ano = st.sidebar.selectbox(
+        t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0)
+    )
+    trimestre = st.sidebar.selectbox(
+        t("col_trimestre"), trimestres or [0], index=(len(trimestres) - 1 if trimestres else 0)
+    )
     ufs_selected = st.sidebar.multiselect(t("filter_state"), ufs, default=[])
 
     return {
@@ -321,16 +329,20 @@ def render_filters_home() -> Dict[str, Any]:
     caged_years = _as_list(caged_opts.get("anos"))
     rais_years = _as_list(rais_opts.get("anos"))
     years = sorted(set(caged_years + rais_years))
-    default_year = (max(years) if years else 2022)
+    default_year = max(years) if years else 2022
 
     if not years:
         st.sidebar.info(t("filters_empty"))
 
     st.sidebar.header(t("filters_title"))
-    ano = st.sidebar.selectbox(t("filter_year"), years or [default_year], index=(len(years) - 1 if years else 0))
+    ano = st.sidebar.selectbox(
+        t("filter_year"), years or [default_year], index=(len(years) - 1 if years else 0)
+    )
 
     meses = load_caged_months(int(ano)) if caged_years else []
-    mes = st.sidebar.selectbox(t("filter_month"), meses or [0], index=(len(meses) - 1 if meses else 0))
+    mes = st.sidebar.selectbox(
+        t("filter_month"), meses or [0], index=(len(meses) - 1 if meses else 0)
+    )
 
     ufs = sorted(set(_as_list(caged_opts.get("ufs")) + _as_list(rais_opts.get("ufs"))))
     ufs_selected = st.sidebar.multiselect(t("filter_state"), ufs, default=[])
@@ -343,11 +355,15 @@ def render_filters_home() -> Dict[str, Any]:
     secao_selected_labels = st.sidebar.multiselect(t("filter_macro"), secao_labels, default=[])
     secao_selected = [secao_map[label] for label in secao_selected_labels]
 
-    subclasses = sorted(set(_as_list(caged_opts.get("subclasses")) + _as_list(rais_opts.get("subclasses"))))
+    subclasses = sorted(
+        set(_as_list(caged_opts.get("subclasses")) + _as_list(rais_opts.get("subclasses")))
+    )
     advanced = st.sidebar.expander(t("filter_advanced"), expanded=False)
     subclass_labels = [sector.format_cnae_subclasse(value) for value in subclasses]
     subclass_map = dict(zip(subclass_labels, subclasses))
-    subclass_selected_labels = advanced.multiselect(t("filter_subclass"), subclass_labels, default=[])
+    subclass_selected_labels = advanced.multiselect(
+        t("filter_subclass"), subclass_labels, default=[]
+    )
     subclass_selected = [subclass_map[label] for label in subclass_selected_labels]
 
     return {
@@ -372,9 +388,13 @@ def render_filters_caged() -> Dict[str, Any]:
         st.sidebar.info(t("filters_empty"))
 
     st.sidebar.header(t("filters_title"))
-    ano = st.sidebar.selectbox(t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0))
+    ano = st.sidebar.selectbox(
+        t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0)
+    )
     meses = load_caged_months(int(ano)) if anos else []
-    mes = st.sidebar.selectbox(t("filter_month"), meses or [0], index=(len(meses) - 1 if meses else 0))
+    mes = st.sidebar.selectbox(
+        t("filter_month"), meses or [0], index=(len(meses) - 1 if meses else 0)
+    )
     ufs_selected = st.sidebar.multiselect(t("filter_state"), ufs, default=[])
 
     if not secoes:
@@ -387,7 +407,9 @@ def render_filters_caged() -> Dict[str, Any]:
     advanced = st.sidebar.expander(t("filter_advanced"), expanded=False)
     subclass_labels = [sector.format_cnae_subclasse(value) for value in subclasses]
     subclass_map = dict(zip(subclass_labels, subclasses))
-    subclass_selected_labels = advanced.multiselect(t("filter_subclass"), subclass_labels, default=[])
+    subclass_selected_labels = advanced.multiselect(
+        t("filter_subclass"), subclass_labels, default=[]
+    )
     subclass_selected = [subclass_map[label] for label in subclass_selected_labels]
 
     return {
@@ -412,7 +434,9 @@ def render_filters_rais() -> Dict[str, Any]:
         st.sidebar.info(t("filters_empty"))
 
     st.sidebar.header(t("filters_title"))
-    ano = st.sidebar.selectbox(t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0))
+    ano = st.sidebar.selectbox(
+        t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0)
+    )
     ufs_selected = st.sidebar.multiselect(t("filter_state"), ufs, default=[])
 
     macro_keys = sector.available_macro_keys_from_cnae2_list(cnae2_list)
@@ -424,7 +448,9 @@ def render_filters_rais() -> Dict[str, Any]:
     advanced = st.sidebar.expander(t("filter_advanced"), expanded=False)
     subclass_labels = [sector.format_cnae_subclasse(value) for value in subclasses]
     subclass_map = dict(zip(subclass_labels, subclasses))
-    subclass_selected_labels = advanced.multiselect(t("filter_subclass"), subclass_labels, default=[])
+    subclass_selected_labels = advanced.multiselect(
+        t("filter_subclass"), subclass_labels, default=[]
+    )
     subclass_selected = [subclass_map[label] for label in subclass_selected_labels]
 
     return {
@@ -441,17 +467,19 @@ def render_filters_rais() -> Dict[str, Any]:
         return value is None or len(value) == 0
 
     if is_empty(ufs) and is_empty(cnae2_list):
-        st.sidebar.info(t('filters_empty'))
+        st.sidebar.info(t("filters_empty"))
 
-    st.sidebar.header(t('filters_title'))
-    ano = st.sidebar.selectbox(t('filter_year'), anos or [default_ano], index=(len(anos) - 1 if anos else 0))
-    ufs = st.sidebar.multiselect(t('filter_state'), ufs, default=[])
+    st.sidebar.header(t("filters_title"))
+    ano = st.sidebar.selectbox(
+        t("filter_year"), anos or [default_ano], index=(len(anos) - 1 if anos else 0)
+    )
+    ufs = st.sidebar.multiselect(t("filter_state"), ufs, default=[])
 
     available_groups = sector.available_groups(cnae2_list)
-    all_label = t('option_all')
+    all_label = t("option_all")
     sector_labels = [sector.sector_label(group, t) for group in available_groups]
     sector_options = [all_label] + sector_labels
-    sector_choice = st.sidebar.selectbox(t('filter_sector'), sector_options, index=0)
+    sector_choice = st.sidebar.selectbox(t("filter_sector"), sector_options, index=0)
 
     if sector_choice == all_label:
         subsetor_groups = available_groups
@@ -461,7 +489,7 @@ def render_filters_rais() -> Dict[str, Any]:
         ]
     subsetor_labels = [sector.subsetor_label(group, t) for group in subsetor_groups]
     subsetor_options = [all_label] + subsetor_labels
-    subsetor_choice = st.sidebar.selectbox(t('filter_subsector'), subsetor_options, index=0)
+    subsetor_choice = st.sidebar.selectbox(t("filter_subsector"), subsetor_options, index=0)
 
     cnae_filters: List[str] = []
     selected_sector_label: Optional[str] = None
@@ -469,37 +497,41 @@ def render_filters_rais() -> Dict[str, Any]:
     if subsetor_choice != all_label:
         for group in subsetor_groups:
             if sector.subsetor_label(group, t) == subsetor_choice:
-                cnae_filters = sector.codes_for_group(cnae2_list, group['key'])
+                cnae_filters = sector.codes_for_group(cnae2_list, group["key"])
                 selected_sector_label = sector.sector_label(group, t)
                 selected_subsetor_label = sector.subsetor_label(group, t)
                 break
     elif sector_choice != all_label:
         for group in available_groups:
             if sector.sector_label(group, t) == sector_choice:
-                cnae_filters = sector.codes_for_group(cnae2_list, group['key'])
+                cnae_filters = sector.codes_for_group(cnae2_list, group["key"])
                 selected_sector_label = sector_choice
                 break
 
     return {
-        'ano': int(ano),
-        'ufs': ufs,
-        'cnae_level': 'CNAE2',
-        'cnaes': cnae_filters,
-        'setor_label': selected_sector_label,
-        'subsetor_label': selected_subsetor_label,
+        "ano": int(ano),
+        "ufs": ufs,
+        "cnae_level": "CNAE2",
+        "cnaes": cnae_filters,
+        "setor_label": selected_sector_label,
+        "subsetor_label": selected_subsetor_label,
     }
 
 
 def build_params(
-    filters: Dict[str, Any]
+    filters: Dict[str, Any],
 ) -> Tuple[bigquery.ScalarQueryParameter | bigquery.ArrayQueryParameter, ...]:
     params: List[bigquery.ScalarQueryParameter | bigquery.ArrayQueryParameter] = [
         bigquery.ScalarQueryParameter("ano", "INT64", filters.get("ano", 0)),
         bigquery.ScalarQueryParameter("mes", "INT64", filters.get("mes", 0)),
         bigquery.ArrayQueryParameter("ufs", "STRING", filters.get("ufs", [])),
         bigquery.ArrayQueryParameter("caged_secoes", "STRING", filters.get("caged_secoes", [])),
-        bigquery.ArrayQueryParameter("caged_subclasses", "STRING", filters.get("caged_subclasses", [])),
-        bigquery.ArrayQueryParameter("rais_subclasses", "STRING", filters.get("rais_subclasses", [])),
+        bigquery.ArrayQueryParameter(
+            "caged_subclasses", "STRING", filters.get("caged_subclasses", [])
+        ),
+        bigquery.ArrayQueryParameter(
+            "rais_subclasses", "STRING", filters.get("rais_subclasses", [])
+        ),
     ]
     return tuple(params)
 
@@ -536,9 +568,7 @@ def run_query_checked(
     for view_fqn, required_cols in required_columns_by_view.items():
         cols = get_view_columns(view_fqn)
         if not cols:
-            st.warning(
-                f"{t('view_missing_title')}: {view_fqn}. {t('view_missing_body')}"
-            )
+            st.warning(f"{t('view_missing_title')}: {view_fqn}. {t('view_missing_body')}")
             return pd.DataFrame()
         missing = [col for col in required_cols if col.lower() not in cols]
         if missing:
@@ -565,7 +595,7 @@ def diagnose_schema(
             "gold_rais_region_risk",
             "gold_rais_sector_year_metrics",
         ]
-    project_id = get_config('BQ_PROJECT_ID', DEFAULT_PROJECT)
+    project_id = get_config("BQ_PROJECT_ID", DEFAULT_PROJECT)
     client = get_client()
     if client is None:
         return {}

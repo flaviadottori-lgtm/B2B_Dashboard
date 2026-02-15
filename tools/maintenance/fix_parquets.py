@@ -18,23 +18,19 @@ print("-" * 60)
 
 try:
     print(f"[1] Loading {csv_path.name}...")
-    df = pd.read_csv(csv_path, encoding='utf-8')
+    df = pd.read_csv(csv_path, encoding="utf-8")
     print(f"    Loaded: {len(df)} rows, {len(df.columns)} columns")
-    
+
     # Save as parquet
-    df.to_parquet(
-        parquet_path,
-        index=False,
-        compression='snappy',
-        engine='pyarrow'
-    )
-    
+    df.to_parquet(parquet_path, index=False, compression="snappy", engine="pyarrow")
+
     file_size = parquet_path.stat().st_size / 1024
     print(f"    Saved: {parquet_path} ({file_size:.1f} KB)")
-    
+
 except Exception as e:
     print(f"    Error: {e}")
     import traceback
+
     traceback.print_exc()
 
 print("-" * 60)

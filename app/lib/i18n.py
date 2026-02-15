@@ -312,7 +312,9 @@ def language_selector() -> str:
     _ensure_lang()
     options = ["Portugues", "English"]
     current = "Portugues" if st.session_state["lang"] == "pt" else "English"
-    choice = st.sidebar.selectbox(STRINGS["pt"]["language_label"], options, index=options.index(current))
+    choice = st.sidebar.selectbox(
+        STRINGS["pt"]["language_label"], options, index=options.index(current)
+    )
     st.session_state["lang"] = "pt" if choice == "Portugues" else "en"
     return st.session_state["lang"]
 

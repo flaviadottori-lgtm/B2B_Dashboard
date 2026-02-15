@@ -31,7 +31,9 @@ if region_df.empty:
     st.info(t("no_data_filters"))
     st.stop()
 
-region_df["top3_setores"] = region_df["top3_setores"].apply(lambda v: ", ".join(v) if isinstance(v, list) else str(v))
+region_df["top3_setores"] = region_df["top3_setores"].apply(
+    lambda v: ", ".join(v) if isinstance(v, list) else str(v)
+)
 
 region_display = region_df.rename(
     columns={
