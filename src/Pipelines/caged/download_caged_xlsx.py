@@ -146,6 +146,37 @@ def download_file(url: str, out_path: Path) -> bool:
 
 
 # =========================
+# Single-competencia helper
+# =========================
+def download_competencia(year: int, month: int, out_dir: Optional[Path] = None) -> Path:
+    """
+    Download a single competencia XLSX into the raw directory.
+    Returns the output path on success.
+    """
+    target_dir = out_dir or OUT
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    ref = MonthRef(year=year, month=month)
+    out_path = target_dir / ref.out_name()
+
+    if out_path.exists() and out_path.stat().st_size > 50_000:
+        print(f"OK: already exists {out_path.name}")
+        return out_path
+
+    dl = resolve_tables_download_url(ref)
+    if not dl:
+        raise RuntimeError(f"No tables link found for {year}-{month:02d}")
+
+    ok = download_file(dl, out_path)
+    if not ok:
+        if out_path.exists():
+            out_path.unlink(missing_ok=True)
+        raise RuntimeError(f"Download returned HTML for {year}-{month:02d}")
+
+    return out_path
+
+
+# =========================
 # URL patterns (tentativas)
 # =========================
 def candidate_month_pages(ref: MonthRef) -> Iterable[str]:

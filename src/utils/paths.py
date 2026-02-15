@@ -1,3 +1,5 @@
+from pathlib import Path
+DUCKDB_PATH = Path(__file__).resolve().parents[2] / 'data' / 'marts' / 'b2b.duckdb'
 from dataclasses import dataclass
 from pathlib import Path
 

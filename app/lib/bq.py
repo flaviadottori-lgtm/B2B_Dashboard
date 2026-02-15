@@ -43,13 +43,14 @@ def get_client() -> bigquery.Client | None:
 @st.cache_data(show_spinner=False)
 def run_query(
     sql: str,
-    params: Tuple[bigquery.ScalarQueryParameter | bigquery.ArrayQueryParameter, ...],
+    _params: Optional[Iterable[bigquery.ScalarQueryParameter | bigquery.ArrayQueryParameter]] = None,
 ) -> pd.DataFrame:
     try:
         client = get_client()
         if client is None:
             return pd.DataFrame()
-        job_config = bigquery.QueryJobConfig(query_parameters=list(params))
+        params_list = list(_params) if _params is not None else []
+        job_config = bigquery.QueryJobConfig(query_parameters=params_list)
         return client.query(sql, job_config=job_config).result().to_dataframe()
     except DefaultCredentialsError:
         return pd.DataFrame()
@@ -84,7 +85,7 @@ def load_caged_options() -> Dict[str, List[Any]]:
 
     secao_select = "cnae_secao," if has_secao else ""
     secao_agg = (
-        "ARRAY_AGG(DISTINCT cnae_secao ORDER BY cnae_secao IGNORE NULLS) AS secoes,"
+        "ARRAY_AGG(DISTINCT cnae_secao IGNORE NULLS ORDER BY cnae_secao) AS secoes,"
         if has_secao
         else "[] AS secoes,"
     )
@@ -104,10 +105,10 @@ def load_caged_options() -> Dict[str, List[Any]]:
         AND ano IS NOT NULL
     )
     SELECT
-      ARRAY_AGG(DISTINCT ano ORDER BY ano IGNORE NULLS) AS anos,
-      ARRAY_AGG(DISTINCT sigla_uf ORDER BY sigla_uf IGNORE NULLS) AS ufs,
+      ARRAY_AGG(DISTINCT ano IGNORE NULLS ORDER BY ano) AS anos,
+      ARRAY_AGG(DISTINCT sigla_uf IGNORE NULLS ORDER BY sigla_uf) AS ufs,
       {secao_agg}
-      ARRAY_AGG(DISTINCT cnae_subclasse ORDER BY cnae_subclasse IGNORE NULLS) AS subclasses
+      ARRAY_AGG(DISTINCT cnae_subclasse IGNORE NULLS ORDER BY cnae_subclasse) AS subclasses
     FROM base
     """
     try:
@@ -176,10 +177,10 @@ def load_rais_options() -> Dict[str, List[Any]]:
         AND ano IS NOT NULL
     )
     SELECT
-      ARRAY_AGG(DISTINCT ano ORDER BY ano IGNORE NULLS) AS anos,
-      ARRAY_AGG(DISTINCT sigla_uf ORDER BY sigla_uf IGNORE NULLS) AS ufs,
-      ARRAY_AGG(DISTINCT cnae_subclasse ORDER BY cnae_subclasse IGNORE NULLS) AS subclasses,
-      ARRAY_AGG(DISTINCT cnae2 ORDER BY cnae2 IGNORE NULLS) AS cnae2_list
+      ARRAY_AGG(DISTINCT ano IGNORE NULLS ORDER BY ano) AS anos,
+      ARRAY_AGG(DISTINCT sigla_uf IGNORE NULLS ORDER BY sigla_uf) AS ufs,
+      ARRAY_AGG(DISTINCT cnae_subclasse IGNORE NULLS ORDER BY cnae_subclasse) AS subclasses,
+      ARRAY_AGG(DISTINCT cnae2 IGNORE NULLS ORDER BY cnae2) AS cnae2_list
     FROM base
     WHERE cnae2 IS NOT NULL AND cnae2 != ''
     """
@@ -222,7 +223,7 @@ def load_caged_months(ano: int) -> List[int]:
     dataset = get_config('BQ_DATASET_GOLD', DEFAULT_DATASET_GOLD)
     table = f"`{project_id}.{dataset}.caged_uf_mes`"
     sql = f"""
-    SELECT ARRAY_AGG(DISTINCT mes ORDER BY mes IGNORE NULLS) AS meses
+    SELECT ARRAY_AGG(DISTINCT mes IGNORE NULLS ORDER BY mes) AS meses
     FROM {table}
     WHERE ano = @ano AND mes IS NOT NULL
     """
@@ -253,9 +254,9 @@ def load_pnad_options() -> Dict[str, List[Any]]:
     table = f"`{project_id}.{dataset}.pnad_uf_trimestre`"
     sql = f"""
     SELECT
-      ARRAY_AGG(DISTINCT ano ORDER BY ano IGNORE NULLS) AS anos,
-      ARRAY_AGG(DISTINCT sigla_uf ORDER BY sigla_uf IGNORE NULLS) AS ufs,
-      ARRAY_AGG(DISTINCT trimestre ORDER BY trimestre IGNORE NULLS) AS trimestres
+      ARRAY_AGG(DISTINCT ano IGNORE NULLS ORDER BY ano) AS anos,
+      ARRAY_AGG(DISTINCT sigla_uf IGNORE NULLS ORDER BY sigla_uf) AS ufs,
+      ARRAY_AGG(DISTINCT trimestre IGNORE NULLS ORDER BY trimestre) AS trimestres
     FROM {table}
     WHERE ano IS NOT NULL AND sigla_uf IS NOT NULL AND sigla_uf != ''
     """
@@ -304,11 +305,22 @@ def render_filters_pnad() -> Dict[str, Any]:
 
 
 def render_filters_home() -> Dict[str, Any]:
+    def _as_list(value: Any) -> List[Any]:
+        if value is None:
+            return []
+        try:
+            return list(value.tolist())
+        except Exception:
+            try:
+                return list(value)
+            except Exception:
+                return [value]
+
     caged_opts = load_caged_options()
     rais_opts = load_rais_options()
-    caged_years = caged_opts.get("anos", [])
-    rais_years = rais_opts.get("anos", [])
-    years = sorted({*caged_years, *rais_years})
+    caged_years = _as_list(caged_opts.get("anos"))
+    rais_years = _as_list(rais_opts.get("anos"))
+    years = sorted(set(caged_years + rais_years))
     default_year = (max(years) if years else 2022)
 
     if not years:
@@ -320,10 +332,10 @@ def render_filters_home() -> Dict[str, Any]:
     meses = load_caged_months(int(ano)) if caged_years else []
     mes = st.sidebar.selectbox(t("filter_month"), meses or [0], index=(len(meses) - 1 if meses else 0))
 
-    ufs = sorted({*(caged_opts.get("ufs", []) or []), *(rais_opts.get("ufs", []) or [])})
+    ufs = sorted(set(_as_list(caged_opts.get("ufs")) + _as_list(rais_opts.get("ufs"))))
     ufs_selected = st.sidebar.multiselect(t("filter_state"), ufs, default=[])
 
-    secoes = sorted({s for s in (caged_opts.get("secoes", []) or []) if s})
+    secoes = sorted({s for s in _as_list(caged_opts.get("secoes")) if s})
     if not secoes:
         st.sidebar.info(t("caged_section_disabled"))
     secao_labels = [sector.secao_display_label(secao, t) for secao in secoes]
@@ -331,7 +343,7 @@ def render_filters_home() -> Dict[str, Any]:
     secao_selected_labels = st.sidebar.multiselect(t("filter_macro"), secao_labels, default=[])
     secao_selected = [secao_map[label] for label in secao_selected_labels]
 
-    subclasses = sorted({*(caged_opts.get("subclasses", []) or []), *(rais_opts.get("subclasses", []) or [])})
+    subclasses = sorted(set(_as_list(caged_opts.get("subclasses")) + _as_list(rais_opts.get("subclasses"))))
     advanced = st.sidebar.expander(t("filter_advanced"), expanded=False)
     subclass_labels = [sector.format_cnae_subclasse(value) for value in subclasses]
     subclass_map = dict(zip(subclass_labels, subclasses))
@@ -535,7 +547,7 @@ def run_query_checked(
                 f"{t('columns_missing_body')} {', '.join(missing)}"
             )
             return pd.DataFrame()
-    return run_query(sql, params=params)
+    return run_query(sql, _params=params)
 
 
 def diagnose_schema(

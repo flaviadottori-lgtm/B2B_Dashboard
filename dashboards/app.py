@@ -7,27 +7,69 @@ import logging
 import sys
 import os
 from pathlib import Path
+import json
 
 # Adicionar diretório pai ao path para importações
 project_root = Path(__file__).parent.parent.resolve()
+
+# Defensive initialization for all main variables to avoid NameError
+df_companies = None
+df_scores = None
+df_caged = None
+geo_states = None
+centroids = {}
+
+print(">>> APP STARTED")
 sys.path.insert(0, str(project_root))
 
 # Opcional: manter CWD no root do projeto
 os.chdir(project_root)
 
+
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from pathlib import Path
+import json
 
-# Imports dos módulos centralizados
 from src.config import Settings, I18N, UF_ORDER, MACRO_SECTORS
 from src.utils.formatters import fmt_int
-from src.utils.data_loading import load_parquet_safe, load_geojson_safe
+from src.utils.duckdb_client import get_con
+from src.utils.data_loading import (
+    load_geojson_safe,
+    load_companies_agg,
+    load_opportunity_scores,
+    load_caged_state_sector_year,
+    load_pnad_metrics,
+    load_rais_metrics,
+)
 from src.utils.logging_config import setup_logging, get_logger
-from src.core.data_processing import prep_companies, prep_scores, prep_caged, apply_filters
+from src.core.data_processing import (
+    prep_companies,
+    prep_scores,
+    prep_caged,
+    apply_filters,
+    build_gold_join,
+)
 from src.ui.components import apply_styles, render_kpi, render_pills
 from src.ui.pnad_section import render_pnad_section
+
+def load_geo_states():
+    try:
+        settings_local = Settings()
+        candidates = [
+            settings_local.paths.brazil_states_geojson,
+            Path(__file__).resolve().parents[1] / "assets" / "geo" / "brazil_states.geojson",
+            Path(__file__).resolve().parents[1] / "assets" / "geo" / "br_states.geojson",
+        ]
+        for geo_path in candidates:
+            if geo_path and geo_path.exists():
+                return load_geojson_safe(geo_path)
+    except Exception:
+        pass
+    return None
 
 # ======================================================
 # SETUP
@@ -42,26 +84,66 @@ st.set_page_config(
     layout=settings.layout,
 )
 
+st.title("✅ Streamlit App Loaded")
+st.write("If you can see this, the app is rendering.")
+
 apply_styles()
 logger.info(f"App iniciado | Debug: {settings.debug_mode}")
 
 # ======================================================
+# SESSION STATE INITIALIZATION
+# ======================================================
+if "source_fallback_done" not in st.session_state:
+    st.session_state.source_fallback_done = False
+    st.session_state.effective_source = None
+
+# ======================================================
+# BACKEND SELECTION
+# ======================================================
+backend_default = settings.backend_default if settings.backend_default in ["duckdb", "bigquery"] else "duckdb"
+backend_id = st.sidebar.radio(
+    "Fonte de backend",
+    ["duckdb", "bigquery"],
+    index=0 if backend_default == "duckdb" else 1,
+    format_func=lambda x: "Local (DuckDB)" if x == "duckdb" else "BigQuery",
+)
+
+# ======================================================
 # LOAD DATA
 # ======================================================
-@st.cache_data(show_spinner=False)
-def load_all_data(
-    companies_path: str,
-    scores_path: str,
-    caged_path: str,
-    geo_path: str,
-):
-    """Carrega datasets críticos (cacheado como dado)."""
-    logger.info("Carregando datasets...")
 
-    df_companies = load_parquet_safe(Path(companies_path))
-    df_scores = load_parquet_safe(Path(scores_path))
-    df_caged = load_parquet_safe(Path(caged_path))
-    geo_states = load_geojson_safe(Path(geo_path))
+@st.cache_data(show_spinner=False)
+def load_all_data(backend: str):
+    """
+    Carrega os dados principais a partir do DuckDB e o geojson.
+    """
+    logger.info("Carregando datasets via DuckDB...")
+    try:
+        df_companies = load_companies_agg(backend=backend)
+    except Exception as e:
+        logger.error(f"Erro ao carregar companies_agg ({backend}): {e}")
+        df_companies = None
+    try:
+        df_scores = load_opportunity_scores(backend=backend)
+    except Exception as e:
+        logger.error(f"Erro ao carregar opportunity_scores ({backend}): {e}")
+        df_scores = None
+    try:
+        df_caged = load_caged_state_sector_year(backend=backend)
+    except Exception as e:
+        logger.error(f"Erro ao carregar caged_state_sector_year ({backend}): {e}")
+        df_caged = None
+    try:
+        df_pnad_metrics = load_pnad_metrics(backend=backend)
+    except Exception as e:
+        logger.error(f"Erro ao carregar PNAD metrics ({backend}): {e}")
+        df_pnad_metrics = None
+    try:
+        df_rais_metrics = load_rais_metrics(backend=backend)
+    except Exception as e:
+        logger.error(f"Erro ao carregar RAIS metrics ({backend}): {e}")
+        df_rais_metrics = None
+    geo_states = load_geo_states()
 
     # Preparar dados - SÓ se carregou com sucesso
     if df_companies is not None and not df_companies.empty:
@@ -88,21 +170,68 @@ def load_all_data(
             logger.error(f"Erro em prep_caged: {e}")
             df_caged = None
 
-    logger.info("Todos os dados carregados com sucesso")
-    return df_companies, df_scores, df_caged, geo_states
+    logger.info("Todos os dados carregados com sucesso (DuckDB)")
+    return df_companies, df_scores, df_caged, geo_states, df_pnad_metrics, df_rais_metrics
 
 
-# Carregar dados com tratamento de erro REAL (sem mascarar como "não encontrado")
+
+# Carregar dados principais via DuckDB
+
 try:
-    df_companies, df_scores, df_caged, geo_states = load_all_data(
-        str(settings.paths.companies_agg),
-        str(settings.paths.opportunity_scores),
-        str(settings.paths.caged_state_sector_year),
-        str(settings.paths.brazil_states_geojson),
-    )
+    df_companies, df_scores, df_caged, geo_states, df_pnad_metrics, df_rais_metrics = load_all_data(backend=backend_id)
 except Exception as e:
     st.error(f"Falha ao carregar dados: {type(e).__name__} - {e}")
-    st.stop()
+    logger.error(f"Falha crítica ao carregar dados: {e}")
+    df_companies = None
+    df_scores = None
+    df_caged = None
+    geo_states = None
+    df_pnad_metrics = None
+    df_rais_metrics = None
+    # NÃO parar - deixar app continuar renderizando
+
+# Fallback para DuckDB se BigQuery falhar
+if backend_id == "bigquery":
+    if (
+        (df_companies is None or df_companies.empty)
+        and (df_scores is None or df_scores.empty)
+        and (df_caged is None or df_caged.empty)
+    ):
+        st.error("Backend BigQuery indisponível. Verifique credenciais/tabelas e tente novamente. Usando DuckDB.")
+        df_companies, df_scores, df_caged, geo_states, df_pnad_metrics, df_rais_metrics = load_all_data(backend="duckdb")
+        backend_id = "duckdb"
+
+# Defensive: ensure all variables are defined before use
+if df_companies is None:
+    df_companies = pd.DataFrame()
+if df_scores is None:
+    df_scores = pd.DataFrame()
+if df_caged is None:
+    df_caged = pd.DataFrame()
+if geo_states is None:
+    geo_states = None
+if df_pnad_metrics is None:
+    df_pnad_metrics = pd.DataFrame()
+if df_rais_metrics is None:
+    df_rais_metrics = pd.DataFrame()
+
+# Visão integrada (gold)
+df_gold = build_gold_join(df_companies, df_caged, df_rais_metrics, df_pnad_metrics)
+if df_gold is not None and not df_gold.empty and df_scores is not None and not df_scores.empty:
+    if "year" in df_scores.columns and "uf" in df_scores.columns and "opportunity_score" in df_scores.columns:
+        scores_tmp = df_scores.copy()
+        if "units" in scores_tmp.columns:
+            scores_tmp["_w"] = scores_tmp["opportunity_score"] * scores_tmp["units"]
+            scores_agg = (
+                scores_tmp.groupby(["year", "uf"], as_index=False)
+                .agg(weighted=("_w", "sum"), units=("units", "sum"))
+            )
+            scores_agg = scores_agg[scores_agg["units"] > 0].copy()
+            scores_agg["opportunity_score"] = scores_agg["weighted"] / scores_agg["units"]
+            scores_agg = scores_agg[["year", "uf", "opportunity_score"]]
+        else:
+            scores_agg = scores_tmp.groupby(["year", "uf"], as_index=False)[["opportunity_score"]].mean()
+        df_gold = df_gold.merge(scores_agg, on=["year", "uf"], how="left")
 
 
 # Validar dados críticos (apenas alerta; não substitui o try/except acima)
@@ -192,25 +321,28 @@ lang = st.sidebar.selectbox(
 LANG = "pt" if "Portugu" in lang else "en"
 T = I18N[LANG]
 
-# Fonte de dados
-source = st.sidebar.radio(
+# Fonte de dados (IDs fixos)
+source_id = st.sidebar.radio(
     T["source"],
-    [T["companies"], T["jobs"]],
+    ["companies", "jobs"],
     index=0,
+    format_func=lambda x: T["companies"] if x == "companies" else T["jobs"],
 )
 
 # Filtros
 uf_selected = st.sidebar.selectbox(
     T["uf"],
-    [T["macro_all"]] + UF_ORDER,
+    ["ALL"] + UF_ORDER,
     index=0,
+    format_func=lambda x: T["macro_all"] if x == "ALL" else x,
 )
 
 st.sidebar.caption(T["note_macro"])
 macro_selected = st.sidebar.selectbox(
     T["macro"],
-    [T["macro_all"]] + MACRO_SECTORS,
+    ["ALL"] + MACRO_SECTORS,
     index=0,
+    format_func=lambda x: T["macro_all"] if x == "ALL" else x,
 )
 
 only_tech = st.sidebar.toggle(T["tech_only"], value=False)
@@ -219,53 +351,101 @@ show_raw = st.sidebar.toggle(T["debug"], value=False)
 st.sidebar.divider()
 
 # ======================================================
-# SELECIONAR DATASET - COM FALLBACK AUTOMÁTICO
+# DATASET AVAILABILITY CHECK - NO FATAL ERRORS
 # ======================================================
-# Determinar se datasets estão disponíveis
+# Determinar se datasets estão realmente disponíveis (baseado em dados carregados, não em filtros)
 companies_available = df_companies is not None and not df_companies.empty
 caged_available = df_caged is not None and not df_caged.empty
+gold_available = df_gold is not None and not df_gold.empty
 
-# Se usuário selecionou Companies mas não está disponível, mudar para CAGED
-if source == T["companies"] and not companies_available:
-    st.warning("⚠️ Dataset de empresas não disponível. Alternando para Empregos (CAGED)...")
-    source = T["jobs"]
-    logger.warning("Companies não disponível, fallback para CAGED")
+# Log para debug
+logger.info(f"Dataset availability: companies={companies_available}, caged={caged_available}")
 
-# Se usuário selecionou CAGED mas não está disponível, mudar para Companies
-if source == T["jobs"] and not caged_available:
-    st.warning("⚠️ Dataset de empregos não disponível. Alternando para Empresas (IBGE)...")
-    source = T["companies"]
-    logger.warning("CAGED não disponível, fallback para Companies")
+# ======================================================
+# DETERMINE EFFECTIVE DATA SOURCE - GRACEFUL FALLBACK
+# ======================================================
+# Determinar qual dataset realmente usar (sem parar a aplicação)
+effective_source = source_id
+df_main = None
+value_col = "net"
+value_label = T["indicator_companies"]
+source_name = "Nenhuma fonte"
 
-# Se nenhum dataset está disponível, parar
-if not companies_available and not caged_available:
-    st.error("❌ NENHUM DATASET DISPONÍVEL. Verifique os arquivos parquet.")
-    st.stop()
+# Se usuário selecionou Companies
+if source_id == "companies":
+    if companies_available:
+        # Companies disponível - usar
+        df_main = df_gold if gold_available else df_companies
+        value_col = "net"
+        value_label = T["indicator_companies"]
+        source_name = "IBGE Empresas"
+    elif caged_available:
+        # Companies não disponível mas CAGED está - usar CAGED
+        effective_source = "jobs"
+        df_main = df_caged
+        value_col = "job_balance"
+        value_label = T["indicator_jobs"]
+        source_name = "CAGED Empregos"
+        st.warning("⚠️ Dataset de empresas não disponível. Usando Empregos (CAGED).")
+        logger.warning("Companies não disponível, usando CAGED como fallback")
+    else:
+        # Nenhum disponível
+        st.info("ℹ️ Datasets de empresas e empregos não estão disponíveis no momento.")
+        logger.warning("Ambos os datasets indisponíveis - renderizando com dados vazios")
 
-# Selecionar dataset baseado na fonte
-if source == T["companies"]:
-    df_main = df_companies
-    value_col = "net"
-    value_label = T["indicator_companies"]
+# Se usuário selecionou CAGED
+elif source_id == "jobs":
+    if caged_available:
+        # CAGED disponível - usar
+        df_main = df_gold if gold_available else df_caged
+        value_col = "job_balance"
+        value_label = T["indicator_jobs"]
+        source_name = "CAGED Empregos"
+    elif companies_available:
+        # CAGED não disponível mas Companies está - usar Companies
+        effective_source = "companies"
+        df_main = df_companies
+        value_col = "net"
+        value_label = T["indicator_companies"]
+        source_name = "IBGE Empresas"
+        st.warning("⚠️ Dataset de empregos não disponível. Usando Empresas (IBGE).")
+        logger.warning("CAGED não disponível, usando Companies como fallback")
+    else:
+        # Nenhum disponível
+        st.info("ℹ️ Datasets de empresas e empregos não estão disponíveis no momento.")
+        logger.warning("Ambos os datasets indisponíveis - renderizando com dados vazios")
+
+# Se temos algum dataset, continuar com os filtros
+if not isinstance(df_main, pd.DataFrame) or df_main.empty:
+    year_selected = 2021  # valor padrão
+    df_main = pd.DataFrame()
+    df_view = pd.DataFrame()
+    logger.warning("Nenhum dataset disponível - usando DataFrames vazios")
+    st.sidebar.info("ℹ️ Nenhum dataset disponível para renderizar controles dinâmicos.")
 else:
-    df_main = df_caged
-    value_col = "job_balance"
-    value_label = T["indicator_jobs"]
+    # Ano
+    years = sorted(df_main["year"].dropna().astype(int).unique().tolist())
+    default_year_idx = len(years) - 1  # padrão: último ano
+    if source_id == "companies" and 2021 in years:
+        default_year_idx = years.index(2021)
+    # Para CAGED, sempre último ano (default já é esse)
+    year_selected = st.sidebar.selectbox(T["year"], years, index=default_year_idx)
 
-# Ano
-years = sorted(df_main["year"].dropna().astype(int).unique().tolist())
-year_selected = st.sidebar.selectbox(T["year"], years, index=len(years) - 1)
+    # Aplicar filtros
+    df_view = apply_filters(
+        df_main,
+        year=int(year_selected),
+        state=None if uf_selected == "ALL" else uf_selected,
+        macro_sector=None if macro_selected == "ALL" else macro_selected,
+        tech_only=only_tech,
+    )
 
-# Aplicar filtros
-df_view = apply_filters(
-    df_main,
-    year=int(year_selected),
-    state=None if uf_selected == T["macro_all"] else uf_selected,
-    macro_sector=None if macro_selected == T["macro_all"] else macro_selected,
-    tech_only=only_tech,
-)
+    # Se filtros resultaram em zero linhas, mostrar aviso mas continuar renderizando
+    if df_view.empty and not df_main.empty:
+        st.info(f"ℹ️ Nenhum dado disponível para os filtros selecionados. Tente ajustar os filtros.")
+        logger.info(f"Filtros resultaram em dataset vazio (mas dados base existem)")
 
-logger.info(f"Filtros: year={year_selected}, uf={uf_selected}, macro={macro_selected} | {len(df_view)} linhas")
+    logger.info(f"Fonte: {source_name} | Filtros: year={year_selected}, uf={uf_selected}, macro={macro_selected} | {len(df_view)} linhas")
 
 # ======================================================
 # HEADER
@@ -303,7 +483,7 @@ c1, c2, c3, c4 = st.columns(4)
 with c1:
     render_kpi(
         T["kpi_source"],
-        "IBGE" if source == T["companies"] else "CAGED",
+        "IBGE" if source_id == "companies" else "CAGED",
         f"{T['year']}: {int(year_selected)}",
     )
 
@@ -341,7 +521,7 @@ st.divider()
 # ======================================================
 # TABS
 # ======================================================
-tab1, tab2, tab3, tab4, tab5 = st.tabs(T["tabs"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(T["tabs"])
 
 # -------------------------
 # TAB 1  TIME SERIES
@@ -351,8 +531,8 @@ with tab1:
 
     base = apply_filters(
         df_main,
-        state=None if uf_selected == T["macro_all"] else uf_selected,
-        macro_sector=None if macro_selected == T["macro_all"] else macro_selected,
+        state=None if uf_selected == "ALL" else uf_selected,
+        macro_sector=None if macro_selected == "ALL" else macro_selected,
         tech_only=only_tech,
     )
 
@@ -410,12 +590,56 @@ with tab2:
         st.dataframe(by_macro, use_container_width=True, height=280)
 
 # -------------------------
-# TAB 3  MAP & RANKINGS
+# TAB 3  INTEGRATED VIEW
 # -------------------------
 with tab3:
+    st.subheader(" " + T["tabs"][2])
+
+    if df_gold is None or df_gold.empty:
+        st.info("Visão integrada indisponível. Verifique as bases carregadas.")
+    else:
+        gold_view = apply_filters(
+            df_gold,
+            year=int(year_selected) if "year_selected" in locals() else None,
+            state=None if uf_selected == "ALL" else uf_selected,
+            macro_sector=None if macro_selected == "ALL" else macro_selected,
+            tech_only=only_tech,
+        )
+
+        if gold_view.empty:
+            st.info(T["no_data"])
+        else:
+            cols = ["uf", "macro_sector"]
+            metrics = []
+            for c in ["opportunity_score", "net", "job_balance", "vinculos"]:
+                if c in gold_view.columns:
+                    metrics.append(c)
+            if not metrics:
+                st.info("Nenhuma métrica integrada disponível para este recorte.")
+            else:
+                by_uf = gold_view.groupby("uf", as_index=False)[metrics].sum(numeric_only=True)
+                by_macro = gold_view.groupby("macro_sector", as_index=False)[metrics].sum(numeric_only=True)
+
+                left, right = st.columns(2)
+                with left:
+                    st.markdown("**Ranking por UF (integrado)**")
+                    st.dataframe(by_uf.sort_values(metrics[0], ascending=False), use_container_width=True, height=360)
+                with right:
+                    st.markdown("**Ranking por Macro-setor (integrado)**")
+                    st.dataframe(by_macro.sort_values(metrics[0], ascending=False), use_container_width=True, height=360)
+
+            if "vinculos" not in gold_view.columns:
+                st.info("RAIS não disponível para este recorte.")
+            if "taxa_informalidade" not in gold_view.columns and "taxa_desemprego" not in gold_view.columns:
+                st.info("PNAD não carregada no backend selecionado.")
+
+# -------------------------
+# TAB 4  MAP & RANKINGS
+# -------------------------
+with tab4:
     st.subheader(" " + T["map_structural"])
 
-    if df_scores.empty or geo_states is None:
+    if df_scores is None or df_scores.empty or geo_states is None:
         st.warning(
             "Mapa indisponível: verifique opportunity_scores.parquet e brazil_states.geojson"
         )
@@ -432,30 +656,67 @@ with tab3:
         state_score = state_score[state_score["units"] > 0].copy()
         state_score["score"] = (state_score["weighted"] / state_score["units"])
         state_score = state_score[["uf", "score", "region"]].copy()
+        # Normaliza UF para casar com properties.sigla do GeoJSON (ex.: SP, CE)
+        if "UF_CODE_MAP" in globals() and isinstance(UF_CODE_MAP, dict):
+            uf_num = pd.to_numeric(state_score["uf"], errors="coerce")
+            uf_mapped = uf_num.map(lambda x: UF_CODE_MAP.get(int(x)) if pd.notna(x) else None)
+            state_score["uf"] = uf_mapped.where(uf_mapped.notna(), state_score["uf"])
+        state_score["uf"] = state_score["uf"].astype(str).str.strip().str.upper()
 
         show_rank = st.toggle(T["map_toggle_rank"], value=True)
 
-        fig_map = px.choropleth(
-            state_score,
-            geojson=geo_states,
-            locations="uf",
-            featureidkey="properties.sigla",
-            color="score",
-            hover_name="uf",
-            hover_data={"uf": False, "score": ":.1f"},
-            labels={"score": T["map_col_index"]},
-        )
-        fig_map.update_traces(
-            hovertemplate=f"<b>%{{hovertext}}</b><br>{T['map_col_index']}: %{{customdata[0]:.1f}}<extra></extra>",
-            customdata=state_score[["score"]].values,
+        # Garante casamento robusto entre dados e GeoJSON (sigla ou id numérico)
+        geo_props = [f.get("properties", {}) for f in geo_states.get("features", [])]
+        geo_siglas = {
+            str(p.get("sigla")).strip().upper()
+            for p in geo_props
+            if p.get("sigla") is not None
+        }
+        uf_to_geo_id = {
+            str(p.get("sigla")).strip().upper(): p.get("id")
+            for p in geo_props
+            if p.get("sigla") is not None and p.get("id") is not None
+        }
+
+        match_sigla = state_score["uf"].isin(geo_siglas).sum()
+        if match_sigla > 0:
+            locations_col = "uf"
+            feature_key = "properties.sigla"
+        else:
+            state_score["geo_id"] = state_score["uf"].map(uf_to_geo_id)
+            state_score = state_score[state_score["geo_id"].notna()].copy()
+            locations_col = "geo_id"
+            feature_key = "properties.id"
+
+        fig_map = go.Figure(
+            go.Choropleth(
+                geojson=geo_states,
+                locations=state_score[locations_col],
+                z=state_score["score"],
+                featureidkey=feature_key,
+                colorscale="Blues",
+                colorbar=dict(
+                    title=f"{T['map_col_index']}<br>",
+                    thickness=12,
+                    len=0.70,
+                    tickformat=".1f",
+                    tickfont=dict(size=10),
+                ),
+                marker_line_width=0.8,
+                marker_line_color="rgba(255,255,255,0.75)",
+                customdata=state_score[["score"]].values,
+                hovertemplate=f"<b>%{{location}}</b><br>{T['map_col_index']}: %{{customdata[0]:.1f}}<extra></extra>",
+            )
         )
         fig_map.update_geos(
             fitbounds="geojson",
-            visible=False,
+            visible=True,
+            bgcolor="rgba(255,255,255,0)",
             projection_type="mercator",
             showland=True,
-            landcolor="rgba(20,20,20,1)",
-            coastlinecolor="rgba(30,30,30,0.5)",
+            landcolor="rgba(245,247,250,1)",
+            coastlinecolor="rgba(160,174,192,0.7)",
+            showframe=False,
         )
 
         # Labels de UF
@@ -473,7 +734,7 @@ with tab3:
                 lat=lats,
                 text=texts,
                 mode="text",
-                textfont=dict(size=14, color="white", family="Arial Black"),
+                textfont=dict(size=14, color="#0f172a", family="Arial Black"),
                 textposition="middle center",
                 showlegend=False,
                 hoverinfo="skip",
@@ -481,19 +742,12 @@ with tab3:
         )
 
         fig_map.update_layout(
-            template="plotly_dark",
+            template="plotly_white",
             height=680,
             margin={"r": 0, "t": 10, "l": 0, "b": 0},
-            coloraxis_colorbar=dict(
-                title=f"{T['map_col_index']}<br>",
-                thickness=12,
-                len=0.70,
-                tickformat=".1f",
-                tickfont=dict(size=10),
-            ),
             font=dict(family="Arial", size=11),
-            paper_bgcolor="rgba(17,17,17,1)",
-            plot_bgcolor="rgba(17,17,17,1)",
+            paper_bgcolor="rgba(255,255,255,1)",
+            plot_bgcolor="rgba(255,255,255,1)",
         )
 
         rank = state_score.sort_values("score", ascending=False).reset_index(drop=True)
@@ -599,21 +853,22 @@ with tab3:
         )
 
 # -------------------------
-# TAB 4  PNAD
+# TAB 5  PNAD
 # -------------------------
-with tab4:
+with tab5:
     render_pnad_section(lang=LANG)
 
 # -------------------------
-# TAB 5  DATA & DIAGNOSTICS
+# TAB 6  DATA & DIAGNOSTICS
 # -------------------------
-with tab5:
+with tab6:
     st.subheader(" " + T["data_diag"])
 
     st.code(
         "\n".join(
             [
                 f"PROJECT_ROOT: {settings.paths.root}",
+                f"BACKEND: {backend_id}",
                 f"companies_agg: {settings.paths.companies_agg} | exists={settings.paths.companies_agg.exists()}",
                 f"opportunity_scores: {settings.paths.opportunity_scores} | exists={settings.paths.opportunity_scores.exists()}",
                 f"caged_state_sector_year: {settings.paths.caged_state_sector_year} | exists={settings.paths.caged_state_sector_year.exists()}",
@@ -624,22 +879,73 @@ with tab5:
         )
     )
 
+    if backend_id == "bigquery":
+        from src.utils.bigquery_client import check_tables
+        if not settings.bq_project or not settings.bq_dataset_gold:
+            st.warning("BigQuery não configurado. Defina BQ_PROJECT e BQ_DATASET_GOLD.")
+        else:
+            expected_tables = [
+                settings.bq_table_companies,
+                settings.bq_table_opportunity,
+                settings.bq_table_caged,
+                settings.bq_table_pnad_metrics,
+                settings.bq_table_rais_metrics,
+            ]
+            status = check_tables(
+                project=settings.bq_project,
+                dataset=settings.bq_dataset_gold,
+                table_names=expected_tables,
+                location=settings.bq_location,
+            )
+            st.markdown("**BigQuery status**")
+            st.json(status)
+
     cA, cB, cC = st.columns(3)
 
+
     with cA:
-        st.write("IBGE companies:", df_companies.shape)
-        st.write("years:", sorted(df_companies["year"].dropna().astype(int).unique().tolist())[:25])
-        st.write("ufs:", df_companies["uf"].nunique())
+        if df_companies is not None and not df_companies.empty:
+            st.write("IBGE companies:", df_companies.shape)
+            if "year" in df_companies.columns:
+                st.write("years:", sorted(df_companies["year"].dropna().astype(int).unique().tolist())[:25])
+            else:
+                st.write("years:", "N/A")
+            if "uf" in df_companies.columns:
+                st.write("ufs:", df_companies["uf"].nunique())
+            else:
+                st.write("ufs:", "N/A")
+        else:
+            st.write("IBGE companies:", "(Não disponível)")
+
 
     with cB:
-        st.write("CAGED:", df_caged.shape)
-        st.write("years:", sorted(df_caged["year"].dropna().astype(int).unique().tolist()))
-        st.write("ufs:", df_caged["uf"].nunique())
+        if df_caged is not None and not df_caged.empty:
+            st.write("CAGED:", df_caged.shape)
+            if "year" in df_caged.columns:
+                st.write("years:", sorted(df_caged["year"].dropna().astype(int).unique().tolist()))
+            else:
+                st.write("years:", "N/A")
+            if "uf" in df_caged.columns:
+                st.write("ufs:", df_caged["uf"].nunique())
+            else:
+                st.write("ufs:", "N/A")
+        else:
+            st.write("CAGED:", "(Não disponível)")
+
 
     with cC:
-        st.write("Índice estrutural:", df_scores.shape)
-        st.write("years:", sorted(df_scores["year"].dropna().astype(int).unique().tolist())[:25])
-        st.write("ufs:", df_scores["uf"].nunique())
+        if df_scores is not None and not df_scores.empty:
+            st.write("Índice estrutural:", df_scores.shape)
+            if "year" in df_scores.columns:
+                st.write("years:", sorted(df_scores["year"].dropna().astype(int).unique().tolist())[:25])
+            else:
+                st.write("years:", "N/A")
+            if "uf" in df_scores.columns:
+                st.write("ufs:", df_scores["uf"].nunique())
+            else:
+                st.write("ufs:", "N/A")
+        else:
+            st.write("Índice estrutural:", "(Não disponível)")
 
     st.divider()
 

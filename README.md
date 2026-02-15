@@ -18,6 +18,33 @@ Plataforma de inteligência econômica que integra dados do **IBGE** e **CAGED**
 
 ---
 
+## ✅ Default Runtime (Fase 1)
+
+O modo recomendado é **Local (DuckDB)**, com o app principal em `app.py`:
+
+```bash
+streamlit run app.py
+```
+
+O modo **BigQuery** é opcional e está em `app/main.py` (veja a seção "BigQuery").
+
+Também é possível selecionar o backend diretamente no app (DuckDB ou BigQuery) via sidebar.
+
+---
+
+## 📈 Opportunity Score (explicável)
+
+O **Opportunity Score** é um índice estrutural baseado em dados IBGE agregados,
+comparável entre estados e explicável. Ele combina:
+
+- intensidade de atividade econômica por UF
+- distribuição setorial (macro-setores executivos)
+- volume de unidades (peso para comparação)
+
+O objetivo é **rankear oportunidades** de forma transparente, sem caixa-preta.
+
+---
+
 ## 🇧🇷 Sobre o Projeto | 🇺🇸 About the Project
 
 This project analyzes the **Brazilian business landscape** using public economic and labor
@@ -92,19 +119,41 @@ Assim, o app nunca ficará sem dados por nomes inconsistentes e todas as views p
 ## ⚡ Quick Start
 
 ### Prerequisites
-- Python 3.12 (recomendado)
+- Python 3.11 ou 3.12 (recomendado)
 - pip ou conda
 - Git
 
-### Execucao rapida (BigQuery)
+### Execucao rapida (DuckDB - recomendado)
 ```bash
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+streamlit run app.py
+```
+
+### Execucao rapida (BigQuery - opcional)
+```bash
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r app/requirements.txt
 set GOOGLE_APPLICATION_CREDENTIALS=C:\\path\\to\\service-account.json
 set BQ_PROJECT_ID=dados-mercado-brasil
 set BQ_DATASET_GOLD=gold
 streamlit run app/main.py
+```
+
+### Usar BigQuery no app principal (sidebar)
+Configure variáveis no `.env`:
+```
+B2B_BACKEND=bigquery
+BQ_PROJECT=seu-projeto
+BQ_DATASET_GOLD=seu_dataset
+BQ_LOCATION=us
+GOOGLE_APPLICATION_CREDENTIALS=C:\\path\\to\\service-account.json
+```
+Depois rode:
+```bash
+streamlit run app.py
 ```
 
 ### Installation
@@ -152,7 +201,7 @@ cp .env.example .env
 
 5. **Execute o dashboard:**
 ```bash
-streamlit run app/main.py
+streamlit run app.py
 ```
 
 O app estará disponível em `http://localhost:8501`
@@ -188,6 +237,35 @@ Crie (ou atualize) as views abaixo no dataset configurado (`BQ_DATASET_GOLD`):
 Os SQLs estao em `sql/rais_views/`.
 
 Nota: nao existe dimensao de descricao CNAE neste projeto. Os seletores exibem CNAE por codigo. Uma futura melhoria e integrar uma `dim_cnae`.
+
+---
+
+## 📸 Screenshots (placeholders)
+
+Coloque imagens em `assets/` e atualize os links acima:
+
+- `assets/opportunityv3.jpg`
+- `assets/Postlinkedin1.jpg`
+
+---
+
+## ⚠️ Limitações
+
+- O índice é comparativo e depende da qualidade das bases públicas.
+- Não prevê o futuro; indica sinais estruturais e tendências recentes.
+- PNAD e CAGED são complementares ao índice estrutural, não protagonistas.
+
+---
+
+## 🧭 Roadmap
+
+**Fase 2**
+- Consolidar Opportunity Score v3 (IBGE + CNPJ + CAGED)
+- Melhorar narrativas executivas e explainability
+
+**Fase 3**
+- Módulos de previsão (tendências 2026+)
+- Integração de RAG/LLM para relatórios
 
 ---
 
