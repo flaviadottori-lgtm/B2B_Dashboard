@@ -1,6 +1,14 @@
 # B2B Opportunity Engine  
 ## Data Systems & Economic Intelligence Platform
 
+> 🚧 **Project Status: Under Active Development**
+>
+> This project is currently evolving and new modules are being continuously refined and expanded.
+> Core data pipelines and scoring architecture are functional, while advanced modeling and cloud deployment layers are in progress.
+>
+> The repository reflects an iterative and production-oriented build process.
+
+
 Data engineering project focused on transforming Brazilian public economic and labor datasets into structured analytical data marts and explainable opportunity scoring models.
 
 ---
