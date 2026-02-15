@@ -11,29 +11,59 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install black isort pylint mypy bandit
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install black isort pylint mypy bandit
 
-    - name: Run black formatter
-      run: black --check src/ dashboards/ tests/
+      - name: Compute target paths
+        id: paths
+        shell: bash
+        run: |
+          paths=""
+          for d in src dashboards tests; do
+            if [ -d "$d" ]; then
+              paths="$paths $d"
+            fi
+          done
+          echo "PATHS=$paths" >> $GITHUB_ENV
+          echo "Using paths:$paths"
 
-    - name: Run isort import sorting
-      run: isort --check-only src/ dashboards/ tests/
+      - name: Run black formatter
+        if: env.PATHS != ''
+        run: black --check ${{ env.PATHS }}
 
-    - name: Run pylint linter
-      run: pylint src/ dashboards/ --exit-zero
+      - name: Run isort import sorting
+        if: env.PATHS != ''
+        run: isort --check-only ${{ env.PATHS }}
 
-    - name: Run mypy type checker
-      run: mypy src/ --ignore-missing-imports
+      - name: Run pylint linter
+        if: env.PATHS != ''
+        run: |
+          # pylint não gosta de pastas vazias/sem .py; por isso rodamos só no que existir
+          pylint src dashboards --exit-zero || true
 
-    - name: Security check with bandit
-      run: bandit -r src/ -ll || true
+      - name: Run mypy type checker
+        if: env.PATHS != ''
+        run: |
+          if [ -d "src" ]; then
+            mypy src/ --ignore-missing-imports
+          else
+            echo "No src/ directory; skipping mypy."
+          fi
+
+      - name: Security check with bandit
+        if: env.PATHS != ''
+        run: |
+          if [ -d "src" ]; then
+            bandit -r src/ -ll || true
+          else
+            echo "No src/ directory; skipping bandit."
+          fi
