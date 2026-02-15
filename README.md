@@ -1,6 +1,9 @@
 # B2B Opportunity Engine  
 ## Data Systems & Economic Intelligence Platform
 
+![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![Status](https://img.shields.io/badge/status-active--development-orange)
+
+
 > 🚧 **Project Status: Under Active Development**
 >
 > This project is currently evolving and new modules are being continuously refined and expanded.
