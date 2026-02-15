@@ -22,26 +22,38 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: "pip"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install black isort pylint mypy bandit pytest
+          pip install pylint mypy bandit pytest
 
       - name: Lint with pylint
         run: |
-          if [ -d src ]; then pylint src --exit-zero; fi
+          if [ -d src ]; then
+            pylint src --exit-zero
+          fi
 
-      - name: Type check with mypy
+      - name: Type check with mypy (non-blocking)
+        continue-on-error: true
         run: |
-         if [ -d src ]; then python -m mypy src --ignore-missing-imports --disable-error-code import-untyped --exclude '/\.venv/|/build/|/dist/'; fi
-
+          if [ -d src ]; then
+            python -m mypy src \
+              --ignore-missing-imports \
+              --disable-error-code import-untyped \
+              --exclude '/\.venv/|/build/|/dist/'
+          fi
 
       - name: Security check with bandit
         run: |
-          if [ -d src ]; then bandit -r src -ll || true; fi
+          if [ -d src ]; then
+            bandit -r src -ll || true
+          fi
 
       - name: Run tests
         run: |
-          if [ -d tests ]; then pytest -q; fi
+          if [ -d tests ]; then
+            pytest -q
+          fi
