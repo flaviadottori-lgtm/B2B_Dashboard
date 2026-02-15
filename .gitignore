@@ -36,3 +36,6 @@ data/**/raw/
 
 # Notebooks
 .ipynb_checkpoints/
+
+# Dashboard local file
+app.py
