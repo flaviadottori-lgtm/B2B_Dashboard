@@ -9,7 +9,7 @@
 > The repository reflects an iterative and production-oriented build process.
 
 
-Data engineering project focused on transforming Brazilian public economic and labor datasets into structured analytical data marts and explainable opportunity scoring models.
+Data systems project focused on transforming Brazilian public economic and labor datasets into structured analytical data marts and explainable opportunity scoring models.
 
 ---
 
