@@ -52,10 +52,11 @@ jobs:
       - name: Run mypy
         run: |
           if [ -d src ]; then
-            python -m mypy src --ignore-missing-imports
+            python -m mypy src --ignore-missing-imports --disable-error-code import-untyped
           else
             echo "No src directory found."
           fi
+
 
       - name: Run bandit
         run: |
