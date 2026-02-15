@@ -35,7 +35,7 @@ jobs:
 
       - name: Type check with mypy
         run: |
-          if [ -d src ]; then python -m mypy src --ignore-missing-imports --disable-error-code import-untyped --exclude '/\.venv/|/build/|/dist/'; fi
+         if [ -d src ]; then python -m mypy src --ignore-missing-imports --disable-error-code import-untyped --exclude '/\.venv/|/build/|/dist/'; fi
 
 
       - name: Security check with bandit
