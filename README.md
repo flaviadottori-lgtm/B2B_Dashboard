@@ -3,6 +3,8 @@ Data Systems & Economic Intelligence Platform
 
 Data engineering project focused on transforming Brazilian public economic and labor datasets into structured analytical data marts and explainable opportunity scoring models.
 
+Overview
+
 This repository emphasizes:
 
 End-to-end data pipelines
@@ -163,7 +165,7 @@ Local analytical engine.
 
 Advantages:
 
-Zero infra
+Zero infrastructure
 
 Fast aggregation
 
@@ -234,7 +236,6 @@ Local Setup
 python -m venv .venv
 .venv\Scripts\Activate.ps1   # Windows
 source .venv/bin/activate    # Linux/Mac
-
 pip install -r requirements.txt
 
 Run Pipelines
@@ -264,7 +265,7 @@ Maintain reproducibility via pipeline execution
 
 Dependent on public dataset update frequency
 
-Structural index, not forward-looking prediction
+Structural index (not forward-looking prediction)
 
 Some datasets limited historically (e.g., RAIS temporal depth)
 
@@ -305,6 +306,6 @@ It is part of a broader portfolio focused on data infrastructure and market inte
 Author
 
 Flávia Dottori
-Data Engineering & Economic Intelligence
+Data Systems & Economic Intelligence
 
 LinkedIn: https://www.linkedin.com/in/fmdottori
