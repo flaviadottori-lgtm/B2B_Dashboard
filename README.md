@@ -166,7 +166,7 @@ sql/
 ---
 
 ## 4. Repository Structure
-
+```
 B2B_Dashboard/
 │
 ├── src/
@@ -191,7 +191,7 @@ B2B_Dashboard/
 ├── requirements.txt
 ├── pyproject.toml
 └── README.md
-
+```
 
 ---
 
