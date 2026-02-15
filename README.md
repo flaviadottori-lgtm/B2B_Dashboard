@@ -226,8 +226,8 @@ python -m venv .venv
 source .venv/bin/activate    # Linux/Mac
 pip install -r requirements.txt
 Run Pipelines
-python run_pnad_pipeline.py
-python run_pnad_metrics_pipeline.py
+python scripts/run_pnad_pipeline.py
+python scripts/run_pnad_metrics_pipeline.py
 Launch Dashboard (Optional Layer)
 streamlit run app.py
 ```
