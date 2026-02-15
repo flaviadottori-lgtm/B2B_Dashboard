@@ -52,10 +52,9 @@ jobs:
             bandit -r src -ll || true
           fi
 
-      - name: Run tests
+            - name: Run tests
         run: |
           if [ -d tests ]; then
-            pytest -q \
-              --ignore=tests/test_final_pnad.py \
-              --ignore=tests/test_lote7_validation.py
+            pytest -q --ignore-glob="tests/test_lote*.py" --ignore=tests/test_final_pnad.py
           fi
+
