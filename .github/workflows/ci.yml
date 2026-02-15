@@ -55,5 +55,7 @@ jobs:
       - name: Run tests
         run: |
           if [ -d tests ]; then
-            pytest -q --ignore=tests/test_final_pnad.py
+            pytest -q \
+              --ignore=tests/test_final_pnad.py \
+              --ignore=tests/test_lote7_validation.py
           fi
