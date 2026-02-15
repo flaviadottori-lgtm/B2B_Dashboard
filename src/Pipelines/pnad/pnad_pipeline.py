@@ -14,7 +14,6 @@ import duckdb
 import pandas as pd
 import requests
 
-
 LOGGER = logging.getLogger(__name__)
 
 
@@ -62,7 +61,7 @@ def _norm_text(value: str) -> str:
 
 
 def _resolve_column(columns: Iterable[str], candidates: Iterable[str]) -> Optional[str]:
-    col_map = { _norm_text(c): c for c in columns }
+    col_map = {_norm_text(c): c for c in columns}
     for cand in candidates:
         key = _norm_text(cand)
         if key in col_map:

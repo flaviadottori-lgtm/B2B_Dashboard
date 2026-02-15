@@ -9,7 +9,7 @@ from typing import Optional
 def fmt_int(n) -> str:
     """
     Formata número como string com separador de milhar (ponto).
-    
+
     Exemplo:
         fmt_int(1234567) -> "1.234.567"
     """
@@ -22,7 +22,7 @@ def fmt_int(n) -> str:
 def fix_mojibake(s: str) -> str:
     """
     Corrige encoding quebrado (mojibake).
-    
+
     Exemplo:
         fix_mojibake("AmapÃ¡") -> "Amapá"
     """
@@ -41,7 +41,7 @@ def fix_mojibake(s: str) -> str:
 def strip_accents(s: str) -> str:
     """
     Remove acentos de uma string.
-    
+
     Exemplo:
         strip_accents("São Paulo") -> "Sao Paulo"
     """
@@ -49,16 +49,13 @@ def strip_accents(s: str) -> str:
         return s
 
     s = str(s)
-    return "".join(
-        c for c in unicodedata.normalize("NFKD", s) 
-        if not unicodedata.combining(c)
-    )
+    return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
 
 
 def clean_label(x) -> str:
     """
     Limpeza completa: corrige encoding, remove espaços extras.
-    
+
     Exemplo:
         clean_label("  Amapá   ") -> "Amapá"
     """
@@ -73,7 +70,7 @@ def clean_label(x) -> str:
 def normalize_uf(value: str) -> Optional[str]:
     """
     Normaliza entrada para UF válido (2 letras maiúsculas).
-    
+
     Suporta:
     - UF já correto: "SP" -> "SP"
     - Nome estado: "São Paulo" -> "SP"
@@ -108,7 +105,7 @@ def normalize_uf(value: str) -> Optional[str]:
 def macro_sector_from_label(sector_label: str) -> str:
     """
     Mapeia label de setor para macro-setor executivo.
-    
+
     Setores padrão: Agronegócio, Indústria, Comércio, Serviços, Tecnologia
     """
     from ..config.constants import MACRO_SECTORS
@@ -121,28 +118,75 @@ def macro_sector_from_label(sector_label: str) -> str:
     # Palavras-chave por macro-setor
     keywords = {
         "Agronegócio": [
-            "agro", "agricultur", "pecuári", "pesca", "alimento",
-            "bebid", "tabaco", "florestal"
+            "agro",
+            "agricultur",
+            "pecuári",
+            "pesca",
+            "alimento",
+            "bebid",
+            "tabaco",
+            "florestal",
         ],
         "Indústria": [
-            "indústr", "manufatur", "químic", "farmacêutic", "metal",
-            "máquina", "veículo", "minera", "eletrônic", "texto",
-            "vestuár", "couro", "papel", "celulose", "petróleo",
-            "gás", "construção", "eletricidad"
+            "indústr",
+            "manufatur",
+            "químic",
+            "farmacêutic",
+            "metal",
+            "máquina",
+            "veículo",
+            "minera",
+            "eletrônic",
+            "texto",
+            "vestuár",
+            "couro",
+            "papel",
+            "celulose",
+            "petróleo",
+            "gás",
+            "construção",
+            "eletricidad",
         ],
         "Comércio": [
-            "comércio", "venda", "varejo", "atacado", "distribuição",
-            "importação", "exportação", "logística", "transporte"
+            "comércio",
+            "venda",
+            "varejo",
+            "atacado",
+            "distribuição",
+            "importação",
+            "exportação",
+            "logística",
+            "transporte",
         ],
         "Tecnologia": [
-            "tecnologia", "software", "informática", "telecomun",
-            "digital", "dados", "ia", "inteligênc", "programação",
-            "web", "desenvolvimento", "tech", "it "
+            "tecnologia",
+            "software",
+            "informática",
+            "telecomun",
+            "digital",
+            "dados",
+            "ia",
+            "inteligênc",
+            "programação",
+            "web",
+            "desenvolvimento",
+            "tech",
+            "it ",
         ],
         "Serviços": [
-            "serviço", "consultoria", "assessoria", "administrativo",
-            "financeiro", "bancário", "seguros", "educação", "saúde",
-            "hotelaria", "gastronomia", "turismo", "lazer"
+            "serviço",
+            "consultoria",
+            "assessoria",
+            "administrativo",
+            "financeiro",
+            "bancário",
+            "seguros",
+            "educação",
+            "saúde",
+            "hotelaria",
+            "gastronomia",
+            "turismo",
+            "lazer",
         ],
     }
 

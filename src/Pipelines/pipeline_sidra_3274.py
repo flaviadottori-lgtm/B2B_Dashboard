@@ -10,26 +10,77 @@ RAW_PATH = BASE_DIR / "data" / "raw" / "sidra_empresas.csv"
 OUT_DIR = BASE_DIR / "data" / "processed"
 
 UF_TO_REGION = {
-    "AC": "Norte", "AL": "Nordeste", "AM": "Norte", "AP": "Norte", "BA": "Nordeste",
-    "CE": "Nordeste", "DF": "Centro-Oeste", "ES": "Sudeste", "GO": "Centro-Oeste",
-    "MA": "Nordeste", "MG": "Sudeste", "MS": "Centro-Oeste", "MT": "Centro-Oeste",
-    "PA": "Norte", "PB": "Nordeste", "PE": "Nordeste", "PI": "Nordeste", "PR": "Sul",
-    "RJ": "Sudeste", "RN": "Nordeste", "RO": "Norte", "RR": "Norte", "RS": "Sul",
-    "SC": "Sul", "SE": "Nordeste", "SP": "Sudeste", "TO": "Norte",
+    "AC": "Norte",
+    "AL": "Nordeste",
+    "AM": "Norte",
+    "AP": "Norte",
+    "BA": "Nordeste",
+    "CE": "Nordeste",
+    "DF": "Centro-Oeste",
+    "ES": "Sudeste",
+    "GO": "Centro-Oeste",
+    "MA": "Nordeste",
+    "MG": "Sudeste",
+    "MS": "Centro-Oeste",
+    "MT": "Centro-Oeste",
+    "PA": "Norte",
+    "PB": "Nordeste",
+    "PE": "Nordeste",
+    "PI": "Nordeste",
+    "PR": "Sul",
+    "RJ": "Sudeste",
+    "RN": "Nordeste",
+    "RO": "Norte",
+    "RR": "Norte",
+    "RS": "Sul",
+    "SC": "Sul",
+    "SE": "Nordeste",
+    "SP": "Sudeste",
+    "TO": "Norte",
 }
 
 # (fallback) nome do estado -> sigla, caso o arquivo traga "São Paulo" em vez de "SP"
 STATE_NAME_TO_UF = {
-    "acre": "AC", "alagoas": "AL", "amapa": "AP", "amapá": "AP", "amazonas": "AM",
-    "bahia": "BA", "ceara": "CE", "ceará": "CE", "distrito federal": "DF",
-    "espirito santo": "ES", "espírito santo": "ES", "goias": "GO", "goiás": "GO",
-    "maranhao": "MA", "maranhão": "MA", "mato grosso": "MT", "mato grosso do sul": "MS",
-    "minas gerais": "MG", "para": "PA", "pará": "PA", "paraiba": "PB", "paraíba": "PB",
-    "parana": "PR", "paraná": "PR", "pernambuco": "PE", "piaui": "PI", "piauí": "PI",
-    "rio de janeiro": "RJ", "rio grande do norte": "RN", "rio grande do sul": "RS",
-    "rondonia": "RO", "rondônia": "RO", "roraima": "RR", "santa catarina": "SC",
-    "sao paulo": "SP", "são paulo": "SP", "sergipe": "SE", "tocantins": "TO",
+    "acre": "AC",
+    "alagoas": "AL",
+    "amapa": "AP",
+    "amapá": "AP",
+    "amazonas": "AM",
+    "bahia": "BA",
+    "ceara": "CE",
+    "ceará": "CE",
+    "distrito federal": "DF",
+    "espirito santo": "ES",
+    "espírito santo": "ES",
+    "goias": "GO",
+    "goiás": "GO",
+    "maranhao": "MA",
+    "maranhão": "MA",
+    "mato grosso": "MT",
+    "mato grosso do sul": "MS",
+    "minas gerais": "MG",
+    "para": "PA",
+    "pará": "PA",
+    "paraiba": "PB",
+    "paraíba": "PB",
+    "parana": "PR",
+    "paraná": "PR",
+    "pernambuco": "PE",
+    "piaui": "PI",
+    "piauí": "PI",
+    "rio de janeiro": "RJ",
+    "rio grande do norte": "RN",
+    "rio grande do sul": "RS",
+    "rondonia": "RO",
+    "rondônia": "RO",
+    "roraima": "RR",
+    "santa catarina": "SC",
+    "sao paulo": "SP",
+    "são paulo": "SP",
+    "sergipe": "SE",
+    "tocantins": "TO",
 }
+
 
 def _read_rows_semicolon(path: Path) -> list[list[str]]:
     """
@@ -54,9 +105,11 @@ def _read_rows_semicolon(path: Path) -> list[list[str]]:
         raise ValueError("Arquivo está vazio ou não foi possível ler.")
     return rows
 
+
 def _pad_rows(rows: list[list[str]]) -> list[list[str]]:
     max_len = max(len(r) for r in rows)
     return [r + [""] * (max_len - len(r)) for r in rows]
+
 
 def _find_year_and_header(rows: list[list[str]]) -> tuple[int, int, int]:
     """
@@ -106,6 +159,7 @@ def _find_year_and_header(rows: list[list[str]]) -> tuple[int, int, int]:
 
     return idx_year, idx_sector, idx_data_start
 
+
 def _extract_state(name_or_sigla: str) -> str | None:
     """
     Tenta extrair sigla de UF de strings como:
@@ -130,6 +184,7 @@ def _extract_state(name_or_sigla: str) -> str | None:
     # "São Paulo"
     key = s.lower()
     return STATE_NAME_TO_UF.get(key)
+
 
 def main():
     print(f"✅ Lendo arquivo: {RAW_PATH}")
@@ -184,7 +239,9 @@ def main():
         j += 2  # pula a coluna "Unidades" logo depois
 
     if len(sector_map) < 2:
-        raise ValueError("Detectei poucos setores. Parece que a linha de setores não foi lida corretamente.")
+        raise ValueError(
+            "Detectei poucos setores. Parece que a linha de setores não foi lida corretamente."
+        )
 
     # Agora percorremos as linhas de dados e coletamos somente UF + Entrada/Saída
     records = []
@@ -222,14 +279,16 @@ def main():
                 except Exception:
                     val = 0
 
-            records.append({
-                "year": year_val,
-                "region": UF_TO_REGION[uf],
-                "state": uf,
-                "sector": sector,
-                "event": event,
-                "value": val,
-            })
+            records.append(
+                {
+                    "year": year_val,
+                    "region": UF_TO_REGION[uf],
+                    "state": uf,
+                    "sector": sector,
+                    "event": event,
+                    "value": val,
+                }
+            )
 
     if not records:
         raise ValueError(
@@ -243,10 +302,9 @@ def main():
     df_long["opened"] = df_long["value"].where(df_long["event"].str.contains("entrada"), 0)
     df_long["closed"] = df_long["value"].where(df_long["event"].str.contains("saída|saida"), 0)
 
-    out = (
-        df_long.groupby(["year", "region", "state", "sector"], as_index=False)[["opened", "closed"]]
-        .sum()
-    )
+    out = df_long.groupby(["year", "region", "state", "sector"], as_index=False)[
+        ["opened", "closed"]
+    ].sum()
     out["net"] = out["opened"] - out["closed"]
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -261,6 +319,7 @@ def main():
     print(f" - {out_csv}")
     print("\n🔎 Amostra (10 linhas):")
     print(out.head(10))
+
 
 if __name__ == "__main__":
     main()

@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 if not logger.handlers:
     logger.setLevel(logging.INFO)
     handler = logging.StreamHandler()
-    formatter = logging.Formatter('[%(asctime)s] | %(levelname)-8s | %(message)s', '%H:%M:%S')
+    formatter = logging.Formatter("[%(asctime)s] | %(levelname)-8s | %(message)s", "%H:%M:%S")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
@@ -36,19 +36,19 @@ if not logger.handlers:
 class PNADCMetricsExtractor:
     """
     Extrai métricas avançadas PNAD Contínua
-    
+
     Usa tabela detalhada `ano_trimestre_uf_sexo_idade_educacao` para calcular:
     - Taxa de informalidade (ocupados informais / total ocupados)
     - Renda média do trabalho (com winsorização em 5%-95%)
     - Taxa de desemprego (desocupados / força de trabalho)
-    
+
     Resultado agregado por: UF x ano x trimestre x sexo x grupo_idade
     """
-    
-    def __init__(self, project_id: str = 'b2b-opportunity-engine'):
+
+    def __init__(self, project_id: str = "b2b-opportunity-engine"):
         """
         Initialize BigQuery client with ADC
-        
+
         Args:
             project_id: GCP project for billing
         """
@@ -56,27 +56,25 @@ class PNADCMetricsExtractor:
         self.client = bigquery.Client(project=project_id)
         self.sql_query = None  # Will be set during extraction
         logger.info(f"✓ BigQuery client initialized (project: {project_id})")
-    
+
     def extract_pnad_metrics(
-        self, 
-        min_year: int = 2017,
-        output_path: Optional[Path] = None
+        self, min_year: int = 2017, output_path: Optional[Path] = None
     ) -> pd.DataFrame:
         """
         Extrai métricas PNAD com granularidade: UF x ano x trimestre x sexo x grupo_idade
-        
+
         Usa agregação no BigQuery para otimizar custos.
-        
+
         Args:
             min_year: Ano mínimo para filtro
             output_path: Path para salvar parquet
-            
+
         Returns:
             DataFrame com métricas agregadas
         """
-        
+
         logger.info(f"Extracting PNAD metrics (min_year={min_year})...")
-        
+
         # SQL otimizada - calcula métricas no BigQuery
         query = f"""
         WITH pnad_data AS (
@@ -168,104 +166,102 @@ class PNADCMetricsExtractor:
         WHERE forca_trabalho > 0 OR populacao > 0  -- Filtrar grupos vazios
         ORDER BY ano DESC, trimestre DESC, uf_code, sexo, grupo_idade
         """
-        
+
         # Store SQL for inspection
         self.sql_query = query
-        
+
         logger.info("Executing BigQuery...")
-        
+
         job_config = bigquery.QueryJobConfig(
             use_query_cache=True,
             priority=bigquery.QueryPriority.INTERACTIVE,
             maximum_bytes_billed=int(5e8),  # Max 500MB (mais dados que população)
         )
-        
+
         try:
-            query_job = self.client.query(
-                query,
-                job_config=job_config,
-                location='US'
-            )
-            
+            query_job = self.client.query(query, job_config=job_config, location="US")
+
             logger.info(f"  Job ID: {query_job.job_id}")
-            
+
             # Get results
             df = query_job.to_dataframe()
             logger.info(f"✓ Query executed: {len(df):,} rows")
-            
+
             if len(df) == 0:
                 logger.warning("⚠ Query returned 0 rows!")
                 return df
-            
+
             # Post-processing: tratamento de outliers em renda
             df = self._process_renda(df)
-            
+
             # Validations
             self._validate_data(df)
-            
+
             # Save if path provided
             if output_path:
                 self._save_parquet(df, output_path)
-            
+
             return df
-            
+
         except Exception as e:
             logger.error(f"❌ Query execution failed: {e}")
             raise
-    
+
     def extract(self, min_year: int = 2017, output_path: Optional[Path] = None) -> pd.DataFrame:
         """Alias para extract_pnad_metrics() para compatibilidade"""
         return self.extract_pnad_metrics(min_year=min_year, output_path=output_path)
-    
+
     def _process_renda(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Aplicar winsorização na renda para remover outliers
-        
+
         Usa percentis 5% e 95% para cap valores extremos
         """
         logger.info("\nProcessing renda values (winsorization at 5%-95%)...")
-        
-        if 'renda_media_trabalho' in df.columns:
+
+        if "renda_media_trabalho" in df.columns:
             # Winsorizar por UF para ser mais preciso
-            for uf in df['uf_code'].unique():
-                mask = df['uf_code'] == uf
-                renda_col = df.loc[mask, 'renda_media_trabalho']
-                
+            for uf in df["uf_code"].unique():
+                mask = df["uf_code"] == uf
+                renda_col = df.loc[mask, "renda_media_trabalho"]
+
                 if renda_col.notna().sum() > 0:
                     p5 = renda_col.quantile(0.05)
                     p95 = renda_col.quantile(0.95)
-                    
+
                     # Cap values
-                    df.loc[mask, 'renda_media_trabalho'] = df.loc[mask, 'renda_media_trabalho'].clip(p5, p95)
-                    
+                    df.loc[mask, "renda_media_trabalho"] = df.loc[
+                        mask, "renda_media_trabalho"
+                    ].clip(p5, p95)
+
                     logger.info(f"  {uf}: [R$ {p5:,.0f} - R$ {p95:,.0f}]")
-        
+
         return df
-    
+
     def _validate_data(self, df: pd.DataFrame):
         """Validate extracted data"""
         logger.info("\nValidating data...")
-        
+
         # Expected columns
         expected_cols = {
-            'ano': 'int64',
-            'trimestre': 'int64',
-            'uf_code': 'object',
-            'sexo': 'object',
-            'grupo_idade': 'object',
-            'populacao': 'int64',
-            'taxa_informalidade': 'float64',
-            'taxa_desemprego': 'float64',
-            'renda_media_trabalho': 'float64',
+            "ano": "int64",
+            "trimestre": "int64",
+            "uf_code": "object",
+            "sexo": "object",
+            "grupo_idade": "object",
+            "populacao": "int64",
+            "taxa_informalidade": "float64",
+            "taxa_desemprego": "float64",
+            "renda_media_trabalho": "float64",
         }
-        
+
         for col, expected_dtype in expected_cols.items():
             if col not in df.columns:
                 raise ValueError(f"Missing column: {col}")
             logger.info(f"  ✓ {col:25} {str(df[col].dtype):15}")
-        
+
         # Check for nulls in key columns
-        key_cols = ['ano', 'uf_code', 'sexo', 'grupo_idade']
+        key_cols = ["ano", "uf_code", "sexo", "grupo_idade"]
         has_nulls = False
         for col in key_cols:
             null_count = df[col].isnull().sum()
@@ -274,10 +270,10 @@ class PNADCMetricsExtractor:
                 has_nulls = True
             else:
                 logger.info(f"  ✓ {col:25} No nulls")
-        
+
         if has_nulls:
             raise ValueError("Key columns contain nulls - data integrity issue")
-        
+
         # Show summary
         logger.info(f"\n  Dataset summary:")
         logger.info(f"    Rows:              {len(df):,}")
@@ -289,20 +285,15 @@ class PNADCMetricsExtractor:
         logger.info(f"    Avg Informalidade: {df['taxa_informalidade'].mean():.1%}")
         logger.info(f"    Avg Desemprego:    {df['taxa_desemprego'].mean():.1%}")
         logger.info(f"    Renda Média:       R$ {df['renda_media_trabalho'].mean():,.0f}")
-    
+
     def _save_parquet(self, df: pd.DataFrame, output_path: Path):
         """Save DataFrame to parquet"""
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         logger.info(f"\nSaving parquet: {output_path}")
-        
-        df.to_parquet(
-            output_path,
-            index=False,
-            compression='snappy',
-            engine='pyarrow'
-        )
-        
+
+        df.to_parquet(output_path, index=False, compression="snappy", engine="pyarrow")
+
         file_size = output_path.stat().st_size / (1024**2)
         logger.info(f"✓ File size: {file_size:.2f} MB")
 
@@ -310,14 +301,14 @@ class PNADCMetricsExtractor:
 def extract_pnad_metrics(
     min_year: int = 2017,
     output_path: Optional[Path] = None,
-    project_id: str = 'b2b-opportunity-engine'
+    project_id: str = "b2b-opportunity-engine",
 ) -> pd.DataFrame:
     """
     Convenience function to extract PNAD metrics
-    
+
     Usage:
         df = extract_pnad_metrics(
-            min_year=2017, 
+            min_year=2017,
             output_path=Path('data/marts/pnad/pnad_metrics.parquet')
         )
     """
@@ -325,7 +316,7 @@ def extract_pnad_metrics(
     return extractor.extract_pnad_metrics(min_year=min_year, output_path=output_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Simple test
     try:
         extractor = PNADCMetricsExtractor()

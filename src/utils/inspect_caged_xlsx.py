@@ -16,12 +16,14 @@ print("\n📑 Abas:")
 for s in xls.sheet_names:
     print(" -", s)
 
+
 def first_data_row(df0: pd.DataFrame) -> int | None:
     # df0 é lido com header=None
     # acha a primeira linha que tem pelo menos 3 células preenchidas
     filled = df0.notna().sum(axis=1).to_numpy()
     idx = np.where(filled >= 3)[0]
     return int(idx[0]) if len(idx) else None
+
 
 print("\n🔎 Varredura das abas (procurando dados reais):")
 candidates = []
@@ -35,7 +37,7 @@ for s in xls.sheet_names:
             continue
 
         # pega umas linhas ao redor para inspecionar
-        sample = df0.iloc[max(0, r0-2): r0+6, :15]
+        sample = df0.iloc[max(0, r0 - 2) : r0 + 6, :15]
         non_empty_cols = sample.notna().sum().sum()
 
         print(f" - {s}: primeira linha com dados ~ linha {r0} (amostra abaixo)")
@@ -48,7 +50,9 @@ for s in xls.sheet_names:
 
 # resumo do melhor candidato
 if not candidates:
-    print("\n❌ Nenhuma aba com dados detectáveis. Talvez o arquivo seja protegido ou o conteúdo esteja em imagens.")
+    print(
+        "\n❌ Nenhuma aba com dados detectáveis. Talvez o arquivo seja protegido ou o conteúdo esteja em imagens."
+    )
 else:
     candidates.sort(key=lambda x: (x[2], -x[1]), reverse=True)
     best = candidates[0]

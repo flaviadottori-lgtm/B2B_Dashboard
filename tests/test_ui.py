@@ -13,7 +13,7 @@ class TestApplyStyles:
     def test_apply_styles_returns_none_or_works_silently(self):
         """Test that apply_styles executes without error."""
         from src.ui.components import apply_styles
-        
+
         # Should work without raising exception
         try:
             result = apply_styles()
@@ -21,12 +21,13 @@ class TestApplyStyles:
             assert result is None or isinstance(result, (str, dict))
         except Exception as e:
             # If it fails, it should be a Streamlit-specific error, not a logic error
-            assert 'streamlit' in str(e).lower() or 'not running' in str(e).lower()
+            assert "streamlit" in str(e).lower() or "not running" in str(e).lower()
 
     def test_apply_styles_with_mock_streamlit(self):
         """Test apply_styles with mocked Streamlit."""
-        with patch('streamlit.markdown'):
+        with patch("streamlit.markdown"):
             from src.ui.components import apply_styles
+
             # Should not raise error
             try:
                 apply_styles()
@@ -42,7 +43,7 @@ class TestRenderKPI:
         """Test that render_kpi accepts expected parameters."""
         from src.ui.components import render_kpi
         from inspect import signature
-        
+
         sig = signature(render_kpi)
         # Should have parameters like label, value, etc.
         params = list(sig.parameters.keys())
@@ -50,9 +51,9 @@ class TestRenderKPI:
 
     def test_render_kpi_with_sample_values(self):
         """Test render_kpi with sample data."""
-        with patch('streamlit.metric'):
+        with patch("streamlit.metric"):
             from src.ui.components import render_kpi
-            
+
             try:
                 # Should handle numeric and string values
                 render_kpi("Test KPI", 1000)
@@ -63,9 +64,9 @@ class TestRenderKPI:
 
     def test_render_kpi_with_delta(self):
         """Test render_kpi with delta value."""
-        with patch('streamlit.metric'):
+        with patch("streamlit.metric"):
             from src.ui.components import render_kpi
-            
+
             try:
                 render_kpi("Test KPI", 1000, delta=100)
             except Exception:
@@ -79,7 +80,7 @@ class TestRenderPills:
         """Test that render_pills accepts expected parameters."""
         from src.ui.components import render_pills
         from inspect import signature
-        
+
         sig = signature(render_pills)
         params = list(sig.parameters.keys())
         # Should have parameters like items/labels, etc.
@@ -87,20 +88,20 @@ class TestRenderPills:
 
     def test_render_pills_with_sample_data(self):
         """Test render_pills with sample items."""
-        with patch('streamlit.write'):
+        with patch("streamlit.write"):
             from src.ui.components import render_pills
-            
+
             try:
-                render_pills(['Item 1', 'Item 2', 'Item 3'])
+                render_pills(["Item 1", "Item 2", "Item 3"])
             except Exception as e:
                 # Expected in non-Streamlit environment
                 pass
 
     def test_render_pills_handles_empty_list(self):
         """Test render_pills with empty list."""
-        with patch('streamlit.write'):
+        with patch("streamlit.write"):
             from src.ui.components import render_pills
-            
+
             try:
                 render_pills([])
             except Exception:
@@ -114,7 +115,7 @@ class TestRenderDiagnosticInfo:
         """Test that render_diagnostic_info accepts expected parameters."""
         from src.ui.components import render_diagnostic_info
         from inspect import signature
-        
+
         sig = signature(render_diagnostic_info)
         params = list(sig.parameters.keys())
         # Should be callable with some parameters
@@ -122,14 +123,14 @@ class TestRenderDiagnosticInfo:
 
     def test_render_diagnostic_info_with_dict(self):
         """Test render_diagnostic_info with diagnostic data."""
-        with patch('streamlit.write'):
+        with patch("streamlit.write"):
             from src.ui.components import render_diagnostic_info
-            
+
             try:
                 diagnostic_data = {
-                    'records_loaded': 1000,
-                    'last_update': '2024-01-01',
-                    'status': 'OK'
+                    "records_loaded": 1000,
+                    "last_update": "2024-01-01",
+                    "status": "OK",
                 }
                 render_diagnostic_info(diagnostic_data)
             except Exception:
@@ -137,9 +138,9 @@ class TestRenderDiagnosticInfo:
 
     def test_render_diagnostic_info_with_none(self):
         """Test render_diagnostic_info with None input."""
-        with patch('streamlit.write'):
+        with patch("streamlit.write"):
             from src.ui.components import render_diagnostic_info
-            
+
             try:
                 render_diagnostic_info(None)
             except Exception:
@@ -151,13 +152,8 @@ class TestComponentsIntegration:
 
     def test_all_components_importable(self):
         """Test that all components can be imported."""
-        from src.ui.components import (
-            apply_styles,
-            render_kpi,
-            render_pills,
-            render_diagnostic_info
-        )
-        
+        from src.ui.components import apply_styles, render_kpi, render_pills, render_diagnostic_info
+
         # All should be callable
         assert callable(apply_styles)
         assert callable(render_kpi)
@@ -167,14 +163,14 @@ class TestComponentsIntegration:
     def test_components_have_docstrings(self):
         """Test that all components have documentation."""
         from src.ui import components
-        
+
         component_functions = [
-            'apply_styles',
-            'render_kpi',
-            'render_pills',
-            'render_diagnostic_info'
+            "apply_styles",
+            "render_kpi",
+            "render_pills",
+            "render_diagnostic_info",
         ]
-        
+
         for func_name in component_functions:
             if hasattr(components, func_name):
                 func = getattr(components, func_name)
@@ -190,10 +186,11 @@ class TestComponentsWithRealStreamlit:
         """Test components within Streamlit context if available."""
         try:
             import streamlit as st
-            
+
             # Only run if in Streamlit context
-            if hasattr(st, '_is_running_with_streamlit'):
+            if hasattr(st, "_is_running_with_streamlit"):
                 from src.ui.components import apply_styles
+
                 apply_styles()
         except Exception:
             pytest.skip("Streamlit session context not available")

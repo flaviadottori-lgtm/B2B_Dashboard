@@ -13,13 +13,38 @@ print("CWD:", Path().resolve())
 
 RAW_DIR = Path("data/raw/caged/caged_xlsx").resolve()
 OUT_MONTH = Path("data/processed/caged_state_sector_month.parquet").resolve()
-OUT_YEAR  = Path("data/processed/caged_state_sector_year.parquet").resolve()
+OUT_YEAR = Path("data/processed/caged_state_sector_year.parquet").resolve()
 
 FNAME_RE = re.compile(r"novo_caged_(\d{4})_(\d{2})\.xlsx$", re.IGNORECASE)
 
 UF_SET = {
-    "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
-    "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO",
 }
 UF_TOKEN_RE = re.compile(r"\b(" + "|".join(sorted(UF_SET)) + r")\b", re.IGNORECASE)
 
@@ -54,14 +79,16 @@ STATE_NAME_TO_UF = {
 }
 
 MAX_USECOLS = 500
-MAX_NROWS   = 520
+MAX_NROWS = 520
 
 COL_SCAN_ROWS = 260
 GLOBAL_SCAN_ROWS = 360
 
+
 def _strip_accents(s: str) -> str:
     s = unicodedata.normalize("NFKD", s)
     return "".join(ch for ch in s if not unicodedata.combining(ch))
+
 
 def _norm_str(x) -> str:
     if pd.isna(x):
@@ -69,14 +96,17 @@ def _norm_str(x) -> str:
     s = str(x).replace("\n", " ").strip()
     return re.sub(r"\s+", " ", s)
 
+
 def _norm_key(x) -> str:
     return _strip_accents(_norm_str(x).lower())
+
 
 def parse_year_month_from_filename(path: Path) -> tuple[int, int]:
     m = FNAME_RE.search(path.name)
     if not m:
         raise ValueError(f"Nome inesperado: {path.name} (esperado: novo_caged_YYYY_MM.xlsx)")
     return int(m.group(1)), int(m.group(2))
+
 
 def _extract_uf_or_state_name(x) -> str | None:
     """
@@ -108,11 +138,13 @@ def _extract_uf_or_state_name(x) -> str | None:
 
     return None
 
+
 def _to_number_series(s: pd.Series) -> pd.Series:
     s = s.astype(str).str.strip()
     s = s.str.replace("\u00a0", "", regex=False)
     s = s.str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
     return pd.to_numeric(s, errors="coerce")
+
 
 def _find_tabela4_sheet(xls: pd.ExcelFile) -> str:
     for sh in xls.sheet_names:
@@ -120,6 +152,7 @@ def _find_tabela4_sheet(xls: pd.ExcelFile) -> str:
         if shn == "tabela 4" or shn == "tabela4" or "tabela 4" in shn:
             return sh
     raise KeyError("Não encontrei a aba da Tabela 4.")
+
 
 def _read_excel_safe(xls: pd.ExcelFile, sheet: str, nrows: int, max_cols: int) -> pd.DataFrame:
     prev = pd.read_excel(xls, sheet_name=sheet, header=None, nrows=120)
@@ -136,9 +169,11 @@ def _read_excel_safe(xls: pd.ExcelFile, sheet: str, nrows: int, max_cols: int) -
         usecols=list(range(0, use_n)),
     )
 
+
 def _ffill_vertical_only(df: pd.DataFrame) -> pd.DataFrame:
     # NÃO preencher horizontalmente — quebra header de estados
     return df.ffill(axis=0)
+
 
 def _detect_header_row_and_sector_col(df: pd.DataFrame) -> tuple[int, int]:
     best = None  # (score, row, sector_col)
@@ -172,6 +207,7 @@ def _detect_header_row_and_sector_col(df: pd.DataFrame) -> tuple[int, int]:
 
     return best[1], best[2]
 
+
 def _detect_states_by_column_heavy(df: pd.DataFrame) -> list[tuple[int, str]]:
     """
     Detecta estados por COLUNA, varrendo até COL_SCAN_ROWS linhas.
@@ -201,6 +237,7 @@ def _detect_states_by_column_heavy(df: pd.DataFrame) -> list[tuple[int, str]]:
 
     return out
 
+
 def _clean_sector(x) -> str | None:
     t = _norm_str(x)
     if not t:
@@ -209,6 +246,7 @@ def _clean_sector(x) -> str | None:
     if "grupamento" in low or low == "total" or "tabela" in low:
         return None
     return t
+
 
 def read_caged_tabela4(path: Path, debug: bool = False) -> pd.DataFrame:
     xls = pd.ExcelFile(path, engine="openpyxl")
@@ -227,7 +265,9 @@ def read_caged_tabela4(path: Path, debug: bool = False) -> pd.DataFrame:
 
     if debug:
         print(f"   🔎 DEBUG sheet: {sh}")
-        print(f"   🔎 DEBUG header_row: {header_row} | sector_col: {sector_col} | state_cols: {len(state_pairs)}")
+        print(
+            f"   🔎 DEBUG header_row: {header_row} | sector_col: {sector_col} | state_cols: {len(state_pairs)}"
+        )
         print(f"   🔎 DEBUG UFs found ({len(ufs_found)}): {ufs_found}")
         print(f"   🔎 DEBUG Missing UFs ({len(missing)}): {missing}")
 
@@ -252,6 +292,7 @@ def read_caged_tabela4(path: Path, debug: bool = False) -> pd.DataFrame:
 
     out = df.groupby(["state", "sector"], as_index=False)["job_balance"].sum()
     return out
+
 
 def main():
     print("📁 RAW_DIR:", RAW_DIR)
@@ -298,7 +339,10 @@ def main():
         f"✅ Saved monthly: {OUT_MONTH} | files_ok={ok} files_fail={fail} | "
         f"years={sorted(month_df.year.unique())} | rows={len(month_df):,} | UFs={month_df['state'].nunique()}"
     )
-    print(f"✅ Saved yearly : {OUT_YEAR} | years={sorted(year_df.year.unique())} | rows={len(year_df):,}")
+    print(
+        f"✅ Saved yearly : {OUT_YEAR} | years={sorted(year_df.year.unique())} | rows={len(year_df):,}"
+    )
+
 
 if __name__ == "__main__":
     main()

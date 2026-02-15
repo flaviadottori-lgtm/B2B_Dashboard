@@ -7,7 +7,6 @@ from typing import List
 
 from google.cloud import bigquery
 
-
 LOGGER = logging.getLogger("rais.publish")
 
 DEFAULT_PROJECT = os.getenv("GCP_PROJECT", "dados-mercado-brasil")

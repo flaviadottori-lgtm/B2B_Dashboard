@@ -28,9 +28,20 @@ SESSION.headers.update(
 )
 
 MESES = [
-    "janeiro", "fevereiro", "marco", "abril", "maio", "junho",
-    "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+    "janeiro",
+    "fevereiro",
+    "marco",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
 ]
+
 
 @dataclass(frozen=True)
 class MonthRef:
@@ -107,11 +118,16 @@ def find_tables_link_in_html(page_url: str, html: str) -> Optional[str]:
     def score(u: str) -> int:
         ul = u.lower()
         s = 0
-        if "tabelas" in ul: s += 5
-        if "3-" in ul or "3." in ul or "3tabel" in ul: s += 2
-        if ".xlsx" in ul: s += 2
-        if ".xls" in ul: s += 1
-        if "/view" in ul: s += 1
+        if "tabelas" in ul:
+            s += 5
+        if "3-" in ul or "3." in ul or "3tabel" in ul:
+            s += 2
+        if ".xlsx" in ul:
+            s += 2
+        if ".xls" in ul:
+            s += 1
+        if "/view" in ul:
+            s += 1
         return s
 
     best = sorted(candidates, key=score, reverse=True)[0]
@@ -251,7 +267,9 @@ def main(year_start: int = 2024, year_end: int = 2025):
                     print(f"❌ {ref.year}/{ref.mes_nome}: veio HTML (bloqueio/redirecionamento).")
                     continue
 
-                print(f"✅ OK: {ref.year}/{ref.mes_nome} -> {out_path.name} ({out_path.stat().st_size/1e6:.2f} MB)")
+                print(
+                    f"✅ OK: {ref.year}/{ref.mes_nome} -> {out_path.name} ({out_path.stat().st_size/1e6:.2f} MB)"
+                )
 
             except Exception as e:
                 if out_path.exists():

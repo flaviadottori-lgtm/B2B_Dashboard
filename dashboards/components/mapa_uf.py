@@ -9,7 +9,7 @@ def mapa_uf_com_valor(
     geojson_path: str = "data/geo/brazil_states.geojson",
     value_col: str = "opportunity_score",
     year: int = 2021,
-    title: str = "Opportunity Score por Estado (2021)"
+    title: str = "Opportunity Score por Estado (2021)",
 ):
     # 1) Carregar GeoJSON
     with open(geojson_path, "r", encoding="utf-8") as f:
@@ -24,7 +24,9 @@ def mapa_uf_com_valor(
     needed = {"state", value_col, "units"}
     missing = needed - set(df.columns)
     if missing:
-        raise ValueError(f"Scores sem colunas necessárias: {missing}. Colunas atuais: {list(df.columns)}")
+        raise ValueError(
+            f"Scores sem colunas necessárias: {missing}. Colunas atuais: {list(df.columns)}"
+        )
 
     # 3) Agregar um valor por UF (média ponderada por units)
     def weighted_score(x: pd.DataFrame) -> float:
@@ -35,9 +37,9 @@ def mapa_uf_com_valor(
 
     agg = (
         df.groupby("state", as_index=False)
-          .apply(weighted_score)
-          .reset_index(drop=True)
-          .rename(columns={0: value_col})
+        .apply(weighted_score)
+        .reset_index(drop=True)
+        .rename(columns={0: value_col})
     )
 
     # 4) Descobrir qual campo no GeoJSON guarda a UF (sigla)
@@ -63,7 +65,7 @@ def mapa_uf_com_valor(
         color=value_col,
         hover_name="state",
         hover_data={value_col: ":.2f"},
-        title=title
+        title=title,
     )
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(template="plotly_dark", margin={"r": 0, "t": 40, "l": 0, "b": 0})
@@ -109,12 +111,6 @@ def mapa_uf_com_valor(
             lons.append(lon)
             texts.append(f"{val:.1f}")
 
-    fig.add_trace(go.Scattergeo(
-        lat=lats,
-        lon=lons,
-        text=texts,
-        mode="text",
-        hoverinfo="skip"
-    ))
+    fig.add_trace(go.Scattergeo(lat=lats, lon=lons, text=texts, mode="text", hoverinfo="skip"))
 
     return fig

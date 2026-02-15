@@ -8,7 +8,11 @@ OUT = PROJECT_ROOT / "data" / "processed" / "companies_agg_uf.parquet"
 
 REGIONS_AND_TOTALS = {
     "Brasil",
-    "Norte", "Nordeste", "Sul", "Sudeste", "Centro-Oeste",
+    "Norte",
+    "Nordeste",
+    "Sul",
+    "Sudeste",
+    "Centro-Oeste",
     "Brasil, Grande Região e Unidade da Federação",
 }
 
@@ -42,6 +46,7 @@ UF_NAME_TO_SIGLA = {
     "Tocantins": "TO",
 }
 
+
 def fix_mojibake(s: str) -> str:
     """
     Corrige casos tipo 'AmapÃ¡' -> 'Amapá' tentando latin1->utf8.
@@ -56,10 +61,12 @@ def fix_mojibake(s: str) -> str:
     except Exception:
         return s
 
+
 def normalize_state(s: str) -> str:
     s2 = fix_mojibake(s)
     s2 = s2.replace("  ", " ").strip()
     return s2
+
 
 def main():
     if not INP.exists():
@@ -97,6 +104,7 @@ def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(OUT, index=False)
     print("✅ Salvo:", OUT)
+
 
 if __name__ == "__main__":
     main()

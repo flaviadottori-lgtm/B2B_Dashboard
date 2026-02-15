@@ -2,8 +2,33 @@ import pandas as pd
 import re
 
 UF = {
-    "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG",
-    "PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO",
 }
 pat = re.compile(r"\b([A-Z]{2})\b")
 
@@ -43,7 +68,7 @@ print("\n".join([str(b) for b in best]) if best else "NONE")
 
 # 4) mostra as 15 primeiras linhas e 12 primeiras colunas (pra enxergar o layout)
 print("\n--- HEAD (first 15 rows, first 12 cols) ---")
-print(df.iloc[:15, :min(12, df.shape[1])].to_string(index=True, header=False))
+print(df.iloc[:15, : min(12, df.shape[1])].to_string(index=True, header=False))
 
 out = "preview_tabela4_2025_09.csv"
 df.to_csv(out, index=False, header=False, encoding="utf-8-sig")

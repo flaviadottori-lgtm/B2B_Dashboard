@@ -9,13 +9,12 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 from sklearn.preprocessing import StandardScaler
 
-
 # -----------------------------
 # Paths (ajuste se necessário)
 # -----------------------------
 TIDY_PATH = Path("data/processed/ibge_3274_3275_tidy.parquet")
 SCORES_SNAPSHOT_PATH = Path("data/processed/opportunity_scores.parquet")  # seu atual (2021)
-SCORES_BY_YEAR_DIR = Path("data/processed/opportunity_scores_by_year")   # novo dataset particionado
+SCORES_BY_YEAR_DIR = Path("data/processed/opportunity_scores_by_year")  # novo dataset particionado
 
 
 # -----------------------------
@@ -59,7 +58,9 @@ def build_opportunity_scores_by_year(
     required = {"year", "state", "sector", "units"}
     missing = required - set(df.columns)
     if missing:
-        raise ValueError(f"Tidy não tem colunas obrigatórias: {missing}. Colunas: {list(df.columns)}")
+        raise ValueError(
+            f"Tidy não tem colunas obrigatórias: {missing}. Colunas: {list(df.columns)}"
+        )
 
     if "high_growth_units" not in df.columns:
         # se não existir, cria como 0
@@ -121,13 +122,21 @@ def build_opportunity_scores_by_year(
 
     out = pd.DataFrame(records)
     if out.empty:
-        raise ValueError("Não consegui gerar scores por ano (dataset vazio). Verifique o tidy e a janela.")
+        raise ValueError(
+            "Não consegui gerar scores por ano (dataset vazio). Verifique o tidy e a janela."
+        )
 
     # score: padroniza features por ano (evita comparar 2010 com 2021 de forma enviesada)
     # você pode mudar pesos depois — aqui é um default robusto.
     def score_per_year(grp: pd.DataFrame) -> pd.DataFrame:
         grp = grp.copy()
-        feats = ["units", "high_growth_units", "high_growth_ratio", "cagr_window", "volatility_window"]
+        feats = [
+            "units",
+            "high_growth_units",
+            "high_growth_ratio",
+            "cagr_window",
+            "volatility_window",
+        ]
 
         X = grp[feats].copy()
         # estabilidade: menor vol é melhor
@@ -142,11 +151,11 @@ def build_opportunity_scores_by_year(
 
         # pesos default (ajuste se quiser)
         grp["opportunity_score"] = (
-            0.35 * Z[:, 0] +  # size
-            0.20 * Z[:, 1] +  # high growth units
-            0.15 * Z[:, 2] +  # ratio
-            0.20 * Z[:, 3] +  # growth
-            0.10 * Z[:, 4]    # stability (inverted vol)
+            0.35 * Z[:, 0]  # size
+            + 0.20 * Z[:, 1]  # high growth units
+            + 0.15 * Z[:, 2]  # ratio
+            + 0.20 * Z[:, 3]  # growth
+            + 0.10 * Z[:, 4]  # stability (inverted vol)
         )
 
         return grp
@@ -166,7 +175,9 @@ def build_opportunity_scores_by_year(
 
 
 @st.cache_data(show_spinner=False)
-def load_scores(dataset_dir: str | Path, year: int | None = None, year_range: tuple[int, int] | None = None) -> pd.DataFrame:
+def load_scores(
+    dataset_dir: str | Path, year: int | None = None, year_range: tuple[int, int] | None = None
+) -> pd.DataFrame:
     filters = None
     if year is not None:
         filters = [("year", "==", int(year))]
@@ -211,7 +222,9 @@ with st.sidebar:
         st.cache_data.clear()
         if SCORES_BY_YEAR_DIR.exists():
             # não apaga automaticamente por segurança
-            st.warning("Cache limpo. Se quiser rebuild total, apague a pasta opportunity_scores_by_year e rode de novo.")
+            st.warning(
+                "Cache limpo. Se quiser rebuild total, apague a pasta opportunity_scores_by_year e rode de novo."
+            )
         st.rerun()
 
 # garante dataset
@@ -225,7 +238,7 @@ except Exception as e:
 all_years = sorted([int(p.name.split("=")[1]) for p in SCORES_BY_YEAR_DIR.glob("year=*")])
 
 if mode == "Ano específico":
-    year_sel = st.selectbox("Ano", all_years, index=len(all_years)-1)
+    year_sel = st.selectbox("Ano", all_years, index=len(all_years) - 1)
     df = load_scores(SCORES_BY_YEAR_DIR, year=year_sel)
 
 else:

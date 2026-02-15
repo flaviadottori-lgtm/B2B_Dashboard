@@ -16,11 +16,7 @@ require_columns(companies, COMPANIES_AGG_COLS, "companies_agg")
 # =====================================================
 # Merge IBGE + Business Demography
 # =====================================================
-df = ibge.merge(
-    companies,
-    on=["year", "state", "region", "sector"],
-    how="left"
-)
+df = ibge.merge(companies, on=["year", "state", "region", "sector"], how="left")
 
 for c in ["opened", "closed", "net"]:
     df[c] = df[c].fillna(0)
@@ -46,13 +42,7 @@ df["stability"] = 1 / (1 + df["volatility_units"])
 # =====================================================
 # Normalize by percentile rank (per year)
 # =====================================================
-features = [
-    "log_units",
-    "cagr_2008_2021",
-    "hg_density",
-    "net_rate",
-    "stability"
-]
+features = ["log_units", "cagr_2008_2021", "hg_density", "net_rate", "stability"]
 
 for f in features:
     df[f + "_n"] = df.groupby("year")[f].rank(pct=True)
@@ -61,7 +51,7 @@ for f in features:
 # Opportunity Score (0–100)
 # =====================================================
 df["opportunity_score"] = 100 * (
-      0.25 * df["log_units_n"]
+    0.25 * df["log_units_n"]
     + 0.25 * df["cagr_2008_2021_n"]
     + 0.20 * df["hg_density_n"]
     + 0.20 * df["net_rate_n"]
@@ -73,13 +63,23 @@ df["opportunity_score"] = 100 * (
 # =====================================================
 out = df[
     [
-        "year","state","region","sector",
-        "units","high_growth_units","employment","avg_wage",
-        "opened","closed","net",
-        "hg_density","cagr_2008_2021","volatility_units",
-        "opportunity_score"
+        "year",
+        "state",
+        "region",
+        "sector",
+        "units",
+        "high_growth_units",
+        "employment",
+        "avg_wage",
+        "opened",
+        "closed",
+        "net",
+        "hg_density",
+        "cagr_2008_2021",
+        "volatility_units",
+        "opportunity_score",
     ]
-].sort_values(["year","opportunity_score"], ascending=[True, False])
+].sort_values(["year", "opportunity_score"], ascending=[True, False])
 
 save_parquet(out, "opportunity_scores.parquet")
 

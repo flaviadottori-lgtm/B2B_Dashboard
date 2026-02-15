@@ -2,6 +2,7 @@
 """
 Pipeline CAGED - download -> parquet -> publish BigQuery.
 """
+
 import argparse
 import logging
 import os
@@ -20,8 +21,14 @@ from src.common.logging_utils import setup_logging, get_run_id
 
 def parse_args():
     parser = argparse.ArgumentParser(description="CAGED Cloud Pipeline Runner")
-    parser.add_argument("--competencia", type=str, help="Competência YYYY-MM a processar (default: mês anterior)")
-    parser.add_argument("--force", action="store_true", help="Forçar reprocessamento mesmo se já processado com sucesso")
+    parser.add_argument(
+        "--competencia", type=str, help="Competência YYYY-MM a processar (default: mês anterior)"
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Forçar reprocessamento mesmo se já processado com sucesso",
+    )
     return parser.parse_args()
 
 
@@ -30,6 +37,7 @@ def get_default_competencia(tz: str) -> str:
     if tz:
         try:
             import pytz
+
             now = now.astimezone(pytz.timezone(tz))
         except Exception:
             pass
@@ -70,8 +78,16 @@ def main():
         logger.info({"event": "pipeline_success", "run_id": run_id, "competencia": competencia})
     except Exception as e:
         watermark.mark_failed(competencia, run_id, str(e))
-        logger.error({"event": "pipeline_failed", "run_id": run_id, "competencia": competencia, "error": str(e)})
+        logger.error(
+            {
+                "event": "pipeline_failed",
+                "run_id": run_id,
+                "competencia": competencia,
+                "error": str(e),
+            }
+        )
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,9 @@
 from pathlib import Path
-DUCKDB_PATH = Path(__file__).resolve().parents[2] / 'data' / 'marts' / 'b2b.duckdb'
+
+DUCKDB_PATH = Path(__file__).resolve().parents[2] / "data" / "marts" / "b2b.duckdb"
 from dataclasses import dataclass
 from pathlib import Path
+
 
 @dataclass(frozen=True)
 class ProjectPaths:
@@ -14,6 +16,7 @@ class ProjectPaths:
     ibge_tidy: Path
     companies_agg: Path
     opportunity_scores: Path
+
 
 def get_paths() -> ProjectPaths:
     root = Path(__file__).resolve().parents[2]  # .../B2B_Dashboard

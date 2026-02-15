@@ -7,7 +7,6 @@ from typing import Optional
 
 from google.cloud import bigquery
 
-
 LOGGER = logging.getLogger("caged.publish")
 
 
@@ -89,13 +88,17 @@ def build_gold_table(
     adm_col = _pick_column(schema, ["admissoes", "admissao"])
     des_col = _pick_column(schema, ["desligamentos", "desligamento"])
 
-    missing = [name for name, col in {
-        "ano/year": year_col,
-        "mes/month": month_col,
-        "sigla_uf/uf/state": uf_col,
-        "cnae_2_secao/sector": sector_col,
-        "saldo_movimentacao/job_balance": saldo_col,
-    }.items() if col is None]
+    missing = [
+        name
+        for name, col in {
+            "ano/year": year_col,
+            "mes/month": month_col,
+            "sigla_uf/uf/state": uf_col,
+            "cnae_2_secao/sector": sector_col,
+            "saldo_movimentacao/job_balance": saldo_col,
+        }.items()
+        if col is None
+    ]
     if missing:
         raise ValueError(f"Missing required columns in raw table: {', '.join(missing)}")
 

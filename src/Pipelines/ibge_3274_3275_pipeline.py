@@ -6,7 +6,6 @@ import re
 import pandas as pd
 import numpy as np
 
-
 # ================= PATHS =================
 BASE_DIR = Path(__file__).resolve().parents[2]
 
@@ -16,24 +15,74 @@ OUT_DIR = BASE_DIR / "data" / "processed"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 UF_TO_REGION = {
-    "AC": "Norte", "AL": "Nordeste", "AM": "Norte", "AP": "Norte", "BA": "Nordeste",
-    "CE": "Nordeste", "DF": "Centro-Oeste", "ES": "Sudeste", "GO": "Centro-Oeste",
-    "MA": "Nordeste", "MG": "Sudeste", "MS": "Centro-Oeste", "MT": "Centro-Oeste",
-    "PA": "Norte", "PB": "Nordeste", "PE": "Nordeste", "PI": "Nordeste", "PR": "Sul",
-    "RJ": "Sudeste", "RN": "Nordeste", "RO": "Norte", "RR": "Norte", "RS": "Sul",
-    "SC": "Sul", "SE": "Nordeste", "SP": "Sudeste", "TO": "Norte",
+    "AC": "Norte",
+    "AL": "Nordeste",
+    "AM": "Norte",
+    "AP": "Norte",
+    "BA": "Nordeste",
+    "CE": "Nordeste",
+    "DF": "Centro-Oeste",
+    "ES": "Sudeste",
+    "GO": "Centro-Oeste",
+    "MA": "Nordeste",
+    "MG": "Sudeste",
+    "MS": "Centro-Oeste",
+    "MT": "Centro-Oeste",
+    "PA": "Norte",
+    "PB": "Nordeste",
+    "PE": "Nordeste",
+    "PI": "Nordeste",
+    "PR": "Sul",
+    "RJ": "Sudeste",
+    "RN": "Nordeste",
+    "RO": "Norte",
+    "RR": "Norte",
+    "RS": "Sul",
+    "SC": "Sul",
+    "SE": "Nordeste",
+    "SP": "Sudeste",
+    "TO": "Norte",
 }
 
 STATE_NAME_TO_UF = {
-    "acre": "AC", "alagoas": "AL", "amapa": "AP", "amapá": "AP", "amazonas": "AM",
-    "bahia": "BA", "ceara": "CE", "ceará": "CE", "distrito federal": "DF",
-    "espirito santo": "ES", "espírito santo": "ES", "goias": "GO", "goiás": "GO",
-    "maranhao": "MA", "maranhão": "MA", "mato grosso": "MT", "mato grosso do sul": "MS",
-    "minas gerais": "MG", "para": "PA", "pará": "PA", "paraiba": "PB", "paraíba": "PB",
-    "parana": "PR", "paraná": "PR", "pernambuco": "PE", "piaui": "PI", "piauí": "PI",
-    "rio de janeiro": "RJ", "rio grande do norte": "RN", "rio grande do sul": "RS",
-    "rondonia": "RO", "rondônia": "RO", "roraima": "RR", "santa catarina": "SC",
-    "sao paulo": "SP", "são paulo": "SP", "sergipe": "SE", "tocantins": "TO",
+    "acre": "AC",
+    "alagoas": "AL",
+    "amapa": "AP",
+    "amapá": "AP",
+    "amazonas": "AM",
+    "bahia": "BA",
+    "ceara": "CE",
+    "ceará": "CE",
+    "distrito federal": "DF",
+    "espirito santo": "ES",
+    "espírito santo": "ES",
+    "goias": "GO",
+    "goiás": "GO",
+    "maranhao": "MA",
+    "maranhão": "MA",
+    "mato grosso": "MT",
+    "mato grosso do sul": "MS",
+    "minas gerais": "MG",
+    "para": "PA",
+    "pará": "PA",
+    "paraiba": "PB",
+    "paraíba": "PB",
+    "parana": "PR",
+    "paraná": "PR",
+    "pernambuco": "PE",
+    "piaui": "PI",
+    "piauí": "PI",
+    "rio de janeiro": "RJ",
+    "rio grande do norte": "RN",
+    "rio grande do sul": "RS",
+    "rondonia": "RO",
+    "rondônia": "RO",
+    "roraima": "RR",
+    "santa catarina": "SC",
+    "sao paulo": "SP",
+    "são paulo": "SP",
+    "sergipe": "SE",
+    "tocantins": "TO",
 }
 
 YEAR_RE = re.compile(r"^(19|20)\d{2}$")
@@ -159,8 +208,12 @@ def _detect_stride(sector_row: list[str], start_col: int, end_col: int) -> int:
     return 1
 
 
-def _build_year_sector_map(year_row: list[str], sector_row: list[str]) -> list[tuple[int, str, int]]:
-    year_starts: list[tuple[int, int]] = [(j, int(c)) for j, c in enumerate(year_row) if YEAR_RE.match(c)]
+def _build_year_sector_map(
+    year_row: list[str], sector_row: list[str]
+) -> list[tuple[int, str, int]]:
+    year_starts: list[tuple[int, int]] = [
+        (j, int(c)) for j, c in enumerate(year_row) if YEAR_RE.match(c)
+    ]
     if not year_starts:
         raise ValueError("Não encontrei blocos de anos no cabeçalho.")
 
@@ -187,7 +240,9 @@ def _build_year_sector_map(year_row: list[str], sector_row: list[str]) -> list[t
             j += stride
 
     if len(mapping) < 20:
-        raise ValueError("Mapeamento de (ano, setor) pequeno demais. Layout do cabeçalho pode ser diferente.")
+        raise ValueError(
+            "Mapeamento de (ano, setor) pequeno demais. Layout do cabeçalho pode ser diferente."
+        )
     return mapping
 
 
@@ -237,7 +292,9 @@ def parse_sidra_multi_year(path: Path, require_total: bool) -> pd.DataFrame:
                 continue
         else:
             # 3275 normalmente não tem eventos, mas se tiver, evita os que não são "estoque"
-            if _row_has_any_keywords(r, ["entrada", "saída", "saida", "nascimento", "reentrada", "sobreviv"], max_cols=24):
+            if _row_has_any_keywords(
+                r, ["entrada", "saída", "saida", "nascimento", "reentrada", "sobreviv"], max_cols=24
+            ):
                 continue
 
         for y, sec, col in mapping:
@@ -251,14 +308,16 @@ def parse_sidra_multi_year(path: Path, require_total: bool) -> pd.DataFrame:
                 except Exception:
                     val = 0.0
 
-            records.append({
-                "year": y,
-                "state": uf,
-                "region": UF_TO_REGION[uf],
-                "sector": sec,
-                "variable": var_name,
-                "value": val,
-            })
+            records.append(
+                {
+                    "year": y,
+                    "state": uf,
+                    "region": UF_TO_REGION[uf],
+                    "sector": sec,
+                    "variable": var_name,
+                    "value": val,
+                }
+            )
 
     return pd.DataFrame(records, columns=["year", "state", "region", "sector", "variable", "value"])
 
@@ -357,13 +416,11 @@ def main():
     base["cagr_n"] = _norm(base["cagr_2008_2021"].fillna(0))
     base["stab_n"] = 1 - _norm(base["volatility_units"].fillna(0))
 
-    base["structural_index"] = (
-        0.45 * base["size_n"] +
-        0.35 * base["cagr_n"] +
-        0.20 * base["stab_n"]
-    )
+    base["structural_index"] = 0.45 * base["size_n"] + 0.35 * base["cagr_n"] + 0.20 * base["stab_n"]
     base["growth_index"] = 0.60 * base["hg_n"] + 0.40 * base["hgr_n"]
-    base["opportunity_score"] = 100 * (0.60 * base["structural_index"] + 0.40 * base["growth_index"])
+    base["opportunity_score"] = 100 * (
+        0.60 * base["structural_index"] + 0.40 * base["growth_index"]
+    )
 
     # Salvar
     df.to_parquet(OUT_DIR / "ibge_3274_3275_tidy.parquet", index=False)
@@ -373,7 +430,16 @@ def main():
     print(f" - {OUT_DIR / 'ibge_3274_3275_tidy.parquet'}")
     print(f" - {OUT_DIR / 'opportunity_scores.parquet'}")
     print("\n🔎 Top 10 opportunities (2021) — sem 'Total':")
-    show_cols = ["state", "region", "sector", "units", "high_growth_units", "high_growth_ratio", "cagr_2008_2021", "opportunity_score"]
+    show_cols = [
+        "state",
+        "region",
+        "sector",
+        "units",
+        "high_growth_units",
+        "high_growth_ratio",
+        "cagr_2008_2021",
+        "opportunity_score",
+    ]
     print(base[show_cols].sort_values("opportunity_score", ascending=False).head(10))
 
 

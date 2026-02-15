@@ -1,6 +1,7 @@
 """
 Ingestão CAGED: download, upload GCS, validação, manifest
 """
+
 import logging
 import os
 import tempfile
@@ -29,7 +30,9 @@ def ingest_caged(competencia: str, config, run_id: str):
             if os.path.getsize(local_path) == 0:
                 raise RuntimeError(f"Arquivo baixado está vazio: {link}")
             upload_to_gcs(config.GCS_BUCKET_RAW, gcs_path, local_path)
-            logger.info({"event": "uploaded_gcs", "gcs_path": gcs_path, "size": os.path.getsize(local_path)})
+            logger.info(
+                {"event": "uploaded_gcs", "gcs_path": gcs_path, "size": os.path.getsize(local_path)}
+            )
             manifest = {
                 "competencia": competencia,
                 "url": link,

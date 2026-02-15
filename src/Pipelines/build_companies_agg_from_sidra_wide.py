@@ -145,7 +145,11 @@ def parse_sidra_wide(path: Path) -> pd.DataFrame:
 
 def wide_to_long(df_wide: pd.DataFrame) -> pd.DataFrame:
     base_cols = ["level", "code", "state_raw", "event"]
-    value_cols = [c for c in df_wide.columns if c not in base_cols and "|" in c and not c.startswith("unknown|")]
+    value_cols = [
+        c
+        for c in df_wide.columns
+        if c not in base_cols and "|" in c and not c.startswith("unknown|")
+    ]
 
     long = df_wide.melt(
         id_vars=base_cols,
@@ -186,10 +190,7 @@ def build_companies_agg(long: pd.DataFrame) -> pd.DataFrame:
     d["opened"] = d["value"].where(d["event_l"].str.contains("entrada", na=False), 0)
     d["closed"] = d["value"].where(d["event_l"].str.contains("saída|saida", na=False), 0)
 
-    out = (
-        d.groupby(["year", "state", "sector"], as_index=False)[["opened", "closed"]]
-        .sum()
-    )
+    out = d.groupby(["year", "state", "sector"], as_index=False)[["opened", "closed"]].sum()
     out["net"] = out["opened"] - out["closed"]
     out.insert(1, "region", "Brasil")
 

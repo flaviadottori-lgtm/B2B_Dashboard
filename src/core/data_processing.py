@@ -67,7 +67,9 @@ def prep_companies(df: pd.DataFrame) -> pd.DataFrame:
         d["uf"] = d["uf"].astype(str).apply(clean_label).apply(normalize_uf)
     else:
         d["uf"] = pd.Series([None] * len(d))
-        logger.warning("[prep_companies] Coluna 'state'/'uf' não encontrada. 'uf' criado como None.")
+        logger.warning(
+            "[prep_companies] Coluna 'state'/'uf' não encontrada. 'uf' criado como None."
+        )
 
     logger.info(
         f"[prep_companies][STEP 3] uf: non_null={int(pd.Series(d['uf']).notna().sum())}/{len(d)} | "
@@ -247,9 +249,17 @@ def apply_filters(
 
     # Macro-setor/Setor
     if macro_sector:
-        col = "macro_sector" if "macro_sector" in out.columns else (
-            "macro" if "macro" in out.columns else (
-                "setor" if "setor" in out.columns else ("sector" if "sector" in out.columns else None)
+        col = (
+            "macro_sector"
+            if "macro_sector" in out.columns
+            else (
+                "macro"
+                if "macro" in out.columns
+                else (
+                    "setor"
+                    if "setor" in out.columns
+                    else ("sector" if "sector" in out.columns else None)
+                )
             )
         )
         if col:
@@ -262,15 +272,25 @@ def apply_filters(
 
     # Tech only (quando houver macro_sector/sector)
     if tech_only:
-        col = "macro_sector" if "macro_sector" in out.columns else (
-            "setor" if "setor" in out.columns else ("sector" if "sector" in out.columns else None)
+        col = (
+            "macro_sector"
+            if "macro_sector" in out.columns
+            else (
+                "setor"
+                if "setor" in out.columns
+                else ("sector" if "sector" in out.columns else None)
+            )
         )
         if col:
             out = out[out[col].astype(str).str.contains("tec", case=False, na=False)]
 
     # Receita
     if min_revenue is not None or max_revenue is not None:
-        col = "revenue" if "revenue" in out.columns else ("receita" if "receita" in out.columns else None)
+        col = (
+            "revenue"
+            if "revenue" in out.columns
+            else ("receita" if "receita" in out.columns else None)
+        )
         if col:
             if min_revenue is not None:
                 out = out[out[col] >= min_revenue]
@@ -289,6 +309,7 @@ def build_gold_join(
     """
     Cria visão integrada (gold) por year/uf/macro_sector com joins tolerantes.
     """
+
     def _norm(df: pd.DataFrame) -> pd.DataFrame:
         if df is None or df.empty:
             return pd.DataFrame()
@@ -324,7 +345,9 @@ def build_gold_join(
         return df[existing].copy()
 
     comp_cols = keys + [c for c in ["net", "opened", "closed"] if c in companies.columns]
-    caged_cols = keys + [c for c in ["job_balance", "admissoes", "desligamentos"] if c in caged.columns]
+    caged_cols = keys + [
+        c for c in ["job_balance", "admissoes", "desligamentos"] if c in caged.columns
+    ]
     rais_cols = keys + [c for c in ["vinculos", "crescimento_yoy"] if c in rais.columns]
     pnad_cols = keys + [c for c in ["taxa_informalidade", "taxa_desemprego"] if c in pnad.columns]
 

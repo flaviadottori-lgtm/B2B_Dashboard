@@ -27,6 +27,7 @@ class TestPNADV2Integration:
                 extract_pnad_metrics,
                 PNADCMetricsExtractor,
             )
+
             assert callable(extract_pnad_metrics)
             assert callable(PNADCMetricsExtractor)
             print("✅ test_extract_pnad_metrics_import passed")
@@ -37,9 +38,9 @@ class TestPNADV2Integration:
         """Valida importação do CLI do pipeline"""
         try:
             import importlib.util
+
             spec = importlib.util.spec_from_file_location(
-                "run_pnad_metrics_pipeline",
-                Path("run_pnad_metrics_pipeline.py")
+                "run_pnad_metrics_pipeline", Path("run_pnad_metrics_pipeline.py")
             )
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
@@ -51,6 +52,7 @@ class TestPNADV2Integration:
         """Valida importação da seção PNAD refatorada"""
         try:
             from src.ui.pnad_section import render_pnad_section
+
             assert callable(render_pnad_section)
             print("✅ test_pnad_section_import passed")
         except ImportError as e:
@@ -60,6 +62,7 @@ class TestPNADV2Integration:
         """Valida importação da função de carregamento de métricas"""
         try:
             from src.utils.data_loading import load_pnad_metrics_data
+
             assert callable(load_pnad_metrics_data)
             print("✅ test_pnad_metrics_loader_import passed")
         except ImportError as e:
@@ -72,25 +75,25 @@ class TestPNADV2Integration:
 
             # Chaves esperadas
             new_keys = [
-                'pnad_metric_selector',
-                'pnad_select_metric',
-                'pnad_kpis',
-                'pnad_informality',
-                'pnad_income',
-                'pnad_unemployment',
+                "pnad_metric_selector",
+                "pnad_select_metric",
+                "pnad_kpis",
+                "pnad_informality",
+                "pnad_income",
+                "pnad_unemployment",
             ]
 
             # Validar PT
             for key in new_keys:
-                assert key in I18N['pt'], f"Chave faltando PT: {key}"
-                assert isinstance(I18N['pt'][key], str), f"PT[{key}] não é string"
-                assert len(I18N['pt'][key]) > 0, f"PT[{key}] está vazio"
+                assert key in I18N["pt"], f"Chave faltando PT: {key}"
+                assert isinstance(I18N["pt"][key], str), f"PT[{key}] não é string"
+                assert len(I18N["pt"][key]) > 0, f"PT[{key}] está vazio"
 
             # Validar EN
             for key in new_keys:
-                assert key in I18N['en'], f"Chave faltando EN: {key}"
-                assert isinstance(I18N['en'][key], str), f"EN[{key}] não é string"
-                assert len(I18N['en'][key]) > 0, f"EN[{key}] está vazio"
+                assert key in I18N["en"], f"Chave faltando EN: {key}"
+                assert isinstance(I18N["en"][key], str), f"EN[{key}] não é string"
+                assert len(I18N["en"][key]) > 0, f"EN[{key}] está vazio"
 
             print(f"✅ test_i18n_keys_exist passed ({len(new_keys)} keys validated)")
 
@@ -107,7 +110,7 @@ class TestPNADV2Integration:
             print("\n📋 Valores i18n para PNAD v2.0:")
             print("-" * 60)
 
-            for lang in ['pt', 'en']:
+            for lang in ["pt", "en"]:
                 print(f"\n{lang.upper()}:")
                 print(f"  metric_selector: {I18N[lang]['pnad_metric_selector']}")
                 print(f"  select_metric: {I18N[lang]['pnad_select_metric']}")
@@ -127,18 +130,16 @@ class TestPNADV2Integration:
             from src.Pipelines.pnad.extract_pnad_metrics import PNADCMetricsExtractor
 
             required_methods = [
-                '__init__',
-                'extract',
-                '_process_renda',
-                '_validate_data',
-                '_save_parquet',
+                "__init__",
+                "extract",
+                "_process_renda",
+                "_validate_data",
+                "_save_parquet",
             ]
 
             for method in required_methods:
-                assert hasattr(PNADCMetricsExtractor, method), \
-                    f"Método faltando: {method}"
-                assert callable(getattr(PNADCMetricsExtractor, method)), \
-                    f"{method} não é callable"
+                assert hasattr(PNADCMetricsExtractor, method), f"Método faltando: {method}"
+                assert callable(getattr(PNADCMetricsExtractor, method)), f"{method} não é callable"
 
             print(f"✅ test_extractor_class_methods passed ({len(required_methods)} methods)")
 
@@ -166,6 +167,7 @@ class TestPNADV2Integration:
         """Valida compatibilidade com função load_pnad_data (v1.0)"""
         try:
             from src.utils.data_loading import load_pnad_data
+
             assert callable(load_pnad_data)
             print("✅ test_data_loading_backward_compat passed")
         except ImportError as e:
@@ -180,13 +182,13 @@ class TestPNADV2Integration:
             query = extractor.sql_query
 
             required_keywords = [
-                'SELECT',
-                'FROM',
-                'basedosdados.br_ibge_pnadc.pessoa',
-                'GROUP BY',
-                'taxa_informalidade',
-                'taxa_desemprego',
-                'renda_media_trabalho',
+                "SELECT",
+                "FROM",
+                "basedosdados.br_ibge_pnadc.pessoa",
+                "GROUP BY",
+                "taxa_informalidade",
+                "taxa_desemprego",
+                "renda_media_trabalho",
             ]
 
             for keyword in required_keywords:
@@ -215,16 +217,20 @@ class TestPNADV2Metrics:
             taxa_esperada = 0.25
 
             # Validar lógica
-            assert (informais / ocupados) == taxa_esperada, \
+            assert (
+                informais / ocupados
+            ) == taxa_esperada, (
                 f"Taxa informalidade incorreta: {informais}/{ocupados} != {taxa_esperada}"
+            )
 
             # Taxa de desemprego: desocupados / força trabalho
             desocupados = 10
             forca_trabalho = 100
             taxa_desemprego_esperada = 0.10
 
-            assert (desocupados / forca_trabalho) == taxa_desemprego_esperada, \
-                f"Taxa desemprego incorreta: {desocupados}/{forca_trabalho} != {taxa_desemprego_esperada}"
+            assert (
+                desocupados / forca_trabalho
+            ) == taxa_desemprego_esperada, f"Taxa desemprego incorreta: {desocupados}/{forca_trabalho} != {taxa_desemprego_esperada}"
 
             print("✅ test_metric_calculation_formulas passed")
 

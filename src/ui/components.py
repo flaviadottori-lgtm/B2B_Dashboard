@@ -64,7 +64,7 @@ def apply_styles() -> None:
 def render_kpi(label: str, value: str, hint: str = "") -> None:
     """
     Renderiza um KPI em estilo card.
-    
+
     Args:
         label: Texto do rótulo (em cima)
         value: Valor principal (número/texto grande)
@@ -85,10 +85,10 @@ def render_kpi(label: str, value: str, hint: str = "") -> None:
 def render_pills(pills_dict: dict) -> None:
     """
     Renderiza pills (tags) de filtros ativos.
-    
+
     Args:
         pills_dict: Dict com {label: valor}
-        
+
     Exemplo:
         render_pills({
             "Ano": "2024",
@@ -109,7 +109,7 @@ def render_diagnostic_info(
 ) -> None:
     """
     Renderiza box de diagnóstico com informações de caminhos e arquivos.
-    
+
     Args:
         project_root: Caminho raiz do projeto
         data_files: Dict {nome: (caminho, existe?)}

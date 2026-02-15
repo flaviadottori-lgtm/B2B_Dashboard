@@ -4,16 +4,19 @@ import numpy as np
 
 DATA_DIR = Path("data/processed")
 
+
 # -----------------------------
 # Utils
 # -----------------------------
 def pct_rank(s: pd.Series) -> pd.Series:
     return s.rank(pct=True, method="average")
 
+
 def _clean_cols(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df.columns = [str(c).strip().lower() for c in df.columns]
     return df
+
 
 def _ensure_column(df: pd.DataFrame, target: str, candidates: list[str]) -> pd.DataFrame:
     """
@@ -30,6 +33,7 @@ def _ensure_column(df: pd.DataFrame, target: str, candidates: list[str]) -> pd.D
             f"Procurei candidatos={candidates}. Colunas disponíveis: {list(df.columns)}"
         )
     return df.rename(columns={found: target})
+
 
 # -----------------------------
 # Momentum (CAGED)
@@ -54,7 +58,16 @@ def build_momentum_features(caged_m: pd.DataFrame) -> pd.DataFrame:
     c = _ensure_column(
         c,
         "net_jobs",
-        ["job_balance", "saldo", "net", "net_job", "netjobs", "saldo_mov", "saldo_vagas", "saldo_emprego"]
+        [
+            "job_balance",
+            "saldo",
+            "net",
+            "net_job",
+            "netjobs",
+            "saldo_mov",
+            "saldo_vagas",
+            "saldo_emprego",
+        ],
     )
 
     c["year"] = pd.to_numeric(c["year"], errors="coerce").astype("Int64")
@@ -84,19 +97,22 @@ def build_momentum_features(caged_m: pd.DataFrame) -> pd.DataFrame:
 
         vol = float(g["net_jobs"].std(ddof=0)) if len(g) >= 2 else 0.0
 
-        feats.append({
-            "year": y,
-            "state": st,
-            "sector": sec,
-            "net_jobs_ytd": net_jobs_ytd,
-            "net_jobs_6m": net_jobs_6m,
-            "share_positive_months": share_pos,
-            "acceleration": acc,
-            "volatility_jobs": vol,
-            "months_observed": int(len(g))
-        })
+        feats.append(
+            {
+                "year": y,
+                "state": st,
+                "sector": sec,
+                "net_jobs_ytd": net_jobs_ytd,
+                "net_jobs_6m": net_jobs_6m,
+                "share_positive_months": share_pos,
+                "acceleration": acc,
+                "volatility_jobs": vol,
+                "months_observed": int(len(g)),
+            }
+        )
 
     return pd.DataFrame(feats)
+
 
 # -----------------------------
 # Main
@@ -120,13 +136,21 @@ def main():
     base = base.rename(columns={"opportunity_score": "opportunity_score_v2_2021"})
 
     optional_struct_cols = [
-        "units","employment","avg_wage",
-        "opened","closed","net",
-        "hg_density","cagr_2008_2021","volatility_units"
+        "units",
+        "employment",
+        "avg_wage",
+        "opened",
+        "closed",
+        "net",
+        "hg_density",
+        "cagr_2008_2021",
+        "volatility_units",
     ]
     existing_struct_cols = [c for c in optional_struct_cols if c in base.columns]
 
-    base = base[["state", "region", "sector", "opportunity_score_v2_2021"] + existing_struct_cols].copy()
+    base = base[
+        ["state", "region", "sector", "opportunity_score_v2_2021"] + existing_struct_cols
+    ].copy()
 
     # 2) CAGED mensal
     caged_path = DATA_DIR / "caged_state_sector_month.parquet"
@@ -137,43 +161,60 @@ def main():
     caged = _ensure_column(
         caged,
         "net_jobs",
-        ["job_balance", "saldo", "net", "net_job", "netjobs", "saldo_mov", "saldo_vagas", "saldo_emprego"]
+        [
+            "job_balance",
+            "saldo",
+            "net",
+            "net_job",
+            "netjobs",
+            "saldo_mov",
+            "saldo_vagas",
+            "saldo_emprego",
+        ],
     )
 
     # 3) Momentum features
     mom = build_momentum_features(caged)
     if mom.empty:
-        raise ValueError("Momentum features vazio. Verifique se o parquet do CAGED tem dados/colunas corretas.")
+        raise ValueError(
+            "Momentum features vazio. Verifique se o parquet do CAGED tem dados/colunas corretas."
+        )
 
     # 4) Join com baseline estrutural
     df = mom.merge(base, on=["state", "sector"], how="left")
 
     # 5) Scores
-    df["structural_score"] = (
-        df.groupby("year")["opportunity_score_v2_2021"]
-          .transform(lambda s: 100 * pct_rank(s.fillna(s.median())))
+    df["structural_score"] = df.groupby("year")["opportunity_score_v2_2021"].transform(
+        lambda s: 100 * pct_rank(s.fillna(s.median()))
     )
 
     df["m1"] = df.groupby("year")["net_jobs_ytd"].transform(pct_rank)
-    df["m2"] = df.groupby("year")["net_jobs_6m"].transform(pct_rank
+    df["m2"] = df.groupby("year")["net_jobs_6m"].transform(pct_rank)
     df["m3"] = df["share_positive_months"].clip(0, 1)
     df["m4"] = df.groupby("year")["acceleration"].transform(pct_rank)
 
     df["momentum_score"] = 100 * (
-        0.40*df["m1"] +
-        0.30*df["m2"] +
-        0.20*df["m3"] +
-        0.10*df["m4"]
+        0.40 * df["m1"] + 0.30 * df["m2"] + 0.20 * df["m3"] + 0.10 * df["m4"]
     )
 
-    df["opportunity_score_v3"] = 0.65*df["structural_score"] + 0.35*df["momentum_score"]
+    df["opportunity_score_v3"] = 0.65 * df["structural_score"] + 0.35 * df["momentum_score"]
 
     # 6) saída
     keep = [
-        "year","state","region","sector",
-        "opportunity_score_v2_2021","structural_score",
-        "net_jobs_ytd","net_jobs_6m","share_positive_months","acceleration","volatility_jobs","months_observed",
-        "momentum_score","opportunity_score_v3",
+        "year",
+        "state",
+        "region",
+        "sector",
+        "opportunity_score_v2_2021",
+        "structural_score",
+        "net_jobs_ytd",
+        "net_jobs_6m",
+        "share_positive_months",
+        "acceleration",
+        "volatility_jobs",
+        "months_observed",
+        "momentum_score",
+        "opportunity_score_v3",
     ] + existing_struct_cols
 
     df = df[keep].sort_values(["year", "opportunity_score_v3"], ascending=[True, False])
@@ -184,6 +225,7 @@ def main():
     print(f"✅ Opportunity Engine v3 generated: {out}")
     print("Years:", sorted(df["year"].unique()))
     print("Rows:", f"{len(df):,}")
+
 
 if __name__ == "__main__":
     main()

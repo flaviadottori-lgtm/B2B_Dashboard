@@ -14,7 +14,7 @@ def setup_logging(
 ) -> None:
     """
     Configura logging estruturado para o projeto.
-    
+
     Args:
         log_level: Nível de logging (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         log_file: Caminho opcional para arquivo de log
@@ -32,8 +32,7 @@ def setup_logging(
 
     # Formato: [HH:MM:SS] | LEVEL | module | message
     formatter = logging.Formatter(
-        fmt="[%(asctime)s] | %(levelname)-8s | %(name)s | %(message)s",
-        datefmt="%H:%M:%S"
+        fmt="[%(asctime)s] | %(levelname)-8s | %(name)s | %(message)s", datefmt="%H:%M:%S"
     )
     console_handler.setFormatter(formatter)
     root_logger.addHandler(console_handler)
@@ -52,10 +51,10 @@ def setup_logging(
 def get_logger(name: str) -> logging.Logger:
     """
     Obtém logger para um módulo específico.
-    
+
     Args:
         name: Nome do logger (geralmente __name__)
-        
+
     Returns:
         Logger configurado
     """

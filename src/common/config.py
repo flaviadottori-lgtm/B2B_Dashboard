@@ -1,8 +1,10 @@
 """
 Configuração centralizada via variáveis de ambiente
 """
+
 import os
 from typing import NamedTuple
+
 
 class Config(NamedTuple):
     GCP_PROJECT: str

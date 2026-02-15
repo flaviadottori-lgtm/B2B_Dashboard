@@ -1,10 +1,12 @@
 """
 Controle de watermark/idempotência para pipeline CAGED
 """
+
 import logging
 from google.cloud import bigquery
 from datetime import datetime
 from typing import Optional
+
 
 class WatermarkController:
     def __init__(self, config):
@@ -18,9 +20,14 @@ class WatermarkController:
         WHERE pipeline_name = 'caged' AND last_success_competencia = @competencia AND status = 'SUCCESS'
         LIMIT 1
         """
-        job = self.client.query(query, job_config=bigquery.QueryJobConfig(
-            query_parameters=[bigquery.ScalarQueryParameter("competencia", "STRING", competencia)]
-        ))
+        job = self.client.query(
+            query,
+            job_config=bigquery.QueryJobConfig(
+                query_parameters=[
+                    bigquery.ScalarQueryParameter("competencia", "STRING", competencia)
+                ]
+            ),
+        )
         rows = list(job)
         return bool(rows)
 

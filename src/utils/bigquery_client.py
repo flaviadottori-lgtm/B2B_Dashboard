@@ -89,4 +89,3 @@ def check_tables(
         return {name: False for name in table_names}
     available = {str(t).lower() for t in df["table_name"].tolist()}
     return {name: (name.lower() in available) for name in table_names}
-

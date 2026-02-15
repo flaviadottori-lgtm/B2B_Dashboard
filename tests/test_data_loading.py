@@ -15,11 +15,13 @@ class TestValidateDataframe:
 
     def test_validate_dataframe_valid(self):
         """Valida DataFrame com colunas obrigatórias"""
-        df = pd.DataFrame({
-            "year": [2024, 2025],
-            "state": ["SP", "RJ"],
-            "value": [100, 200],
-        })
+        df = pd.DataFrame(
+            {
+                "year": [2024, 2025],
+                "state": ["SP", "RJ"],
+                "value": [100, 200],
+            }
+        )
         assert validate_dataframe(df, ["year", "state", "value"]) is True
 
     def test_validate_dataframe_empty(self):
@@ -38,10 +40,12 @@ class TestValidateDataframe:
 
     def test_validate_dataframe_subset_of_columns(self):
         """Valida quando DataFrame tem colunas extras"""
-        df = pd.DataFrame({
-            "year": [2024],
-            "state": ["SP"],
-            "value": [100],
-            "extra": [999],
-        })
+        df = pd.DataFrame(
+            {
+                "year": [2024],
+                "state": ["SP"],
+                "value": [100],
+                "extra": [999],
+            }
+        )
         assert validate_dataframe(df, ["year", "state"]) is True

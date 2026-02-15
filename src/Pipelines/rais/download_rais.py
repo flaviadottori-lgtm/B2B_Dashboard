@@ -13,7 +13,6 @@ import requests
 import py7zr
 from ftplib import FTP
 
-
 GOVBR_INDEX_URL = (
     "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/"
     "microdados-rais-e-caged"
@@ -84,8 +83,9 @@ def _ftp_list_files(year: int) -> list[str]:
     return files
 
 
-
-def _ftp_download_files(year: int, out_dir: Path, filename_filter: Optional[str] = None, limit: Optional[int] = None) -> list[Path]:
+def _ftp_download_files(
+    year: int, out_dir: Path, filename_filter: Optional[str] = None, limit: Optional[int] = None
+) -> list[Path]:
     """
     Baixa arquivos do FTP. Voce pode filtrar por texto (filename_filter) e limitar quantidade (limit).
     """
@@ -107,7 +107,9 @@ def _ftp_download_files(year: int, out_dir: Path, filename_filter: Optional[str]
             files = files[:limit]
 
         if not files:
-            raise RuntimeError(f"Nenhum arquivo encontrado no FTP para ano={year} com filtro={filename_filter!r}.")
+            raise RuntimeError(
+                f"Nenhum arquivo encontrado no FTP para ano={year} com filtro={filename_filter!r}."
+            )
 
         print(f"Arquivos encontrados ({len(files)}). Vou baixar {len(files)} arquivo(s).")
         downloaded: list[Path] = []
@@ -157,7 +159,9 @@ def _ftp_download_files(year: int, out_dir: Path, filename_filter: Optional[str]
                             preferred = recent[0]
 
                     if preferred is None:
-                        raise RuntimeError(f"Nao foi possivel identificar o .txt extraido de {dest}")
+                        raise RuntimeError(
+                            f"Nao foi possivel identificar o .txt extraido de {dest}"
+                        )
 
                     extracted_txt = preferred
                     if extracted_txt != expected_txt:
@@ -221,7 +225,9 @@ def download_rais_year(
                 z.extractall(extracted_dir)
             print(f"✅ Extraído em: {extracted_dir}")
 
-        return DownloadResult(year=year, downloaded_files=downloaded_files, extracted_dir=extracted_dir)
+        return DownloadResult(
+            year=year, downloaded_files=downloaded_files, extracted_dir=extracted_dir
+        )
 
     # fallback FTP
     print("ℹ️ Não encontrei link .zip/.7z/.rar no HTML. Vou tentar via FTP (automático).")

@@ -7,18 +7,39 @@ from datetime import datetime
 
 import pandas as pd
 
-
 RAW_FTP_DIR = Path("data/raw/rais")  # segue seu padrão
 OUT_DIR = Path("data/processed/rais/agg_parquet")
 
 
 # Mapa básico de UF por código (caso a RAIS venha com código numérico)
 UF_CODE_TO_SIGLA = {
-    11: "RO", 12: "AC", 13: "AM", 14: "RR", 15: "PA", 16: "AP", 17: "TO",
-    21: "MA", 22: "PI", 23: "CE", 24: "RN", 25: "PB", 26: "PE", 27: "AL", 28: "SE", 29: "BA",
-    31: "MG", 32: "ES", 33: "RJ", 35: "SP",
-    41: "PR", 42: "SC", 43: "RS",
-    50: "MS", 51: "MT", 52: "GO", 53: "DF",
+    11: "RO",
+    12: "AC",
+    13: "AM",
+    14: "RR",
+    15: "PA",
+    16: "AP",
+    17: "TO",
+    21: "MA",
+    22: "PI",
+    23: "CE",
+    24: "RN",
+    25: "PB",
+    26: "PE",
+    27: "AL",
+    28: "SE",
+    29: "BA",
+    31: "MG",
+    32: "ES",
+    33: "RJ",
+    35: "SP",
+    41: "PR",
+    42: "SC",
+    43: "RS",
+    50: "MS",
+    51: "MT",
+    52: "GO",
+    53: "DF",
 }
 
 
@@ -72,7 +93,9 @@ def build_agg(year: int, region_tag: str, chunksize: int = 400_000) -> Path:
         if now - last_heartbeat >= 30:
             elapsed = int(now - start_ts)
             mm, ss = divmod(elapsed, 60)
-            print(f"[PROGRESSO] ano={year} regiao={region_tag} chunks={i+1} elapsed={mm:02d}:{ss:02d}")
+            print(
+                f"[PROGRESSO] ano={year} regiao={region_tag} chunks={i+1} elapsed={mm:02d}:{ss:02d}"
+            )
             last_heartbeat = now
         if i == 0:
             print(f"✅ Colunas encontradas (amostra): {list(chunk.columns)[:20]} ...")
@@ -87,13 +110,17 @@ def build_agg(year: int, region_tag: str, chunksize: int = 400_000) -> Path:
         col_idade = pick_first_existing(chunk, ["Idade", "Faixa Etária"])
         col_instr = pick_first_existing(chunk, ["Escolaridade após 2005"])
 
-        missing = [name for name, col in [
-            ("MUNICIPIO", col_mun),
-            ("CNAE", col_cnae),
-            ("SEXO", col_sexo),
-            ("IDADE/FAIXA", col_idade),
-            ("INSTRUCAO", col_instr),
-        ] if col is None]
+        missing = [
+            name
+            for name, col in [
+                ("MUNICIPIO", col_mun),
+                ("CNAE", col_cnae),
+                ("SEXO", col_sexo),
+                ("IDADE/FAIXA", col_idade),
+                ("INSTRUCAO", col_instr),
+            ]
+            if col is None
+        ]
         if missing:
             raise RuntimeError(
                 "Não consegui identificar colunas essenciais nesta RAIS. Faltando: "
@@ -123,9 +150,12 @@ def build_agg(year: int, region_tag: str, chunksize: int = 400_000) -> Path:
         df["vinculos"] = 1
 
         g = (
-            df.groupby(["ano", "sigla_uf", "cnae_subclasse", "sexo", "grupo_idade", "grau_instrucao"], dropna=False)["vinculos"]
-              .sum()
-              .reset_index()
+            df.groupby(
+                ["ano", "sigla_uf", "cnae_subclasse", "sexo", "grupo_idade", "grau_instrucao"],
+                dropna=False,
+            )["vinculos"]
+            .sum()
+            .reset_index()
         )
 
         if agg is None:
@@ -133,16 +163,21 @@ def build_agg(year: int, region_tag: str, chunksize: int = 400_000) -> Path:
         else:
             agg = pd.concat([agg, g], ignore_index=True)
             agg = (
-                agg.groupby(["ano", "sigla_uf", "cnae_subclasse", "sexo", "grupo_idade", "grau_instrucao"], dropna=False)["vinculos"]
-                   .sum()
-                   .reset_index()
+                agg.groupby(
+                    ["ano", "sigla_uf", "cnae_subclasse", "sexo", "grupo_idade", "grau_instrucao"],
+                    dropna=False,
+                )["vinculos"]
+                .sum()
+                .reset_index()
             )
 
         if (i + 1) % 5 == 0:
             print(f"… processados {i+1} chunks")
 
     if agg is None:
-        raise RuntimeError("Nada foi agregado. O arquivo pode estar vazio ou houve falha de leitura.")
+        raise RuntimeError(
+            "Nada foi agregado. O arquivo pode estar vazio ou houve falha de leitura."
+        )
 
     out_path = OUT_DIR / f"ano={year}" / f"rais_vinc_agg_{region_tag.lower()}_{year}.parquet"
     out_path.parent.mkdir(parents=True, exist_ok=True)
