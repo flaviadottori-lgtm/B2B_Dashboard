@@ -5,10 +5,11 @@ Ingestão CAGED: download, upload GCS, validação, manifest
 import logging
 import os
 import tempfile
-from typing import Dict
 from datetime import datetime
-from src.common.gcs_utils import upload_to_gcs, file_exists_gcs
-from src.common.govbr_caged import fetch_caged_links, download_caged_file
+from typing import Dict
+
+from src.common.gcs_utils import file_exists_gcs, upload_to_gcs
+from src.common.govbr_caged import download_caged_file, fetch_caged_links
 from src.common.manifest import write_manifest
 
 

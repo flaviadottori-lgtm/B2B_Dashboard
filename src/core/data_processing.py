@@ -2,9 +2,10 @@
 Funções de preparação e processamento de dados para a UI.
 """
 
-import pandas as pd
-from typing import Optional
 import logging
+from typing import Optional
+
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def prep_companies(df: pd.DataFrame) -> pd.DataFrame:
     - Se o parquet não estiver sendo lido (por engine/erro), df pode chegar vazio.
       Nesse caso, esta função apenas retorna vazio e loga.
     """
-    from ..utils.formatters import clean_label, normalize_uf, macro_sector_from_label
+    from ..utils.formatters import clean_label, macro_sector_from_label, normalize_uf
 
     if df is None:
         logger.error("[prep_companies] df=None (entrada inválida). Retornando DF vazio.")
@@ -161,7 +162,7 @@ def prep_caged(df: pd.DataFrame) -> pd.DataFrame:
     """
     Prepara dataset CAGED (empregos) para visualização.
     """
-    from ..utils.formatters import clean_label, normalize_uf, macro_sector_from_label
+    from ..utils.formatters import clean_label, macro_sector_from_label, normalize_uf
 
     if df is None:
         logger.error("[prep_caged] df=None. Retornando DF vazio.")

@@ -2,9 +2,11 @@
 Testes para módulo de configuração (src/config/)
 """
 
-import pytest
 from pathlib import Path
-from src.config.settings import Settings, PathConfig, get_project_root
+
+import pytest
+
+from src.config.settings import PathConfig, Settings, get_project_root
 
 
 class TestProjectRoot:

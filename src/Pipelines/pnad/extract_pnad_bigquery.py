@@ -10,18 +10,18 @@ Módulo para extrair dados da PNAD Contínua agregados por:
 Source: basedosdados.br_ibge_pnadc (table: ano_uf_grupo_idade)
 """
 
+import logging
 import os
 import sys
 from pathlib import Path
 from typing import Optional
-import logging
 
 # Add project to path
 project_root = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from google.cloud import bigquery
 import pandas as pd
+from google.cloud import bigquery
 
 # Setup logging
 logger = logging.getLogger(__name__)

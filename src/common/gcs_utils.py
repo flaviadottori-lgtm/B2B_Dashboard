@@ -1,5 +1,6 @@
-from google.cloud import storage
 import os
+
+from google.cloud import storage
 
 
 def upload_to_gcs(bucket: str, blob_name: str, local_path: str):

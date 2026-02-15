@@ -5,7 +5,7 @@ import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Iterable
+from typing import Iterable, Optional
 from urllib.parse import urljoin
 
 import requests

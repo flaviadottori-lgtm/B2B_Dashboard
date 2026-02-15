@@ -4,8 +4,8 @@ import argparse
 import logging
 from pathlib import Path
 
-from src.Pipelines.rais.download_rais import download_rais_year
 from src.Pipelines.rais.build_rais_agg_parquet import build_agg
+from src.Pipelines.rais.download_rais import download_rais_year
 from src.Pipelines.rais.publish_to_bigquery import publish_rais_to_bigquery
 
 LOGGER = logging.getLogger(__name__)

@@ -8,15 +8,15 @@ import logging
 import os
 import sys
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
-from src.pipelines.caged.download_caged_xlsx import download_competencia
+from src.common.config import get_config
+from src.common.logging_utils import get_run_id, setup_logging
 from src.pipelines.caged.build_caged_parquet import main as build_caged_parquet
+from src.pipelines.caged.download_caged_xlsx import download_competencia
 from src.pipelines.caged.publish_to_bigquery import publish_caged_to_bigquery
 from src.pipelines.caged.watermark import WatermarkController
-from src.common.config import get_config
-from src.common.logging_utils import setup_logging, get_run_id
 
 
 def parse_args():

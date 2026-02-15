@@ -3,8 +3,9 @@ Tests for src.ui.components module.
 Tests Streamlit UI components and styling functions.
 """
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 
 class TestApplyStyles:
@@ -41,8 +42,9 @@ class TestRenderKPI:
 
     def test_render_kpi_signature(self):
         """Test that render_kpi accepts expected parameters."""
-        from src.ui.components import render_kpi
         from inspect import signature
+
+        from src.ui.components import render_kpi
 
         sig = signature(render_kpi)
         # Should have parameters like label, value, etc.
@@ -78,8 +80,9 @@ class TestRenderPills:
 
     def test_render_pills_signature(self):
         """Test that render_pills accepts expected parameters."""
-        from src.ui.components import render_pills
         from inspect import signature
+
+        from src.ui.components import render_pills
 
         sig = signature(render_pills)
         params = list(sig.parameters.keys())
@@ -113,8 +116,9 @@ class TestRenderDiagnosticInfo:
 
     def test_render_diagnostic_info_signature(self):
         """Test that render_diagnostic_info accepts expected parameters."""
-        from src.ui.components import render_diagnostic_info
         from inspect import signature
+
+        from src.ui.components import render_diagnostic_info
 
         sig = signature(render_diagnostic_info)
         params = list(sig.parameters.keys())
@@ -152,7 +156,7 @@ class TestComponentsIntegration:
 
     def test_all_components_importable(self):
         """Test that all components can be imported."""
-        from src.ui.components import apply_styles, render_kpi, render_pills, render_diagnostic_info
+        from src.ui.components import apply_styles, render_diagnostic_info, render_kpi, render_pills
 
         # All should be callable
         assert callable(apply_styles)

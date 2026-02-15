@@ -217,7 +217,7 @@ class TestDataProcessingIntegration:
 
     def test_full_pipeline(self, pipeline_data):
         """Test complete data processing pipeline."""
-        from src.core.data_processing import prep_companies, apply_filters
+        from src.core.data_processing import apply_filters, prep_companies
 
         # Step 1: Prepare companies
         prepared = prep_companies(pipeline_data)

@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from pathlib import Path
 import re
 import unicodedata
 import warnings
+from pathlib import Path
+
 import pandas as pd
 
 warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")

@@ -1,18 +1,19 @@
 # Corrige NameError para duckdb
-import duckdb
-
 # Corrige NameError para Path
 from pathlib import Path
+
+import duckdb
 
 """
 Utilitários para carregamento e validação de dados.
 """
 
 import json
+import logging
 from pathlib import Path
 from typing import Optional, Union
+
 import pandas as pd
-import logging
 import streamlit as st
 
 logger = logging.getLogger(__name__)

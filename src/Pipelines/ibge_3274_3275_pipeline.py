@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from pathlib import Path
 import csv
 import re
-import pandas as pd
+from pathlib import Path
+
 import numpy as np
+import pandas as pd
 
 # ================= PATHS =================
 BASE_DIR = Path(__file__).resolve().parents[2]

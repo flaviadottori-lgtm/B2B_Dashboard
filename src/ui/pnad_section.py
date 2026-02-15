@@ -3,14 +3,15 @@ Componentes e renderização para seção PNAD no Streamlit app
 Suporta múltiplas métricas: população, informalidade, renda, desemprego
 """
 
-import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
 from pathlib import Path
 from typing import Optional
 
-from src.utils.data_loading import load_pnad_metrics_data
+import pandas as pd
+import plotly.graph_objects as go
+import streamlit as st
+
 from src.config.constants import I18N
+from src.utils.data_loading import load_pnad_metrics_data
 
 
 def render_pnad_section(lang: str = "pt"):

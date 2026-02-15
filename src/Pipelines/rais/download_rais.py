@@ -5,13 +5,13 @@ import sys
 import time
 import zipfile
 from dataclasses import dataclass
+from ftplib import FTP
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
 from urllib.parse import urlparse
 
-import requests
 import py7zr
-from ftplib import FTP
+import requests
 
 GOVBR_INDEX_URL = (
     "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/"

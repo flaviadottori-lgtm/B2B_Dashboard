@@ -24,8 +24,8 @@ class TestPNADV2Integration:
         """Valida importação do módulo de extração de métricas"""
         try:
             from src.Pipelines.pnad.extract_pnad_metrics import (
-                extract_pnad_metrics,
                 PNADCMetricsExtractor,
+                extract_pnad_metrics,
             )
 
             assert callable(extract_pnad_metrics)
@@ -147,9 +147,7 @@ class TestPNADV2Integration:
     def test_pnad_section_functions(self):
         """Valida que pnad_section.py contém funções esperadas"""
         try:
-            from src.ui.pnad_section import (
-                render_pnad_section,
-            )
+            from src.ui.pnad_section import render_pnad_section
 
             # Validar função principal
             assert callable(render_pnad_section)

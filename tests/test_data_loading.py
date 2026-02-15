@@ -2,12 +2,12 @@
 Testes para módulo de carregamento de dados (src/utils/data_loading.py)
 """
 
-import pytest
-import pandas as pd
 from pathlib import Path
-from src.utils.data_loading import (
-    validate_dataframe,
-)
+
+import pandas as pd
+import pytest
+
+from src.utils.data_loading import validate_dataframe
 
 
 class TestValidateDataframe:

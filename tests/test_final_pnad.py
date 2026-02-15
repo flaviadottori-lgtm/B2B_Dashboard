@@ -21,9 +21,9 @@ except Exception as e:
 # Test 2: Imports
 print("[2/4] Testando imports...")
 try:
+    from src.config.constants import I18N
     from src.ui.pnad_section import render_pnad_section
     from src.utils.data_loading import load_pnad_data
-    from src.config.constants import I18N
 
     print("      ✓ Todos os imports OK\n")
 except Exception as e:

@@ -10,9 +10,10 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
+import pandas as pd
+
 from src.config.constants import I18N
 from src.utils.data_loading import load_pnad_data
-import pandas as pd
 
 
 def test_pnad_i18n_keys_exist():

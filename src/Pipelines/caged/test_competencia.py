@@ -1,4 +1,5 @@
 import pytest
+
 from src.pipelines.caged.run import get_default_competencia
 
 

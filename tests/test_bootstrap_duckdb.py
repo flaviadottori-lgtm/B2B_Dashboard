@@ -1,13 +1,16 @@
+from pathlib import Path
+
 import duckdb
 import pytest
+
 from scripts.bootstrap_duckdb import ensure_dim_uf, ensure_views
-from pathlib import Path
 
 
 def test_bootstrap_duckdb_contract():
     con = duckdb.connect(":memory:")
     # Cria fake PNAD e CAGED
     import tempfile
+
     import pandas as pd
 
     # Caso 1: ingestão parquet sintético

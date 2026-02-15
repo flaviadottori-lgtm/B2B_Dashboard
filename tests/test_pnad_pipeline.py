@@ -4,6 +4,7 @@ Smoke tests para pipeline PNAD BigQuery
 
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 project_root = Path(__file__).parent
@@ -86,8 +87,7 @@ def test_module_imports():
     """Test that module can be imported"""
     print("\n[] Test 4: Module imports")
     try:
-        from src.Pipelines.pnad import PNADCExtractor
-        from src.Pipelines.pnad import extract_pnad
+        from src.Pipelines.pnad import PNADCExtractor, extract_pnad
 
         print("   ✓ All imports successful")
         return True

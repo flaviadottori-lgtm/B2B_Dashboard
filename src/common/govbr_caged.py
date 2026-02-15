@@ -1,7 +1,8 @@
-import requests
-from typing import List
-import re
 import os
+import re
+from typing import List
+
+import requests
 
 
 def fetch_caged_links(year: str, month: str) -> List[str]:

@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import numpy as np
-import pandas as pd
-import streamlit as st
 from pathlib import Path
 
+import numpy as np
+import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+import streamlit as st
 from sklearn.preprocessing import StandardScaler
 
 # -----------------------------

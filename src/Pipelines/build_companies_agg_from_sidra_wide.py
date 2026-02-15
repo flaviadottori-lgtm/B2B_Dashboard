@@ -1,9 +1,10 @@
 # src/Pipelines/build_companies_agg_from_sidra_wide.py
 from __future__ import annotations
 
-from pathlib import Path
-import pandas as pd
 import re
+from pathlib import Path
+
+import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW = PROJECT_ROOT / "data" / "raw" / "ibge" / "sidra_3274_2008_2021_raw.csv"

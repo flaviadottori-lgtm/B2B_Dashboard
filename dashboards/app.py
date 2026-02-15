@@ -3,11 +3,11 @@ Painel B2B Brasil  Aplicação Streamlit Principal
 Refatorado para modularidade, logging e manutenibilidade
 """
 
-import logging
-import sys
-import os
-from pathlib import Path
 import json
+import logging
+import os
+import sys
+from pathlib import Path
 
 # Adicionar diretório pai ao path para importações
 project_root = Path(__file__).parent.parent.resolve()
@@ -27,34 +27,36 @@ os.chdir(project_root)
 
 
 
+import json
+from pathlib import Path
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from pathlib import Path
-import json
 
-from src.config import Settings, I18N, UF_ORDER, MACRO_SECTORS
-from src.utils.formatters import fmt_int
-from src.utils.duckdb_client import get_con
-from src.utils.data_loading import (
-    load_geojson_safe,
-    load_companies_agg,
-    load_opportunity_scores,
-    load_caged_state_sector_year,
-    load_pnad_metrics,
-    load_rais_metrics,
-)
-from src.utils.logging_config import setup_logging, get_logger
+from src.config import I18N, MACRO_SECTORS, UF_ORDER, Settings
 from src.core.data_processing import (
-    prep_companies,
-    prep_scores,
-    prep_caged,
     apply_filters,
     build_gold_join,
+    prep_caged,
+    prep_companies,
+    prep_scores,
 )
 from src.ui.components import apply_styles, render_kpi, render_pills
 from src.ui.pnad_section import render_pnad_section
+from src.utils.data_loading import (
+    load_caged_state_sector_year,
+    load_companies_agg,
+    load_geojson_safe,
+    load_opportunity_scores,
+    load_pnad_metrics,
+    load_rais_metrics,
+)
+from src.utils.duckdb_client import get_con
+from src.utils.formatters import fmt_int
+from src.utils.logging_config import get_logger, setup_logging
+
 
 def load_geo_states():
     try:

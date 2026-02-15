@@ -1,5 +1,6 @@
-from src.utils.paths import DUCKDB_PATH
 import duckdb
+
+from src.utils.paths import DUCKDB_PATH
 
 
 def test_duckdb_path_consistency():

@@ -3,13 +3,14 @@ Testes para módulo de formatação (src/utils/formatters.py)
 """
 
 import pytest
+
 from src.utils.formatters import (
-    fmt_int,
-    fix_mojibake,
-    strip_accents,
     clean_label,
-    normalize_uf,
+    fix_mojibake,
+    fmt_int,
     macro_sector_from_label,
+    normalize_uf,
+    strip_accents,
 )
 
 

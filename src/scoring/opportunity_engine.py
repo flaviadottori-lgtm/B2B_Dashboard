@@ -1,8 +1,8 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from src.utils.io import load_ibge_tidy, load_companies_agg, save_parquet
-from src.utils.schema import require_columns, IBGE_TIDY_COLS, COMPANIES_AGG_COLS
+from src.utils.io import load_companies_agg, load_ibge_tidy, save_parquet
+from src.utils.schema import COMPANIES_AGG_COLS, IBGE_TIDY_COLS, require_columns
 
 # =====================================================
 # Load

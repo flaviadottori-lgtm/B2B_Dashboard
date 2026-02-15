@@ -24,10 +24,11 @@ except Exception as e:
 print("")
 print("[✓] Imports Check:")
 try:
-    from src.core.data_processing import apply_filters, prep_scores
-    from src.utils.data_loading import load_geojson_safe
     import plotly.express as px
     import plotly.graph_objects as go
+
+    from src.core.data_processing import apply_filters, prep_scores
+    from src.utils.data_loading import load_geojson_safe
 
     print("    Todas as dependências de visualização carregadas")
 except Exception as e:

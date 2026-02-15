@@ -3,9 +3,10 @@ Controle de watermark/idempotência para pipeline CAGED
 """
 
 import logging
-from google.cloud import bigquery
 from datetime import datetime
 from typing import Optional
+
+from google.cloud import bigquery
 
 
 class WatermarkController:

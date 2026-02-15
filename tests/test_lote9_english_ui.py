@@ -24,9 +24,10 @@ except Exception as e:
 print("")
 print("[✓] Imports Check:")
 try:
+    import pandas as pd
     import plotly.express as px
     import plotly.graph_objects as go
-    import pandas as pd
+
     from src.core.data_processing import apply_filters, prep_scores
     from src.utils.data_loading import load_geojson_safe
 
