@@ -222,7 +222,9 @@ python run_pnad_pipeline.py
 python run_pnad_metrics_pipeline.py
 Launch Dashboard (Optional Layer)
 streamlit run app.py
-7. Data Flow Governance
+```
+
+## 7. Data Flow Governance
 Raw data is never overwritten.
 Processed data is stored in versionable Parquet outputs.
 
@@ -234,7 +236,7 @@ Version only transformation logic
 
 Maintain reproducibility via pipeline execution
 
-8. Limitations
+## 8. Limitations
 Dependent on public dataset update frequency
 
 Structural index (not forward-looking prediction)
@@ -243,7 +245,7 @@ Some datasets limited historically
 
 Data harmonization depends on official classification consistency
 
-9. Roadmap
+## 9. Roadmap
 Consolidate Opportunity Score v3 (IBGE + CNPJ + CAGED)
 
 Improve feature engineering depth
@@ -256,7 +258,7 @@ Implement cloud-native deployment architecture
 
 Structured reporting module (LLM-assisted summaries)
 
-10. Strategic Positioning
+## 10. Strategic Positioning
 This project demonstrates:
 
 Data systems architecture
@@ -273,7 +275,7 @@ Production-ready modular design
 
 It is part of a broader portfolio focused on data infrastructure and market intelligence systems.
 
-Author
+### Author
 Flávia Dottori
 Data Systems & Economic Intelligence
 
