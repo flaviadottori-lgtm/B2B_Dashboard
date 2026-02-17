@@ -66,4 +66,3 @@ jobs:
               --ignore=tests/test_final_pnad.py \
               --ignore-glob="tests/test_lote*.py"
           fi
-
