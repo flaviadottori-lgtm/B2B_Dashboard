@@ -34,7 +34,7 @@ jobs:
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
-          pip install pylint mypy bandit pytest
+          pip install pylint mypy bandit pytest duckdb
 
       - name: Lint with pylint
         run: |
@@ -58,6 +58,7 @@ jobs:
       - name: Run tests
         run: |
           if [ -d tests ]; then
+            python scripts/bootstrap_duckdb.py
             pytest -q \
               --ignore=tests/test_bootstrap_duckdb.py \
               --ignore=tests/test_final_pnad.py \
