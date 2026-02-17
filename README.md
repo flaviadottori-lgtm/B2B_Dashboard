@@ -1,7 +1,8 @@
 # B2B Opportunity Engine  
 ## Data Systems & Economic Intelligence Platform
 
-![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![SQL](https://img.shields.io/badge/sql-analytical-lightgrey) ![DuckDB](https://img.shields.io/badge/duckdb-local%20engine-yellow) ![BigQuery](https://img.shields.io/badge/bigquery-cloud-blue) ![Status](https://img.shields.io/badge/status-active--development-orange)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue) ![SQL](https://img.shields.io/badge/sql-analytical-lightgrey) ![DuckDB](https://img.shields.io/badge/duckdb-local%20engine-yellow) ![BigQuery](https://img.shields.io/badge/bigquery-cloud-blue) ![Status](https://img.shields.io/badge/status-active--development-orange) [![CI](https://github.com/flaviadottori-lgtm/B2B_Dashboard/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/flaviadottori-lgtm/B2B_Dashboard/actions/workflows/ci.yml)
+
 
 
 
