@@ -13,10 +13,8 @@ def print_db_info():
 
 
 def get_con():
+    DUCKDB_PATH.parent.mkdir(parents=True, exist_ok=True)
     return duckdb.connect(str(DUCKDB_PATH))
-
-
-con = get_con()
 
 
 def ensure_dim_uf(con):
@@ -174,6 +172,8 @@ def ensure_views(con):
 
 
 def main():
+    con = get_con()
+
     # Ingestão PNAD opcional
     import os
     from pathlib import Path
