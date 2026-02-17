@@ -56,6 +56,8 @@ jobs:
           fi
 
       - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           if [ -d tests ]; then
             python scripts/bootstrap_duckdb.py
